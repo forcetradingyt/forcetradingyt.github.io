@@ -2,129 +2,122 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Force Trading</title>
-
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+:root{
+--bg:#050505;--card:#101010;--green:#00ff88;--text:#f2f2f2;--muted:#a7a7a7;
 }
-
+*{box-sizing:border-box}
 body{
-background:#0d1117;
-color:white;
-text-align:center;
-padding:20px;
+margin:0;font-family:Inter,Arial,sans-serif;color:var(--text);
+background:
+radial-gradient(circle at 20% 0%,rgba(0,255,136,.08),transparent 30%),
+radial-gradient(circle at 80% 100%,rgba(0,255,136,.06),transparent 35%),
+var(--bg);
+overflow-x:hidden;
 }
-
-.container{
-max-width:500px;
+.bggrid{
+position:fixed;inset:0;opacity:.08;pointer-events:none;
+background-image:
+linear-gradient(rgba(0,255,136,.18) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,255,136,.18) 1px,transparent 1px);
+background-size:40px 40px;
+}
+.wrap{max-width:520px;margin:auto;padding:24px}
+.hero{
+background:rgba(16,16,16,.92);
+border:1px solid rgba(0,255,136,.25);
+border-radius:24px;
+padding:28px;
+box-shadow:0 0 30px rgba(0,255,136,.12);
+backdrop-filter:blur(8px);
+}
+.logo{
+width:110px;height:110px;border-radius:50%;
 margin:auto;
+display:flex;align-items:center;justify-content:center;
+font-size:40px;font-weight:800;
+color:var(--green);
+border:2px solid var(--green);
+box-shadow:0 0 24px rgba(0,255,136,.5);
 }
-
-img{
-width:140px;
-height:140px;
-border-radius:50%;
-border:4px solid #00ff88;
-object-fit:cover;
-margin-top:20px;
+h1{text-align:center;margin:18px 0 6px}
+.sub{text-align:center;color:var(--muted);line-height:1.6}
+.btn{
+display:block;text-decoration:none;text-align:center;
+margin:14px 0;padding:16px;border-radius:14px;
+background:#0f0f0f;color:#fff;
+border:1px solid rgba(0,255,136,.45);
+transition:.25s;
+box-shadow:0 0 15px rgba(0,255,136,.15);
 }
-
-h1{
-margin-top:20px;
-font-size:32px;
+.btn:hover{background:var(--green);color:#000;transform:translateY(-2px)}
+.section{
+margin-top:22px;padding:20px;border-radius:18px;
+background:#0d0d0d;border:1px solid rgba(0,255,136,.18);
 }
-
-.bio{
-margin-top:10px;
-color:#cfcfcf;
-line-height:1.6;
+h2{margin-top:0;color:var(--green)}
+.grid{
+display:grid;grid-template-columns:1fr 1fr;gap:12px
 }
-
-.button{
-display:block;
-background:#00c853;
-color:white;
-text-decoration:none;
-padding:16px;
-margin-top:15px;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-transition:.3s;
+.stat{
+padding:16px;border-radius:14px;background:#121212;
+border:1px solid rgba(0,255,136,.18);text-align:center
 }
-
-.button:hover{
-background:#00a844;
+.small{color:var(--muted);font-size:14px}
+footer{text-align:center;color:#888;padding:28px}
+.glow{
+position:fixed;width:220px;height:220px;border-radius:50%;
+background:rgba(0,255,136,.18);filter:blur(80px);
+animation:float 7s ease-in-out infinite alternate;
+z-index:-1;top:-50px;right:-40px;
 }
-
-.card{
-background:#161b22;
-padding:20px;
-border-radius:15px;
-margin-top:25px;
-}
-
-footer{
-margin-top:40px;
-color:#888;
-font-size:14px;
-}
+@keyframes float{from{transform:translateY(0)}to{transform:translateY(140px)}}
 </style>
-
 </head>
-
 <body>
+<div class="bggrid"></div>
+<div class="glow"></div>
 
-<div class="container">
-
-<img src="https://via.placeholder.com/150" alt="Profile">
-
+<div class="wrap">
+<div class="hero">
+<div class="logo">FT</div>
 <h1>Force Trading</h1>
+<p class="sub">Technical Analysis • EMA Framework • Swing Trading • Investment</p>
 
-<div class="bio">
-Technical Analyst<br>
-Swing Trading | Investment | EMA Framework
-</div>
+<a class="btn" href="https://t.me/yourchannel">📲 Telegram Channel</a>
+<a class="btn" href="https://chat.whatsapp.com/yourgroup">💬 WhatsApp Group</a>
+<a class="btn" href="#">📘 Free eBook</a>
+<a class="btn" href="#">💎 Premium Membership</a>
 
-<a class="button" href="https://youtube.com">📺 YouTube</a>
-
-<a class="button" href="https://substack.com">📰 Substack</a>
-
-<a class="button" href="https://t.me/">📲 Telegram</a>
-
-<a class="button" href="#">📘 Free eBook</a>
-
-<a class="button" href="#">💎 Premium Membership</a>
-
-<a class="button" href="mailto:youremail@gmail.com">📧 Contact</a>
-
-<div class="card">
-<h2>About Me</h2>
-<p>
-Helping traders find quality breakout stocks using EMA strategies,
-trendline analysis and price action.
+<div class="section">
+<h2>About</h2>
+<p class="small">
+Helping traders identify high-quality swing and investment opportunities using
+EMA strategies, price action and trend analysis.
 </p>
 </div>
 
-<div class="card">
+<div class="section">
+<h2>Highlights</h2>
+<div class="grid">
+<div class="stat"><h3>EMA</h3><div class="small">Framework</div></div>
+<div class="stat"><h3>Daily</h3><div class="small">Market Insights</div></div>
+<div class="stat"><h3>Premium</h3><div class="small">Community</div></div>
+<div class="stat"><h3>Free</h3><div class="small">Learning</div></div>
+</div>
+</div>
+
+<div class="section">
 <h2>Disclaimer</h2>
-<p>
-This content is only for educational purposes.
-Please do your own research before investing.
+<p class="small">
+For educational purposes only. This is not financial advice. Always do your own research before investing.
 </p>
 </div>
-
-<footer>
-© 2026 Force Trading
-</footer>
-
 </div>
 
+<footer>© 2026 Force Trading</footer>
+</div>
 </body>
 </html>
