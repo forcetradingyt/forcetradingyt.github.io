@@ -3,121 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Force Trading</title>
+<title>Force Trading YT</title>
 <style>
-:root{
---bg:#050505;--card:#101010;--green:#00ff88;--text:#f2f2f2;--muted:#a7a7a7;
-}
-*{box-sizing:border-box}
-body{
-margin:0;font-family:Inter,Arial,sans-serif;color:var(--text);
-background:
-radial-gradient(circle at 20% 0%,rgba(0,255,136,.08),transparent 30%),
-radial-gradient(circle at 80% 100%,rgba(0,255,136,.06),transparent 35%),
-var(--bg);
-overflow-x:hidden;
-}
-.bggrid{
-position:fixed;inset:0;opacity:.08;pointer-events:none;
-background-image:
-linear-gradient(rgba(0,255,136,.18) 1px,transparent 1px),
-linear-gradient(90deg,rgba(0,255,136,.18) 1px,transparent 1px);
-background-size:40px 40px;
-}
-.wrap{max-width:520px;margin:auto;padding:24px}
-.hero{
-background:rgba(16,16,16,.92);
-border:1px solid rgba(0,255,136,.25);
-border-radius:24px;
-padding:28px;
-box-shadow:0 0 30px rgba(0,255,136,.12);
-backdrop-filter:blur(8px);
-}
-.logo{
-width:110px;height:110px;border-radius:50%;
-margin:auto;
-display:flex;align-items:center;justify-content:center;
-font-size:40px;font-weight:800;
-color:var(--green);
-border:2px solid var(--green);
-box-shadow:0 0 24px rgba(0,255,136,.5);
-}
-h1{text-align:center;margin:18px 0 6px}
-.sub{text-align:center;color:var(--muted);line-height:1.6}
-.btn{
-display:block;text-decoration:none;text-align:center;
-margin:14px 0;padding:16px;border-radius:14px;
-background:#0f0f0f;color:#fff;
-border:1px solid rgba(0,255,136,.45);
-transition:.25s;
-box-shadow:0 0 15px rgba(0,255,136,.15);
-}
-.btn:hover{background:var(--green);color:#000;transform:translateY(-2px)}
-.section{
-margin-top:22px;padding:20px;border-radius:18px;
-background:#0d0d0d;border:1px solid rgba(0,255,136,.18);
-}
-h2{margin-top:0;color:var(--green)}
-.grid{
-display:grid;grid-template-columns:1fr 1fr;gap:12px
-}
-.stat{
-padding:16px;border-radius:14px;background:#121212;
-border:1px solid rgba(0,255,136,.18);text-align:center
-}
-.small{color:var(--muted);font-size:14px}
-footer{text-align:center;color:#888;padding:28px}
-.glow{
-position:fixed;width:220px;height:220px;border-radius:50%;
-background:rgba(0,255,136,.18);filter:blur(80px);
-animation:float 7s ease-in-out infinite alternate;
-z-index:-1;top:-50px;right:-40px;
-}
-@keyframes float{from{transform:translateY(0)}to{transform:translateY(140px)}}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a; color: #f0f0f0;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 24px 16px;
+  }
+  .page { width: 100%; max-width: 420px; }
+  .header { text-align: center; margin-bottom: 32px; }
+  .avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: #161616; border: 1px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 26px; font-weight: 700; color: #c9a84c; letter-spacing: -1px;
+  }
+  .brand { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .brand-accent { color: #c9a84c; }
+  .tagline { font-size: 13px; color: #666; letter-spacing: 0.3px; }
+  .live-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+  .live-text { font-size: 12px; color: #4ade80; font-weight: 500; letter-spacing: 0.4px; text-transform: uppercase; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, #222, transparent); margin: 0 0 28px; }
+  .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .btn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 15px 18px; border-radius: 12px;
+    text-decoration: none; font-size: 14px; font-weight: 600;
+    color: #fff; background: #141414; border: 1px solid #222;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .btn:hover { border-color: #c9a84c; background: #1a1600; transform: translateY(-1px); }
+  .btn-primary { background: #c9a84c; border-color: #c9a84c; color: #0a0a0a; }
+  .btn-primary:hover { background: #dbb85a; border-color: #dbb85a; color: #0a0a0a; }
+  .btn-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .btn-primary .btn-icon { background: rgba(0,0,0,0.15); }
+  .btn-content { flex: 1; }
+  .btn-label { display: block; font-size: 14px; font-weight: 600; }
+  .btn-sublabel { display: block; font-size: 11px; font-weight: 400; color: #888; margin-top: 1px; }
+  .btn-primary .btn-sublabel { color: rgba(0,0,0,0.5); }
+  .btn-arrow { color: #444; font-size: 14px; flex-shrink: 0; }
+  .btn-primary .btn-arrow { color: rgba(0,0,0,0.35); }
+  .quote-box {
+    background: #0f0f0f; border: 1px solid #1e1e1e;
+    border-left: 3px solid #c9a84c; border-radius: 0 10px 10px 0;
+    padding: 16px 18px; margin-bottom: 28px;
+    min-height: 72px; display: flex; flex-direction: column;
+    justify-content: center; gap: 6px;
+    cursor: pointer; transition: border-color 0.2s;
+  }
+  .quote-box:hover { border-left-color: #dbb85a; }
+  .quote-text { font-size: 13px; color: #bbb; line-height: 1.6; font-style: italic; transition: opacity 0.4s; }
+  .quote-author { font-size: 11px; color: #c9a84c; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; transition: opacity 0.4s; }
+  .quote-hint { font-size: 10px; color: #333; text-align: right; margin-top: 2px; }
+  .disclaimer { background: #0f0f0f; border: 1px solid #1c1c1c; border-left: 3px solid #222; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 24px; }
+  .disclaimer p { font-size: 11px; color: #444; line-height: 1.6; }
+  footer { text-align: center; font-size: 11px; color: #333; padding-top: 16px; border-top: 1px solid #161616; }
 </style>
 </head>
 <body>
-<div class="bggrid"></div>
-<div class="glow"></div>
+<div class="page">
 
-<div class="wrap">
-<div class="hero">
-<div class="logo">FT</div>
-<h1>Force Trading</h1>
-<p class="sub">Technical Analysis • EMA Framework • Swing Trading • Investment</p>
+  <div class="header">
+    <div class="avatar">FT</div>
+    <div class="brand">Force<span class="brand-accent">TradingYT</span></div>
+    <div class="tagline">EMA Framework · NSE Swing Trading · Market Structure</div>
+    <div class="live-row">
+      <div class="dot"></div>
+      <span class="live-text">Active community</span>
+    </div>
+  </div>
 
-<a class="btn" href="https://t.me/forcetradingyt1">📲 Telegram Channel</a>
-<a class="btn" href="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&mlu=3">💬 WhatsApp Group</a>
-<a class="btn" href="https://superprofile.bio/lf/690e01f33f6c4a0013e4c546">📘 Free eBook</a>
-<a class="btn" href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4">💎 Premium Membership</a>
+  <div class="divider"></div>
 
-<div class="section">
-<h2>About</h2>
-<p class="small">
-Helping traders identify high-quality swing and investment opportunities using
-EMA strategies, price action and trend analysis.
-</p>
+  <div class="btn-group">
+    <a class="btn btn-primary" href="https://t.me/forcetradingyt1">
+      <div class="btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </div>
+      <div class="btn-content">
+        <span class="btn-label">Telegram Channel</span>
+        <span class="btn-sublabel">Daily trade setups & insights</span>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <a class="btn" href="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&mlu=3">
+      <div class="btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <div class="btn-content">
+        <span class="btn-label">WhatsApp Group</span>
+        <span class="btn-sublabel">Casual discussion & updates</span>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <a class="btn" href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4">
+      <div class="btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+      </div>
+      <div class="btn-content">
+        <span class="btn-label">Premium Membership</span>
+        <span class="btn-sublabel">Scanner + signals + community</span>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+
+    <a class="btn" href="https://superprofile.bio/lf/690e01f33f6c4a0013e4c546">
+      <div class="btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      </div>
+      <div class="btn-content">
+        <span class="btn-label">Free eBook</span>
+        <span class="btn-sublabel">Download & start learning</span>
+      </div>
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="quote-box" id="quoteBox" onclick="nextQuote()">
+    <div class="quote-text" id="quoteText"></div>
+    <div class="quote-author" id="quoteAuthor"></div>
+    <div class="quote-hint">tap to change</div>
+  </div>
+
+  <div class="disclaimer">
+    <p>For educational purposes only. Not SEBI-registered. Do your own research before making investment decisions.</p>
+  </div>
+
+  <footer>© 2026 Force Trading YT</footer>
+
 </div>
 
-<div class="section">
-<h2>Highlights</h2>
-<div class="grid">
-<div class="stat"><h3>EMA</h3><div class="small">Framework</div></div>
-<div class="stat"><h3>Daily</h3><div class="small">Market Insights</div></div>
-<div class="stat"><h3>Premium</h3><div class="small">Community</div></div>
-<div class="stat"><h3>Free</h3><div class="small">Learning</div></div>
-</div>
-</div>
+<script>
+  const quotes = [
+    { text: "The trend is your friend until the end when it bends.", author: "Ed Seykota" },
+    { text: "In investing, what is comfortable is rarely profitable.", author: "Robert Arnott" },
+    { text: "The stock market is a device for transferring money from the impatient to the patient.", author: "Warren Buffett" },
+    { text: "Risk comes from not knowing what you are doing.", author: "Warren Buffett" },
+    { text: "Cut your losses short and let your winners run.", author: "Jesse Livermore" },
+    { text: "The market can stay irrational longer than you can stay solvent.", author: "John Maynard Keynes" },
+    { text: "It's not whether you're right or wrong, but how much money you make when you're right.", author: "George Soros" },
+    { text: "Plan your trade and trade your plan.", author: "Jesse Livermore" },
+  ];
 
-<div class="section">
-<h2>Disclaimer</h2>
-<p class="small">
-For educational purposes only. This is not financial advice. Always do your own research before investing.
-</p>
-</div>
-</div>
+  let current = 0;
 
-<footer>© 2026 Force Trading</footer>
-</div>
+  function showQuote(index) {
+    const qt = document.getElementById('quoteText');
+    const qa = document.getElementById('quoteAuthor');
+    qt.style.opacity = 0;
+    qa.style.opacity = 0;
+    setTimeout(() => {
+      qt.textContent = '"' + quotes[index].text + '"';
+      qa.textContent = '— ' + quotes[index].author;
+      qt.style.opacity = 1;
+      qa.style.opacity = 1;
+    }, 200);
+  }
+
+  function nextQuote() {
+    current = (current + 1) % quotes.length;
+    showQuote(current);
+  }
+
+  current = Math.floor(Math.random() * quotes.length);
+  showQuote(current);
+  setInterval(nextQuote, 6000);
+</script>
 </body>
 </html>
