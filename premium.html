@@ -88,6 +88,151 @@
     line-height:1.6;
   }
 
+  .trust-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:0 auto 20px;
+    padding:8px 16px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:24px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .trust-badge .avatars{
+    display:flex;
+  }
+  .trust-badge .avatars span{
+    width:20px; height:20px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--gold), #8a6a2c);
+    border:1.5px solid var(--surface);
+    margin-left:-7px;
+  }
+  .trust-badge .avatars span:first-child{ margin-left:0; }
+  .trust-badge b{ color:var(--gold-bright); font-weight:600; }
+
+  .markets-strip{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .market-badge{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:11px 20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:30px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    color:var(--text);
+    transition:border-color .18s ease;
+  }
+  .market-badge:hover{ border-color:var(--gold); }
+  .market-badge .flag{ font-size:16px; line-height:1; }
+  .market-badge .m-name{ color:var(--text); }
+  .market-badge .m-tag{
+    color:var(--muted);
+    font-weight:500;
+    font-size:11.5px;
+  }
+  .market-arrow{
+    color:var(--gold);
+    font-size:15px;
+    opacity:0.6;
+  }
+  @media (max-width:640px){
+    .markets-strip{ gap:8px; }
+    .market-arrow{ display:none; }
+    .market-badge{ padding:9px 14px; font-size:12px; }
+  }
+
+  .market-strip{
+    max-width:1100px;
+    margin:0 auto;
+    padding:4px 24px 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .market-pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.03em;
+    color:var(--muted);
+    background:linear-gradient(180deg, var(--surface-hi), var(--surface));
+    border:1px solid var(--border);
+    padding:8px 16px;
+    border-radius:24px;
+    cursor:pointer;
+    transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .market-pill .flag{
+    font-size:14px;
+    line-height:1;
+  }
+  .market-pill:hover{
+    border-color:var(--gold);
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(201,162,78,0.12);
+  }
+  .market-pill[data-market="india"]{
+    border-color:rgba(201,162,78,0.4);
+    box-shadow:0 0 0 1px rgba(201,162,78,0.08);
+  }
+  .market-pill.soon{
+    color:var(--muted);
+    opacity:0.62;
+    filter:grayscale(0.3);
+  }
+  .market-pill.soon:hover{
+    opacity:0.85;
+  }
+  .market-pill.soon .dot{
+    background:var(--muted);
+  }
+  .market-pill .soon-tag{
+    font-size:9.5px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    color:var(--bg);
+    background:var(--gold);
+    padding:2px 7px;
+    border-radius:10px;
+    text-transform:uppercase;
+    margin-left:2px;
+    animation:soon-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes soon-pulse{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0.55; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .market-pill .soon-tag{ animation:none; }
+  }
+  .market-pill b{ color:var(--gold-bright); font-weight:600; }
+  .market-pill .dot{
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--gold);
+  }
+
   /* ---------- Grid ---------- */
   main{
     max-width:1100px;
@@ -349,6 +494,78 @@
   }
 
   /* ---------- Modal ---------- */
+  .grid-3{
+    grid-template-columns:repeat(3,1fr);
+  }
+  @media (max-width:760px){
+    .grid-3{ grid-template-columns:1fr; }
+  }
+
+  .category-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:6px;
+  }
+  .category-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--surface-hi);
+    border:1px solid var(--border);
+    border-radius:9px;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .category-item:hover{
+    border-color:var(--gold);
+    transform:translateX(2px);
+  }
+  .category-item-name{
+    font-weight:600;
+    font-size:14.5px;
+  }
+  .category-item-tag{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .category-item-price{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    color:var(--gold-bright);
+    font-size:17px;
+    white-space:nowrap;
+  }
+  .category-item.soon{
+    cursor:default;
+    opacity:0.55;
+  }
+  .category-item.soon:hover{
+    border-color:var(--border);
+    transform:none;
+  }
+  .category-item.soon .category-item-price{
+    color:var(--muted);
+    font-size:11px;
+    font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .category-back{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    cursor:pointer;
+    padding:4px 2px 2px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:color .15s ease;
+  }
+  .category-back:hover{ color:var(--gold-bright); }
   .plan{ cursor:pointer; }
   .overlay{
     position:fixed;
@@ -471,46 +688,26 @@
     <p>Tired of random trades, gut-feel entries, and giving back profits? Replace guesswork with a tested, rule-based system — so every trade has a reason behind it.</p>
   </header>
 
+  <div class="market-strip">
+    <div class="market-pill" data-market="india"><span class="flag">🇮🇳</span><b>India</b> NSE</div>
+    <div class="market-pill soon" data-market="us"><span class="flag">🇺🇸</span><b>US</b> NYSE / NASDAQ<span class="soon-tag">Soon</span></div>
+    <div class="market-pill soon" data-market="crypto"><span class="flag">₿</span><b>Crypto</b> BTC · ETH · Altcoins<span class="soon-tag">Soon</span></div>
+  </div>
+
   <main>
-    <div class="grid">
+    <div class="grid grid-3">
 
-      <!-- ===================== INVESTMENT STRATEGY ===================== -->
-      <div class="plan" data-plan="investment">
+      <!-- ===================== INDIAN MARKETS (opens strategy sub-list) ===================== -->
+      <div class="plan" data-category="market" data-market="india">
         <div>
-          <div class="plan-name">Investment Strategy</div>
-          <div class="plan-tag">201 Framework</div>
+          <div class="plan-name">Strategies</div>
+          <div class="plan-tag">NSE</div>
         </div>
         <div class="price-row">
-          <span class="price">₹149</span>
-          <span class="price-note">one-time</span>
+          <span class="price">₹149+</span>
+          <span class="price-note">choose a strategy</span>
         </div>
-        <button class="buy-btn" type="button">View & Buy</button>
-      </div>
-
-      <!-- ===================== SWING TRADING STRATEGY ===================== -->
-      <div class="plan" data-plan="swing">
-        <div>
-          <div class="plan-name">Swing Trading Strategy</div>
-          <div class="plan-tag">Multi-day setups</div>
-        </div>
-        <div class="price-row">
-          <span class="price">₹149</span>
-          <span class="price-note">one-time</span>
-        </div>
-        <button class="buy-btn" type="button">View & Buy</button>
-      </div>
-
-      <!-- ===================== INTRADAY STRATEGY ===================== -->
-      <div class="plan" data-plan="intraday">
-        <div>
-          <div class="plan-name">Intraday Strategy</div>
-          <div class="plan-tag">Same-day setups</div>
-        </div>
-        <div class="price-row">
-          <span class="price">₹499</span>
-          <span class="price-note">one-time</span>
-        </div>
-        <button class="buy-btn" type="button">View & Buy</button>
+        <button class="buy-btn" type="button">View Strategies</button>
       </div>
 
       <!-- ===================== PREMIUM CHANNEL ===================== -->
@@ -520,10 +717,10 @@
           <div class="plan-tag">Telegram community</div>
         </div>
         <div class="price-row">
-          <span class="price">₹99</span>
-          <span class="price-note">/ month</span>
+          <span class="price">₹99+</span>
+          <span class="price-note">monthly / 3mo / 6mo / yearly</span>
         </div>
-        <button class="buy-btn" type="button">View & Buy</button>
+        <button class="buy-btn" type="button">Join Premium</button>
       </div>
 
       <!-- ===================== BUNDLE / COMBO ===================== -->
@@ -543,6 +740,16 @@
 
     </div>
   </main>
+
+  <!-- ===================== STRATEGY SELECT OVERLAY ===================== -->
+  <div class="overlay" id="categoryOverlay">
+    <div class="modal">
+      <button class="modal-close" id="categoryClose" aria-label="Close">✕</button>
+      <div class="modal-tag" id="categoryTag">Choose one</div>
+      <div class="modal-name" id="categoryTitle">Trading Strategies</div>
+      <div class="category-list" id="categoryList"></div>
+    </div>
+  </div>
 
   <!-- ===================== MODAL ===================== -->
   <div class="overlay" id="overlay">
@@ -626,6 +833,60 @@
         "Live market examples"
       ],
       link: "https://superprofile.bio/vp/11-21-intraday-edge-system",
+      buyLabel: "Proceed to Payment"
+    },
+    "us-investment": {
+      tag: "US Markets",
+      name: "Investment Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
+      buyLabel: "Proceed to Payment"
+    },
+    "us-swing": {
+      tag: "US Markets",
+      name: "Swing Trading Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
+      buyLabel: "Proceed to Payment"
+    },
+    "us-intraday": {
+      tag: "US Markets",
+      name: "Intraday Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
+      buyLabel: "Proceed to Payment"
+    },
+    "crypto-investment": {
+      tag: "Crypto",
+      name: "Investment Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
+      buyLabel: "Proceed to Payment"
+    },
+    "crypto-swing": {
+      tag: "Crypto",
+      name: "Swing Trading Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
+      buyLabel: "Proceed to Payment"
+    },
+    "crypto-intraday": {
+      tag: "Crypto",
+      name: "Intraday Strategy",
+      price: "Coming Soon",
+      priceNote: "",
+      features: [],
+      link: "#",
       buyLabel: "Proceed to Payment"
     },
     premium: {
@@ -730,16 +991,91 @@
     overlay.classList.remove('active');
   }
 
+  const MARKETS = {
+    india: {
+      name: "Indian Markets",
+      tag: "NSE",
+      strategies: ["investment", "swing", "intraday"]
+    },
+    us: {
+      name: "US Markets",
+      tag: "NYSE / NASDAQ",
+      strategies: ["us-investment", "us-swing", "us-intraday"]
+    },
+    crypto: {
+      name: "Crypto",
+      tag: "BTC · ETH · Altcoins",
+      strategies: ["crypto-investment", "crypto-swing", "crypto-intraday"]
+    }
+  };
+
+  const categoryOverlay = document.getElementById('categoryOverlay');
+  const categoryList = document.getElementById('categoryList');
+  const categoryTag = document.getElementById('categoryTag');
+  const categoryTitle = document.getElementById('categoryTitle');
+
+  function openCategory(marketKey){
+    showStrategyList(marketKey);
+    categoryOverlay.classList.add('active');
+  }
+
+  function showStrategyList(marketKey){
+    const market = MARKETS[marketKey];
+    categoryTag.textContent = "Choose a strategy";
+    categoryTitle.textContent = market.name;
+    categoryList.innerHTML = '';
+
+    market.strategies.forEach(key => {
+      const plan = PLANS[key];
+      const isSoon = !plan.link || plan.link === '#';
+      const item = document.createElement('div');
+      item.className = 'category-item' + (isSoon ? ' soon' : '');
+      item.innerHTML =
+        '<div><div class="category-item-name">' + plan.name + '</div>' +
+        '<div class="category-item-tag">' + plan.tag + '</div></div>' +
+        '<div class="category-item-price">' + plan.price + '</div>';
+      if(!isSoon){
+        item.addEventListener('click', () => {
+          closeCategory();
+          window.open(plan.link, '_blank', 'noopener');
+        });
+      }
+      categoryList.appendChild(item);
+    });
+  }
+
+  function closeCategory(){
+    categoryOverlay.classList.remove('active');
+  }
+
+  document.querySelectorAll('.market-pill').forEach(pill => {
+    pill.addEventListener('click', () => openCategory(pill.dataset.market));
+  });
+
   document.querySelectorAll('.plan').forEach(card => {
-    card.addEventListener('click', () => openModal(card.dataset.plan));
+    card.addEventListener('click', () => {
+      if(card.dataset.category === 'market'){
+        openCategory(card.dataset.market);
+      } else if(card.dataset.plan === 'premium'){
+        window.open(PLANS.premium.link, '_blank', 'noopener');
+      } else {
+        openModal(card.dataset.plan);
+      }
+    });
   });
 
   document.getElementById('modalClose').addEventListener('click', closeModal);
   overlay.addEventListener('click', (e) => {
     if(e.target === overlay) closeModal();
   });
+
+  document.getElementById('categoryClose').addEventListener('click', closeCategory);
+  categoryOverlay.addEventListener('click', (e) => {
+    if(e.target === categoryOverlay) closeCategory();
+  });
+
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') closeModal();
+    if(e.key === 'Escape'){ closeModal(); closeCategory(); }
   });
 </script>
 
