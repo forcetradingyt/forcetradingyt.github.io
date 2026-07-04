@@ -1,1 +1,997 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- ============ SEO (India) ============ -->
+  <title>Breakout Master Indicator V2.0 — NSE & BSE Breakout Signals for Indian Traders</title>
+  <meta name="description" content="Breakout Master Indicator V2.0 helps Indian retail traders spot high-probability breakouts in NSE & BSE stocks, Nifty and Bank Nifty. Clear entries, volume confirmation, alerts in IST. Pay via UPI, Razorpay, PhonePe, Google Pay, Paytm or Net Banking.">
+  <meta name="robots" content="index, follow">
+  <meta name="geo.region" content="IN">
+  <link rel="canonical" href="https://forcetradingyt.github.io/premium.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:title" content="Breakout Master Indicator V2.0 — NSE & BSE Breakout Signals">
+  <meta property="og:description" content="Spot high-probability breakouts in NSE & BSE stocks with volume confirmation and clear signals. Made for Indian traders.">
+  <meta property="og:image" content="https://forcetradingyt.github.io/assets/og-image.png">
+  <meta property="og:url" content="https://forcetradingyt.github.io/premium.html">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Breakout Master Indicator V2.0 — For NSE & BSE Traders">
+  <meta name="twitter:description" content="High-probability breakout signals for Indian stocks. Clear entries. No guesswork.">
+  <meta name="twitter:image" content="https://forcetradingyt.github.io/assets/og-image.png">
+
+  <!-- Schema.org Product JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Breakout Master Indicator V2.0",
+    "description": "Breakout detection indicator for NSE & BSE stocks with smart alerts, trend confirmation, support & resistance and volume confirmation. Built for Indian swing, positional and breakout traders.",
+    "image": "https://forcetradingyt.github.io/assets/og-image.png",
+    "brand": { "@type": "Brand", "name": "Breakout Master" },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://forcetradingyt.github.io/premium.html#pricing",
+      "priceCurrency": "INR",
+      "price": "2999",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "412" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================= Design tokens ================= */
+    :root {
+      --bg: #030404;
+      --bg-soft: #0a0d0b;
+      --accent: #00FF88;
+      --accent-2: #00c9ff;
+      --accent-dim: rgba(0,255,136,.12);
+      --red: #ff5470;
+      --gold: #ffd166;
+      --text: #f4f7f5;
+      --muted: #96a29c;
+      --glass: rgba(255,255,255,.04);
+      --glass-hi: rgba(255,255,255,.07);
+      --border: rgba(255,255,255,.09);
+      --whatsapp: #25D366;
+      --telegram: #2AABEE;
+      --radius: 20px;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --font: 'Inter', system-ui, sans-serif;
+      --font-display: 'Space Grotesk', 'Inter', sans-serif;
+    }
+
+    /* ================= Base ================= */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--text);font-family:var(--font);
+      line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 70% -10%, rgba(0,255,136,.07), transparent),
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size:100% 100%, 44px 44px, 44px 44px;
+    }
+    img,svg{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    ul,ol{list-style:none}
+    .container{width:min(1180px,92%);margin-inline:auto}
+    .container.narrow{width:min(780px,92%)}
+
+    /* ================= Typography ================= */
+    h1{font-family:var(--font-display);font-size:clamp(2.2rem,5.6vw,3.8rem);font-weight:700;line-height:1.08;letter-spacing:-.02em}
+    h2{font-family:var(--font-display);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;text-align:center;letter-spacing:-.01em}
+    h3{font-size:1.05rem;font-weight:700}
+    .grad{
+      background:linear-gradient(92deg,var(--accent) 20%,#7dffc0 50%,var(--accent-2) 110%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .accent-red{color:var(--red)}
+    .sub,.section-sub{color:var(--muted);font-size:clamp(1rem,2vw,1.14rem)}
+    .section-sub{text-align:center;max-width:660px;margin:1rem auto 0}
+    .section-sub.left{text-align:left;margin-inline:0}
+    .kicker{
+      display:block;text-align:center;color:var(--accent);font-size:.8rem;font-weight:800;
+      letter-spacing:.22em;text-transform:uppercase;margin-bottom:.9rem;
+    }
+    .kicker.left{text-align:left}
+
+    /* ================= Buttons ================= */
+    .btn{
+      position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+      padding:.9rem 1.8rem;border-radius:14px;font-weight:800;font-size:1rem;
+      transition:transform .25s,box-shadow .25s;text-align:center;
+    }
+    .btn:hover{transform:translateY(-3px)}
+    .btn:active{transform:translateY(-1px)}
+    .btn-primary{
+      background:linear-gradient(135deg,#00FF88,#00d474);color:#03130b;
+      box-shadow:0 8px 30px rgba(0,255,136,.25), inset 0 1px 0 rgba(255,255,255,.4);
+    }
+    .btn-primary:hover{box-shadow:0 12px 44px rgba(0,255,136,.5), inset 0 1px 0 rgba(255,255,255,.4)}
+    .btn-ghost{border:1px solid var(--border);background:var(--glass);backdrop-filter:blur(10px)}
+    .btn-ghost:hover{border-color:rgba(0,255,136,.6);color:var(--accent)}
+    .btn-lg{padding:1.1rem 2.3rem;font-size:1.08rem;border-radius:16px}
+    .btn-sm{padding:.55rem 1.15rem;font-size:.88rem;border-radius:11px}
+    .btn.full{display:flex;width:100%}
+    .btn-whatsapp{background:var(--whatsapp);color:#05230f}
+    .btn-whatsapp:hover{box-shadow:0 8px 30px rgba(37,211,102,.45)}
+    .btn-telegram{background:var(--telegram);color:#03202f}
+    .btn-telegram:hover{box-shadow:0 8px 30px rgba(42,171,238,.45)}
+    .glow{animation:pulse 2.8s ease-in-out infinite}
+    @keyframes pulse{
+      0%,100%{box-shadow:0 8px 26px rgba(0,255,136,.28)}
+      50%{box-shadow:0 10px 48px rgba(0,255,136,.6)}
+    }
+
+    /* ================= Badge / glass ================= */
+    .badge{
+      display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:999px;
+      background:var(--accent-dim);border:1px solid rgba(0,255,136,.35);
+      color:var(--accent);font-size:.8rem;font-weight:700;margin-bottom:1.2rem;
+    }
+    .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.6s infinite}
+    @keyframes blink{50%{opacity:.25}}
+    .glass{
+      background:linear-gradient(160deg,var(--glass-hi),var(--glass));
+      border:1px solid var(--border);border-radius:var(--radius);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    }
+
+    /* ================= Scroll progress ================= */
+    .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:200;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+    /* ================= Announcement bar ================= */
+    .announce{
+      position:fixed;top:0;left:0;right:0;z-index:110;text-align:center;
+      background:linear-gradient(90deg,rgba(0,255,136,.16),rgba(0,201,255,.12));
+      border-bottom:1px solid rgba(0,255,136,.25);
+      font-size:.8rem;font-weight:600;padding:.42rem 1rem;color:var(--text);
+    }
+    .announce b{color:var(--accent)}
+
+    /* ================= Navbar ================= */
+    .nav{
+      position:fixed;top:30px;left:0;right:0;z-index:100;
+      background:rgba(3,4,4,.72);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
+    .logo-mark{
+      width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),#00b86b);color:#03130b;font-size:.95rem;font-weight:900;
+    }
+    .logo span{color:var(--accent)}
+    .nav-links{display:none;align-items:center;gap:1.7rem;font-size:.93rem;color:var(--muted)}
+    .nav-links a{transition:color .2s}
+    .nav-links a:hover{color:var(--accent)}
+    .nav-toggle{display:flex;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px}
+    .nav-toggle span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+    .nav-links.open{
+      display:flex;flex-direction:column;align-items:flex-start;
+      position:absolute;top:64px;left:0;right:0;
+      background:rgba(3,4,4,.97);padding:1.4rem 5%;border-bottom:1px solid var(--border);
+    }
+
+    /* ================= Ticker ================= */
+    .ticker{
+      margin-top:94px;border-block:1px solid var(--border);
+      background:var(--bg-soft);overflow:hidden;white-space:nowrap;
+      font-size:.8rem;padding:.5rem 0;color:var(--muted);
+    }
+    .ticker-track{display:inline-block;animation:ticker 32s linear infinite}
+    .ticker-track span{margin-right:2.6rem}
+    .up{color:var(--accent)}.down{color:var(--red)}
+    @keyframes ticker{to{transform:translateX(-50%)}}
+
+    /* ================= Hero ================= */
+    .hero{position:relative;padding:76px 0 90px;overflow:hidden}
+    .hero-glow{position:absolute;border-radius:50%;filter:blur(130px);opacity:.32;animation:drift 13s ease-in-out infinite alternate}
+    .hero-glow-1{width:520px;height:520px;background:var(--accent);top:-200px;right:-140px}
+    .hero-glow-2{width:400px;height:400px;background:#065f38;bottom:-180px;left:-150px;animation-delay:-6s}
+    @keyframes drift{to{transform:translate(-45px,35px) scale(1.15)}}
+
+    .hero-inner{display:grid;gap:3.2rem;align-items:center;position:relative}
+    .hero .sub{margin:1.2rem 0 2rem;max-width:560px}
+    .cta-row{display:flex;flex-wrap:wrap;gap:.9rem}
+    .hero-note{margin-top:1rem;color:var(--muted);font-size:.82rem}
+    .hero-note b{color:var(--accent)}
+
+    .hero-stats{display:flex;gap:0;margin-top:2.6rem;flex-wrap:wrap;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .hero-stats > div{flex:1;min-width:110px;padding:1rem 1.2rem;background:var(--glass);border-right:1px solid var(--border)}
+    .hero-stats > div:last-child{border-right:0}
+    .hero-stats strong{font-family:var(--font-display);font-size:1.55rem;color:var(--accent)}
+    .hero-stats span{display:block;color:var(--muted);font-size:.78rem;margin-top:.15rem}
+
+    /* --- Candlestick mockup --- */
+    .hero-mockup{position:relative}
+    .float{animation:float 6.5s ease-in-out infinite}
+    .float-slow{animation:float 9s ease-in-out infinite}
+    .float-slower{animation:float 11s ease-in-out infinite reverse}
+    @keyframes float{50%{transform:translateY(-13px)}}
+    .mockup-card{padding:1.1rem;box-shadow:var(--shadow)}
+    .mockup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem;font-size:.78rem;color:var(--muted)}
+    .mockup-head strong{color:var(--text);font-size:.88rem}
+    .mockup-head .pill{padding:.15rem .6rem;border-radius:999px;background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:.68rem}
+    .mockup-chart{position:relative;background:rgba(0,0,0,.5);border-radius:14px;padding:.9rem;border:1px solid rgba(255,255,255,.05)}
+    .signal-tag{
+      position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--accent),#00d474);
+      color:#03130b;font-size:.68rem;font-weight:900;padding:5px 11px;border-radius:999px;
+      animation:blink 2s infinite;
+    }
+    .mockup-caption{text-align:center;color:var(--muted);font-size:.76rem;margin-top:.75rem}
+    .chip{position:absolute;padding:.55rem 1rem;font-size:.8rem;font-weight:700;box-shadow:var(--shadow)}
+    .chip-1{top:-18px;left:-10px}
+    .chip-2{bottom:-16px;right:-8px}
+
+    /* ================= Trust strip ================= */
+    .trust-strip{border-block:1px solid var(--border);background:var(--bg-soft);padding:1rem 0}
+    .trust-strip .container{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2.6rem;color:var(--muted);font-size:.85rem;font-weight:600}
+    .trust-strip b{color:var(--accent)}
+
+    /* ================= Sections & cards ================= */
+    .section{padding:92px 0;position:relative}
+    .grid{display:grid;gap:1.2rem;margin-top:2.8rem}
+    .grid-3,.grid-4{grid-template-columns:1fr}
+
+    .card{
+      position:relative;padding:1.7rem;overflow:hidden;
+      transition:transform .3s,border-color .3s,box-shadow .3s;
+    }
+    .card::before{
+      content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+      background:radial-gradient(400px 160px at 50% -20%, rgba(0,255,136,.14), transparent);
+      transition:opacity .35s;
+    }
+    .card:hover{transform:translateY(-7px);border-color:rgba(0,255,136,.45);box-shadow:0 18px 50px rgba(0,255,136,.1)}
+    .card:hover::before{opacity:1}
+    .card .icon{
+      width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:1.35rem;
+      background:var(--accent-dim);border:1px solid rgba(0,255,136,.3);margin-bottom:.9rem;
+    }
+    .card p{color:var(--muted);font-size:.93rem;margin-top:.45rem}
+    .card.sm{padding:1.35rem}
+    .stars{color:var(--gold);letter-spacing:3px;margin-bottom:.8rem}
+
+    /* testimonial */
+    .t-card footer{display:flex;align-items:center;gap:.8rem;margin-top:1.2rem}
+    .avatar{
+      width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
+      font-weight:800;font-size:.9rem;color:#03130b;
+      background:linear-gradient(135deg,var(--accent),#00c9ff);
+    }
+    .t-card footer div span{display:block;color:var(--muted);font-size:.78rem}
+    .t-card footer div strong{font-size:.92rem}
+    .verified{margin-left:auto;color:var(--accent);font-size:.7rem;font-weight:700;border:1px solid rgba(0,255,136,.35);padding:.18rem .55rem;border-radius:999px;white-space:nowrap}
+
+    /* ================= Split sections ================= */
+    .split{display:grid;gap:2.8rem;align-items:center}
+    .split h2{text-align:left}
+    .check-list{margin:1.5rem 0 1.9rem;display:grid;gap:.7rem}
+    .check-list li{padding-left:2rem;position:relative;color:var(--muted)}
+    .check-list li b,.check-list li strong{color:var(--text)}
+    .check-list li::before{
+      content:'✓';position:absolute;left:0;top:.1rem;width:1.35rem;height:1.35rem;border-radius:50%;
+      display:grid;place-items:center;font-size:.75rem;font-weight:900;color:#03130b;
+      background:linear-gradient(135deg,var(--accent),#00d474);
+    }
+    .visual{padding:1.2rem}
+
+    .placeholder-img{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
+      min-height:250px;border-radius:14px;text-align:center;padding:1rem;
+      background:
+        radial-gradient(300px 120px at 50% 0%, rgba(0,255,136,.06), transparent),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 12px, transparent 12px 24px);
+      border:1px dashed var(--border);color:var(--muted);font-size:2rem;
+    }
+    .placeholder-img span{font-size:.85rem}
+    .shot{padding:.9rem}
+    .shot figcaption{text-align:center;color:var(--muted);font-size:.82rem;margin-top:.65rem}
+
+    /* watchlist */
+    .watchlist{margin-top:1rem;font-size:.86rem}
+    .watchlist li{display:flex;justify-content:space-between;align-items:center;padding:.65rem .9rem;border-bottom:1px solid var(--border)}
+    .watchlist li:last-child{border-bottom:0}
+    .watchlist .sig{color:var(--accent);font-weight:800;font-size:.78rem;background:var(--accent-dim);padding:.2rem .6rem;border-radius:999px}
+
+    /* ================= Comparison ================= */
+    .compare{margin-top:2.6rem;overflow:hidden}
+    .compare table{width:100%;border-collapse:collapse}
+    .compare th,.compare td{padding:1.05rem 1.35rem;text-align:left;border-bottom:1px solid var(--border);font-size:.95rem}
+    .compare th{font-family:var(--font-display);font-size:1rem;color:var(--muted)}
+    .compare th.win,.compare td.win{background:var(--accent-dim);font-weight:600}
+    .compare th.win{color:var(--accent)}
+    .compare tr:last-child td{border-bottom:0}
+
+    /* ================= Steps ================= */
+    .steps{display:grid;gap:1.1rem;margin-top:2.8rem}
+    .step{padding:1.6rem;transition:transform .3s,border-color .3s}
+    .step:hover{transform:translateY(-5px);border-color:rgba(0,255,136,.45)}
+    .step-num{
+      display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#00d474);color:#03130b;
+      font-family:var(--font-display);font-weight:700;margin-bottom:.8rem;font-size:1.05rem;
+    }
+    .step p{color:var(--muted);font-size:.92rem}
+
+    /* ================= FAQ ================= */
+    .faq-list{margin-top:2.6rem;display:grid;gap:.85rem}
+    .faq-list details{padding:1.15rem 1.45rem;transition:border-color .3s}
+    .faq-list details[open]{border-color:rgba(0,255,136,.45)}
+    .faq-list summary{cursor:pointer;font-weight:700;list-style:none;position:relative;padding-right:2rem}
+    .faq-list summary::-webkit-details-marker{display:none}
+    .faq-list summary::after{content:'+';position:absolute;right:0;top:-2px;color:var(--accent);font-size:1.4rem;transition:transform .3s}
+    .faq-list details[open] summary::after{transform:rotate(45deg)}
+    .faq-list p{color:var(--muted);margin-top:.75rem;font-size:.93rem}
+
+    /* ================= Pricing ================= */
+    #pricing{overflow:hidden}
+    .pricing-glow{
+      position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);
+      width:620px;height:620px;background:var(--accent);filter:blur(190px);opacity:.13;pointer-events:none;
+    }
+    .countdown{
+      display:flex;justify-content:center;gap:.7rem;margin-top:1.4rem;
+    }
+    .cd-box{
+      min-width:66px;padding:.6rem .4rem;text-align:center;border-radius:13px;
+      background:var(--glass);border:1px solid var(--border);
+    }
+    .cd-box b{font-family:var(--font-display);display:block;font-size:1.4rem;color:var(--accent)}
+    .cd-box span{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+    .urgency{text-align:center;color:var(--muted);margin-top:1.1rem;font-size:.92rem}
+    .urgency strong{color:var(--accent)}
+
+    .price-card{
+      position:relative;margin-top:2.2rem;padding:2.6rem 2rem;text-align:center;
+      border:1px solid rgba(0,255,136,.4);
+      box-shadow:0 0 70px rgba(0,255,136,.13), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .ribbon{
+      position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+      background:linear-gradient(135deg,var(--accent),#00d474);color:#03130b;
+      font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+      padding:.4rem 1.3rem;border-radius:999px;white-space:nowrap;
+    }
+    .price-card h3{font-family:var(--font-display);font-size:1.35rem;margin-top:.8rem}
+    .price{display:flex;align-items:baseline;justify-content:center;gap:.7rem;margin:1.3rem 0 .4rem}
+    .price-old{color:var(--muted);text-decoration:line-through;font-size:1.2rem}
+    .price-now{
+      font-family:var(--font-display);font-size:3.4rem;font-weight:700;
+      background:linear-gradient(92deg,var(--accent),#7dffc0);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 0 24px rgba(0,255,136,.4));
+    }
+    .price-note{color:var(--muted);font-size:.9rem}
+    .save-tag{display:inline-block;background:rgba(255,209,102,.14);border:1px solid rgba(255,209,102,.4);color:var(--gold);
+      font-size:.75rem;font-weight:800;padding:.25rem .8rem;border-radius:999px;margin-bottom:1.2rem}
+    .price-card .check-list{text-align:left;max-width:370px;margin:0 auto 1.6rem}
+    .pay-methods{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1.3rem}
+    .pay-chip{padding:.42rem .95rem;border-radius:999px;font-size:.78rem;font-weight:700;background:var(--glass);border:1px solid var(--border);color:var(--muted)}
+    .pay-note{text-align:center;color:var(--muted);font-size:.8rem;margin-top:.9rem}
+
+    /* ================= Community / final ================= */
+    .community{text-align:center}
+    .community .cta-row{justify-content:center;margin-top:2rem}
+    .final-cta{text-align:center;background:linear-gradient(180deg,transparent,rgba(0,255,136,.06) 50%,transparent)}
+    .final-cta .btn{margin-top:2rem}
+
+    /* ================= Footer ================= */
+    .footer{border-top:1px solid var(--border);padding:2.8rem 0 7rem;background:var(--bg-soft)}
+    .footer-top{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center;justify-content:space-between}
+    .footer-links{display:flex;flex-wrap:wrap;gap:1.4rem;color:var(--muted);font-size:.9rem}
+    .footer-links a:hover{color:var(--accent)}
+    .disclaimer{color:var(--muted);font-size:.8rem;margin-top:1.7rem;max-width:840px}
+    .copyright{color:var(--muted);font-size:.78rem;margin-top:1rem}
+
+    /* ================= Floating contact ================= */
+    .float-contact{position:fixed;right:16px;bottom:86px;z-index:95;display:flex;flex-direction:column;gap:10px}
+    .float-contact a{
+      width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+      font-size:1.5rem;box-shadow:var(--shadow);transition:transform .25s;
+    }
+    .float-contact a:hover{transform:scale(1.12)}
+    .fc-wa{background:var(--whatsapp)}.fc-tg{background:var(--telegram)}
+
+    /* ================= Sticky mobile CTA ================= */
+    .sticky-cta{
+      position:fixed;left:0;right:0;bottom:0;z-index:90;padding:.7rem 4%;
+      background:rgba(3,4,4,.88);backdrop-filter:blur(14px);border-top:1px solid var(--border);
+      transform:translateY(110%);transition:transform .4s;
+    }
+    .sticky-cta.visible{transform:translateY(0)}
+
+    /* ================= Reveal / stagger ================= */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.in{opacity:1;transform:translateY(0)}
+    .grid > .reveal:nth-child(2){transition-delay:.08s}
+    .grid > .reveal:nth-child(3){transition-delay:.16s}
+    .grid > .reveal:nth-child(4){transition-delay:.24s}
+    .grid > .reveal:nth-child(5){transition-delay:.08s}
+    .grid > .reveal:nth-child(6){transition-delay:.16s}
+    .steps > .reveal:nth-child(2){transition-delay:.08s}
+    .steps > .reveal:nth-child(3){transition-delay:.16s}
+    .steps > .reveal:nth-child(4){transition-delay:.24s}
+    .steps > .reveal:nth-child(5){transition-delay:.32s}
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      html{scroll-behavior:auto}
+      .reveal{opacity:1;transform:none}
+    }
+
+    /* ================= Responsive ================= */
+    @media (min-width:640px){
+      .grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}
+      .steps{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (min-width:960px){
+      .nav-links{display:flex}
+      .nav-toggle{display:none}
+      .hero-inner{grid-template-columns:1.08fr .92fr}
+      .split{grid-template-columns:1fr 1fr}
+      .grid-3{grid-template-columns:repeat(3,1fr)}
+      .grid-4{grid-template-columns:repeat(4,1fr)}
+      .steps{grid-template-columns:repeat(5,1fr)}
+      .sticky-cta{display:none}
+      .float-contact{bottom:24px}
+      .footer{padding-bottom:2.8rem}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+
+  <!-- Announcement bar -->
+  <div class="announce">⚡ <b>Festive Offer:</b> Flat 50% OFF — ends soon · Pay via UPI & get instant access</div>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo" aria-label="Breakout Master home">
+        <span class="logo-mark">▲</span>Breakout<span>Master</span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#nse-breakouts">NSE Breakouts</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#faq">FAQ</a>
+        <a href="#pricing" class="btn btn-primary btn-sm">Join Premium</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>NIFTY 50 <b class="up">▲</b></span><span>SENSEX <b class="up">▲</b></span><span>BANK NIFTY <b class="up">▲</b></span><span>RELIANCE <b class="up">▲</b></span><span>TATA MOTORS <b class="down">▼</b></span><span>HDFC BANK <b class="up">▲</b></span><span>INFY <b class="up">▲</b></span><span>SBIN <b class="up">▲</b></span><span>ITC <b class="down">▼</b></span><span>Market hours: 9:15 AM – 3:30 PM IST</span>
+      <span>NIFTY 50 <b class="up">▲</b></span><span>SENSEX <b class="up">▲</b></span><span>BANK NIFTY <b class="up">▲</b></span><span>RELIANCE <b class="up">▲</b></span><span>TATA MOTORS <b class="down">▼</b></span><span>HDFC BANK <b class="up">▲</b></span><span>INFY <b class="up">▲</b></span><span>SBIN <b class="up">▲</b></span><span>ITC <b class="down">▼</b></span><span>Market hours: 9:15 AM – 3:30 PM IST</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="reveal">
+          <span class="badge"><span class="dot"></span>🇮🇳 Trusted by 5,000+ NSE & BSE Traders</span>
+          <h1>Catch <span class="grad">NSE Breakout Stocks</span> Before the Big Move</h1>
+          <p class="sub">Breakout Master Indicator V2.0 scans Indian stocks in real time, filters out fake breakouts with volume confirmation, and gives you crystal-clear entry signals — perfect for swing and positional trading.</p>
+          <div class="cta-row">
+            <a href="#pricing" class="btn btn-primary btn-lg glow">Get Instant Access →</a>
+            <a href="#screenshots" class="btn btn-ghost btn-lg">▶ Watch Demo</a>
+          </div>
+          <p class="hero-note">🔒 One-time payment · <b>Instant delivery via UPI</b> · Lifetime updates</p>
+          <div class="hero-stats">
+            <div><strong class="counter" data-target="5000">0</strong><span>+ Indian Traders</span></div>
+            <div><strong class="counter" data-target="1800">0</strong><span>+ NSE Stocks Scanned</span></div>
+            <div><strong>4.9<small>★</small></strong><span>Average Rating</span></div>
+          </div>
+        </div>
+
+        <div class="hero-mockup reveal float" aria-hidden="true">
+          <div class="glass mockup-card">
+            <div class="mockup-head">
+              <strong>RELIANCE · NSE</strong>
+              <span class="pill">LIVE · IST</span>
+            </div>
+            <div class="mockup-chart">
+              <!-- Candlestick chart with breakout -->
+              <svg viewBox="0 0 320 170" preserveAspectRatio="none" role="img">
+                <!-- resistance line -->
+                <line x1="0" y1="62" x2="320" y2="62" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5" opacity=".8"/>
+                <text x="6" y="56" fill="#ffd166" font-size="9" font-family="Inter">RESISTANCE</text>
+                <!-- red candles -->
+                <g stroke="#ff5470" fill="#ff5470">
+                  <line x1="30" y1="96" x2="30" y2="132"/><rect x="25" y="104" width="10" height="20" rx="1.5"/>
+                  <line x1="80" y1="90" x2="80" y2="128"/><rect x="75" y="98" width="10" height="18" rx="1.5"/>
+                  <line x1="130" y1="86" x2="130" y2="120"/><rect x="125" y="92" width="10" height="16" rx="1.5"/>
+                </g>
+                <!-- green candles -->
+                <g stroke="#00FF88" fill="#00FF88">
+                  <line x1="55" y1="88" x2="55" y2="126"/><rect x="50" y="96" width="10" height="20" rx="1.5"/>
+                  <line x1="105" y1="78" x2="105" y2="116"/><rect x="100" y="84" width="10" height="22" rx="1.5"/>
+                  <line x1="155" y1="70" x2="155" y2="108"/><rect x="150" y="76" width="10" height="22" rx="1.5"/>
+                  <line x1="180" y1="64" x2="180" y2="100"/><rect x="175" y="70" width="10" height="22" rx="1.5"/>
+                  <!-- breakout candle -->
+                  <line x1="205" y1="34" x2="205" y2="92"/><rect x="199" y="40" width="12" height="40" rx="1.5"/>
+                  <line x1="232" y1="26" x2="232" y2="66"/><rect x="227" y="32" width="10" height="24" rx="1.5"/>
+                  <line x1="258" y1="18" x2="258" y2="54"/><rect x="253" y="24" width="10" height="22" rx="1.5"/>
+                  <line x1="284" y1="12" x2="284" y2="44"/><rect x="279" y="16" width="10" height="20" rx="1.5"/>
+                </g>
+                <!-- buy arrow -->
+                <g>
+                  <polygon points="205,102 197,116 213,116" fill="#00FF88"/>
+                  <text x="188" y="130" fill="#00FF88" font-size="9" font-weight="800" font-family="Inter">BUY SIGNAL</text>
+                </g>
+                <!-- volume bars -->
+                <g fill="rgba(0,255,136,.35)">
+                  <rect x="25" y="156" width="10" height="8"/><rect x="50" y="152" width="10" height="12"/>
+                  <rect x="75" y="157" width="10" height="7"/><rect x="100" y="150" width="10" height="14"/>
+                  <rect x="125" y="155" width="10" height="9"/><rect x="150" y="148" width="10" height="16"/>
+                  <rect x="175" y="146" width="10" height="18"/>
+                  <rect x="199" y="132" width="12" height="32" fill="rgba(0,255,136,.85)"/>
+                  <rect x="227" y="142" width="10" height="22"/><rect x="253" y="145" width="10" height="19"/>
+                  <rect x="279" y="147" width="10" height="17"/>
+                </g>
+              </svg>
+              <span class="signal-tag">▲ BREAKOUT CONFIRMED</span>
+            </div>
+            <p class="mockup-caption">Illustrative chart — replace with your real screenshot</p>
+          </div>
+          <div class="glass chip chip-1 float-slow">✅ Volume Confirmed</div>
+          <div class="glass chip chip-2 float-slower">📈 Above Resistance</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRUST STRIP ============ -->
+    <div class="trust-strip">
+      <div class="container">
+        <span><b>★ 4.9/5</b> rated by traders</span>
+        <span><b>5,000+</b> members across India</span>
+        <span><b>UPI</b> instant delivery</span>
+        <span><b>Lifetime</b> free updates</span>
+        <span><b>WhatsApp</b> support in IST</span>
+      </div>
+    </div>
+
+    <!-- ============ PROBLEM ============ -->
+    <section class="section" id="problems">
+      <div class="container">
+        <span class="kicker reveal">The Problem</span>
+        <h2 class="reveal">Trading Breakouts Manually Is <span class="accent-red">Costing You Money</span></h2>
+        <p class="section-sub reveal">If any of these sound familiar, you are not alone. Most Indian retail traders lose money for the very same reasons.</p>
+        <div class="grid grid-3">
+          <div class="glass card reveal"><div class="icon">🎭</div><h3>Fake Breakouts</h3><p>You buy the breakout — and the stock reverses by 3:30 PM, hitting your stop loss yet again.</p></div>
+          <div class="glass card reveal"><div class="icon">⏰</div><h3>Late Entries</h3><p>By the time you spot the move, the stock is already up 5% and the risk-reward is gone.</p></div>
+          <div class="glass card reveal"><div class="icon">😰</div><h3>Emotional Trading</h3><p>FOMO buying near the top, panic selling near the bottom — emotions eat your capital.</p></div>
+          <div class="glass card reveal"><div class="icon">👀</div><h3>Missing Opportunities</h3><p>With 1,800+ NSE stocks, you simply cannot track every chart during market hours.</p></div>
+          <div class="glass card reveal"><div class="icon">📉</div><h3>Poor Risk Management</h3><p>No clear stop loss levels, oversized positions — small losses become big ones.</p></div>
+          <div class="glass card reveal"><div class="icon">🌀</div><h3>Tip-Based Trading</h3><p>Random Telegram tips and TV calls with no system, no logic, and no accountability.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOLUTION ============ -->
+    <section class="section" id="solution">
+      <div class="container split">
+        <div class="reveal">
+          <span class="kicker left">The Solution</span>
+          <h2>Meet <span class="grad">Breakout Master Indicator V2.0</span></h2>
+          <p class="section-sub left">One indicator that does the heavy lifting on your charts — so you focus on executing good trades, not hunting for them across NSE & BSE.</p>
+          <ul class="check-list">
+            <li>Detects <strong>high-probability breakouts</strong> the moment they form</li>
+            <li>Filters weak setups using <strong>trend + volume confirmation</strong></li>
+            <li>Clear visual signals — no complicated analysis needed</li>
+            <li>Beginner friendly, yet powerful for experienced traders</li>
+            <li>Saves hours of daily chart scanning after market close</li>
+            <li>Builds discipline with a rules-based trading approach</li>
+          </ul>
+          <a href="#pricing" class="btn btn-primary glow">Join Premium →</a>
+        </div>
+        <div class="glass visual reveal float-slow" aria-hidden="true">
+          <div class="placeholder-img">📊<span>Indicator on Nifty 50 Chart — Screenshot Placeholder</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NSE SCANNER ============ -->
+    <section class="section" id="nse-breakouts">
+      <div class="container split">
+        <div class="glass visual reveal" aria-hidden="true">
+          <div class="mockup-head" style="padding:.4rem .8rem;"><strong>Today's Breakout Watchlist</strong><span class="pill" style="padding:.15rem .6rem;border-radius:999px;background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:.68rem;">Updated in IST</span></div>
+          <ul class="watchlist">
+            <li><span>TATA POWER · NSE</span><span class="sig">▲ Breakout</span></li>
+            <li><span>HAL · NSE</span><span class="sig">▲ Breakout</span></li>
+            <li><span>POLYCAB · NSE</span><span class="sig">▲ Volume Spike</span></li>
+            <li><span>CDSL · NSE</span><span class="sig">▲ Near Resistance</span></li>
+            <li><span>BEL · NSE</span><span class="sig">▲ Breakout</span></li>
+          </ul>
+          <p class="mockup-caption">Illustrative example — replace with your scanner screenshot</p>
+        </div>
+        <div class="reveal">
+          <span class="kicker left">NSE Breakout Stocks</span>
+          <h2>How It Finds <span class="grad">NSE Breakout Stocks</span> for You</h2>
+          <ul class="check-list">
+            <li><strong>Resistance mapping:</strong> auto-plots key resistance zones on any NSE or BSE stock</li>
+            <li><strong>Breakout trigger:</strong> signals only when price closes above resistance with strength</li>
+            <li><strong>Volume filter:</strong> confirms genuine institutional buying, not operator-driven spikes</li>
+            <li><strong>Trend check:</strong> aligns signals with the larger trend on daily and weekly charts</li>
+            <li><strong>Works everywhere:</strong> Nifty 50, Bank Nifty, midcaps, smallcaps</li>
+            <li><strong>Evening routine:</strong> shortlist tomorrow's candidates after 3:30 PM IST in minutes</li>
+          </ul>
+          <a href="#pricing" class="btn btn-primary glow">Get Instant Access →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="section" id="features">
+      <div class="container">
+        <span class="kicker reveal">Features</span>
+        <h2 class="reveal">Everything You Need to <span class="grad">Master Breakouts</span></h2>
+        <p class="section-sub reveal">Twelve powerful capabilities, one clean indicator — built for Indian markets.</p>
+        <div class="grid grid-4">
+          <div class="glass card sm reveal"><div class="icon">⚡</div><h3>Real-Time Detection</h3><p>Breakout signals the moment price confirms on NSE & BSE.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🔔</div><h3>Smart Alerts</h3><p>Get notified during market hours — no chart babysitting.</p></div>
+          <div class="glass card sm reveal"><div class="icon">📈</div><h3>Trend Confirmation</h3><p>Trade only in the direction of the larger trend.</p></div>
+          <div class="glass card sm reveal"><div class="icon">📏</div><h3>Support & Resistance</h3><p>Auto-plotted levels on any Indian stock, always current.</p></div>
+          <div class="glass card sm reveal"><div class="icon">📊</div><h3>Volume Confirmation</h3><p>Filters fake, low-volume breakouts common in midcaps.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🛠️</div><h3>Easy Setup</h3><p>Install and start scanning in minutes — guide included.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🕒</div><h3>Multi-Timeframe</h3><p>Intraday, daily and weekly — your style, your timeframe.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🌊</div><h3>Swing Trading</h3><p>Ideal for 3–15 day momentum moves in NSE stocks.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🧭</div><h3>Positional Trading</h3><p>Catch multi-week trends early and ride them patiently.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🛡️</div><h3>Risk Management</h3><p>Clear stop loss levels for every single signal.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🎓</div><h3>Beginner Friendly</h3><p>Fully visual — no coding or complex analysis required.</p></div>
+          <div class="glass card sm reveal"><div class="icon">♾️</div><h3>Lifetime Updates</h3><p>Every future improvement, free for existing members.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPARISON ============ -->
+    <section class="section" id="comparison">
+      <div class="container">
+        <span class="kicker reveal">Comparison</span>
+        <h2 class="reveal">Why Choose <span class="grad">Breakout Master</span>?</h2>
+        <div class="compare glass reveal">
+          <table>
+            <thead>
+              <tr><th scope="col">Traditional Trading</th><th scope="col" class="win">Breakout Master V2.0</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>❌ Manual chart analysis every evening</td><td class="win">✅ Automated breakout detection</td></tr>
+              <tr><td>❌ Hours scanning 1,800+ NSE stocks</td><td class="win">✅ Shortlist in minutes</td></tr>
+              <tr><td>❌ Emotional, tip-based decisions</td><td class="win">✅ Clear, rules-based signals</td></tr>
+              <tr><td>❌ Trapped in fake breakouts</td><td class="win">✅ Volume-confirmed, high-probability setups</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <span class="kicker reveal">Simple Process</span>
+        <h2 class="reveal">How It <span class="grad">Works</span></h2>
+        <p class="section-sub reveal">From installation to your first signal in five simple steps.</p>
+        <ol class="steps">
+          <li class="glass step reveal"><span class="step-num">1</span><h3>Install Indicator</h3><p>Add Breakout Master to your charting platform in minutes.</p></li>
+          <li class="glass step reveal"><span class="step-num">2</span><h3>Open Any NSE Chart</h3><p>Load any NSE or BSE stock on your preferred timeframe.</p></li>
+          <li class="glass step reveal"><span class="step-num">3</span><h3>Wait for Signal</h3><p>The indicator alerts you when a confirmed breakout forms.</p></li>
+          <li class="glass step reveal"><span class="step-num">4</span><h3>Plan Your Trade</h3><p>Use plotted levels to define entry, target and stop loss.</p></li>
+          <li class="glass step reveal"><span class="step-num">5</span><h3>Manage Risk</h3><p>Follow the stop loss level and protect your capital first.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ BENEFITS ============ -->
+    <section class="section" id="benefits">
+      <div class="container">
+        <span class="kicker reveal">Benefits</span>
+        <h2 class="reveal">What Changes for <span class="grad">You</span></h2>
+        <div class="grid grid-4">
+          <div class="glass card sm reveal"><div class="icon">⏳</div><h3>Save Time</h3><p>A 15-minute evening scan instead of hours of chart reading.</p></div>
+          <div class="glass card sm reveal"><div class="icon">💪</div><h3>Increase Confidence</h3><p>Trade a proven, repeatable process — not tips.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🧠</div><h3>Better Decisions</h3><p>Data-driven signals, not gut feelings or TV calls.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🧘</div><h3>No Emotional Trading</h3><p>Rules remove FOMO and panic from your trading.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🎯</div><h3>Clear Entries</h3><p>Know exactly when a setup is valid — no second-guessing.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🚪</div><h3>Clear Exits</h3><p>Defined targets and stop losses on every trade.</p></div>
+          <div class="glass card sm reveal"><div class="icon">🏆</div><h3>Professional Workflow</h3><p>Trade with structure, like the institutions do.</p></div>
+          <div class="glass card sm reveal"><div class="icon">📅</div><h3>Consistency</h3><p>The same edge, every trading day, 9:15 AM – 3:30 PM IST.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREENSHOTS ============ -->
+    <section class="section" id="screenshots">
+      <div class="container">
+        <span class="kicker reveal">Proof</span>
+        <h2 class="reveal">See It on <span class="grad">Indian Charts</span></h2>
+        <p class="section-sub reveal">Real signals on real NSE & BSE charts.</p>
+        <div class="grid grid-3">
+          <figure class="glass shot reveal"><div class="placeholder-img">🖼️<span>Nifty 50 Breakout — Screenshot Placeholder</span></div><figcaption>Nifty 50 · Daily Chart</figcaption></figure>
+          <figure class="glass shot reveal"><div class="placeholder-img">🖼️<span>Bank Nifty Signal — Screenshot Placeholder</span></div><figcaption>Bank Nifty · 15 Min Chart</figcaption></figure>
+          <figure class="glass shot reveal"><div class="placeholder-img">🖼️<span>NSE Stock Breakout — Screenshot Placeholder</span></div><figcaption>Reliance Industries · NSE Daily</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section" id="testimonials">
+      <div class="container">
+        <span class="kicker reveal">Reviews</span>
+        <h2 class="reveal">Trusted by <span class="grad">Indian Traders</span></h2>
+        <div class="grid grid-3">
+          <div class="glass card t-card reveal">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p>"Earlier I used to get trapped in fake breakouts in midcap stocks again and again. The volume filter alone has changed my results completely."</p>
+            <footer><span class="avatar">RS</span><div><strong>Rajesh Sharma</strong><span>Swing Trader · Mumbai</span></div><span class="verified">✓ Verified</span></footer>
+          </div>
+          <div class="glass card t-card reveal">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p>"I work a 9-to-6 job in Bengaluru. I just run the scan after market close and place my orders for next day. Simple and effective."</p>
+            <footer><span class="avatar">PV</span><div><strong>Priya Venkatesh</strong><span>Positional Trader · Bengaluru</span></div><span class="verified">✓ Verified</span></footer>
+          </div>
+          <div class="glass card t-card reveal">
+            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p>"As a beginner I was totally confused with indicators. This one is visual and simple — and it taught me to always keep a stop loss."</p>
+            <footer><span class="avatar">AP</span><div><strong>Amit Patel</strong><span>New Trader · Ahmedabad</span></div><span class="verified">✓ Verified</span></footer>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="container narrow">
+        <span class="kicker reveal">FAQ</span>
+        <h2 class="reveal">Frequently Asked <span class="grad">Questions</span></h2>
+        <div class="faq-list">
+          <details class="glass reveal"><summary>Does it work on NSE and BSE stocks?</summary><p>Yes. The indicator works on all NSE and BSE stocks, as well as indices like Nifty 50, Bank Nifty and Sensex — any liquid instrument with volume data.</p></details>
+          <details class="glass reveal"><summary>Which charting platforms are supported?</summary><p>It works on all major charting platforms popular with Indian traders. A step-by-step installation guide is included with your purchase.</p></details>
+          <details class="glass reveal"><summary>Is it suitable for beginners?</summary><p>Absolutely. Signals are fully visual with clear entry, target and stop loss levels — no coding or advanced technical analysis required.</p></details>
+          <details class="glass reveal"><summary>Can I use it for intraday trading?</summary><p>Yes. It works on intraday timeframes during market hours (9:15 AM – 3:30 PM IST), though it is especially popular for swing and positional trading on daily charts.</p></details>
+          <details class="glass reveal"><summary>How does it filter fake breakouts?</summary><p>Every signal must pass trend alignment and volume confirmation checks. Low-volume, operator-style spikes are filtered out before a signal appears.</p></details>
+          <details class="glass reveal"><summary>Do you provide buy/sell tips or recommendations?</summary><p>No. This is an educational charting tool, not an advisory service. It highlights technical setups — all trading decisions and risk remain yours.</p></details>
+          <details class="glass reveal"><summary>Is this a one-time payment or subscription?</summary><p>One-time payment in Indian Rupees. No recurring charges, no hidden fees.</p></details>
+          <details class="glass reveal"><summary>Which payment methods do you accept?</summary><p>UPI, PhonePe, Google Pay, Paytm, Net Banking, and debit/credit cards — processed securely via Razorpay.</p></details>
+          <details class="glass reveal"><summary>How will I receive the indicator after payment?</summary><p>You get instant access along with the installation guide immediately after payment. Support is available on WhatsApp and Telegram if you need help.</p></details>
+          <details class="glass reveal"><summary>Does it guarantee profits?</summary><p>No tool can guarantee profits in the stock market. Breakout Master gives you a structured, high-probability framework — position sizing, stop losses and discipline are still essential. Please read the disclaimer below.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section class="section" id="pricing">
+      <div class="pricing-glow" aria-hidden="true"></div>
+      <div class="container narrow">
+        <span class="kicker reveal">Pricing</span>
+        <h2 class="reveal">Simple, <span class="grad">One-Time</span> Pricing</h2>
+
+        <!-- Countdown: set data-deadline to your offer end (IST) -->
+        <div class="countdown reveal" id="countdown" data-deadline="2026-07-15T23:59:59+05:30" aria-label="Offer countdown">
+          <div class="cd-box"><b id="cdD">0</b><span>Days</span></div>
+          <div class="cd-box"><b id="cdH">0</b><span>Hours</span></div>
+          <div class="cd-box"><b id="cdM">0</b><span>Mins</span></div>
+          <div class="cd-box"><b id="cdS">0</b><span>Secs</span></div>
+        </div>
+        <p class="urgency reveal">🔥 Festive launch offer — <strong>limited seats at this price</strong>. <span id="scarcity-placeholder">Only X licences left.</span></p>
+
+        <div class="glass price-card reveal">
+          <span class="ribbon">⭐ Most Popular</span>
+          <h3>Breakout Master Indicator V2.0</h3>
+          <div class="price"><span class="price-old">₹5,999</span><span class="price-now">₹2,999</span><span class="price-note">one-time</span></div>
+          <span class="save-tag">You save ₹3,000 (50% OFF)</span>
+          <ul class="check-list">
+            <li>Breakout Master Indicator V2.0</li>
+            <li>Step-by-step Installation Guide (Hindi + English)</li>
+            <li>Lifetime Updates</li>
+            <li>Premium Support on WhatsApp & Telegram</li>
+            <li>All Future Improvements</li>
+          </ul>
+          <!-- Replace # with your Razorpay payment link -->
+          <a href="#" class="btn btn-primary btn-lg glow full">Buy Now — Get Instant Access</a>
+          <div class="pay-methods" aria-label="Accepted payment methods">
+            <span class="pay-chip">UPI</span><span class="pay-chip">Razorpay</span><span class="pay-chip">PhonePe</span>
+            <span class="pay-chip">Google Pay</span><span class="pay-chip">Paytm</span><span class="pay-chip">Net Banking</span>
+          </div>
+          <p class="pay-note">🔒 100% secure payment · Instant delivery · GST invoice available</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMMUNITY ============ -->
+    <section class="section community" id="community">
+      <div class="container narrow reveal">
+        <span class="kicker">Community</span>
+        <h2>Join Our <span class="grad">Trading Community</span></h2>
+        <p class="section-sub">Get support, setup help, and connect with fellow Indian traders. We reply during market hours and after close (IST).</p>
+        <div class="cta-row">
+          <!-- Replace # with your wa.me and t.me links -->
+          <a href="#" class="btn btn-whatsapp btn-lg" rel="noopener">💬 Chat on WhatsApp</a>
+          <a href="#" class="btn btn-telegram btn-lg" rel="noopener">✈️ Join Telegram Channel</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section final-cta">
+      <div class="container narrow reveal">
+        <h2>Start Trading <span class="grad">Smarter</span> Today</h2>
+        <p class="section-sub">Stop chasing tips. Start catching confirmed NSE & BSE breakouts with a clear, disciplined workflow.</p>
+        <a href="#pricing" class="btn btn-primary btn-lg glow">Get Breakout Master Indicator V2.0 →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <a href="#" class="logo"><span class="logo-mark">▲</span>Breakout<span>Master</span></a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#">Privacy Policy</a><a href="#">Terms & Conditions</a><a href="#">Refund Policy</a>
+          <a href="#">Contact</a><a href="#" rel="noopener">WhatsApp</a><a href="#" rel="noopener">Telegram</a>
+        </nav>
+      </div>
+      <p class="disclaimer"><strong>Disclaimer:</strong> This indicator is for educational purposes only and should not be considered investment or financial advice. Trading in the stock market involves risk. Past performance does not guarantee future results. We are not SEBI-registered investment advisers and do not provide buy/sell recommendations. Please consult a SEBI-registered adviser before making investment decisions and trade only with capital you can afford to risk.</p>
+      <p class="copyright">© <span id="year"></span> Breakout Master · Made in India 🇮🇳 · All timings in IST.</p>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp & Telegram -->
+  <div class="float-contact">
+    <a href="#" class="fc-wa" aria-label="Chat on WhatsApp" rel="noopener">💬</a>
+    <a href="#" class="fc-tg" aria-label="Join us on Telegram" rel="noopener">✈️</a>
+  </div>
+
+  <!-- Sticky mobile CTA -->
+  <div class="sticky-cta" id="stickyCta">
+    <a href="#pricing" class="btn btn-primary full glow">Buy Now — ₹2,999 Only (50% OFF)</a>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* Footer year */
+      var yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      /* Scroll progress bar */
+      var progress = document.getElementById('progress');
+      function updateProgress() {
+        var h = document.documentElement;
+        var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+        if (progress) progress.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
+
+      /* Mobile nav */
+      var navToggle = document.getElementById('navToggle');
+      var navLinks = document.getElementById('navLinks');
+      if (navToggle && navLinks) {
+        navToggle.addEventListener('click', function () {
+          var open = navLinks.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        navLinks.addEventListener('click', function (e) {
+          if (e.target.tagName === 'A') {
+            navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      /* Scroll reveal */
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var ro = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('in'); ro.unobserve(entry.target); }
+          });
+        }, { threshold: 0.12 });
+        revealEls.forEach(function (el) { ro.observe(el); });
+      } else {
+        revealEls.forEach(function (el) { el.classList.add('in'); });
+      }
+
+      /* Animated counters (Indian formatting) */
+      function animateCounter(el) {
+        var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+        var start = null;
+        function tick(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / 1600, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.floor(eased * target).toLocaleString('en-IN');
+          if (p < 1) requestAnimationFrame(tick);
+          else el.textContent = target.toLocaleString('en-IN') ;
+        }
+        requestAnimationFrame(tick);
+      }
+      var counters = document.querySelectorAll('.counter');
+      if ('IntersectionObserver' in window) {
+        var co = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { animateCounter(entry.target); co.unobserve(entry.target); }
+          });
+        }, { threshold: 0.6 });
+        counters.forEach(function (el) { co.observe(el); });
+      } else {
+        counters.forEach(function (el) { el.textContent = el.getAttribute('data-target'); });
+      }
+
+      /* Countdown timer (deadline in data-deadline, IST) */
+      var cd = document.getElementById('countdown');
+      if (cd) {
+        var deadline = new Date(cd.getAttribute('data-deadline')).getTime();
+        var dEl = document.getElementById('cdD'), hEl = document.getElementById('cdH'),
+            mEl = document.getElementById('cdM'), sEl = document.getElementById('cdS');
+        function pad(n) { return n < 10 ? '0' + n : n; }
+        function tickCd() {
+          var diff = deadline - Date.now();
+          if (diff <= 0) { dEl.textContent = hEl.textContent = mEl.textContent = sEl.textContent = '00'; return; }
+          dEl.textContent = pad(Math.floor(diff / 864e5));
+          hEl.textContent = pad(Math.floor(diff % 864e5 / 36e5));
+          mEl.textContent = pad(Math.floor(diff % 36e5 / 6e4));
+          sEl.textContent = pad(Math.floor(diff % 6e4 / 1e3));
+          setTimeout(tickCd, 1000);
+        }
+        tickCd();
+      }
+
+      /* Sticky mobile CTA */
+      var stickyCta = document.getElementById('stickyCta');
+      var hero = document.getElementById('hero');
+      var pricing = document.getElementById('pricing');
+      function updateStickyCta() {
+        if (!stickyCta || !hero) return;
+        var pastHero = window.scrollY > hero.offsetHeight * 0.7;
+        var inPricing = false;
+        if (pricing) {
+          var r = pricing.getBoundingClientRect();
+          inPricing = r.top < window.innerHeight && r.bottom > 0;
+        }
+        stickyCta.classList.toggle('visible', pastHero && !inPricing);
+      }
+      window.addEventListener('scroll', updateStickyCta, { passive: true });
+      updateStickyCta();
+
+      /* FAQ accordion */
+      var faqItems = document.querySelectorAll('.faq-list details');
+      faqItems.forEach(function (item) {
+        item.addEventListener('toggle', function () {
+          if (item.open) faqItems.forEach(function (o) { if (o !== item) o.open = false; });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
