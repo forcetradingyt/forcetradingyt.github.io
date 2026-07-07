@@ -458,25 +458,89 @@
         <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6" style="background:linear-gradient(135deg,var(--accent),#4fc3f7);">🔍</div>
         <h3 class="text-xl font-bold mb-3">Trading Scanner</h3>
         <ul class="space-y-2 text-sm text-gray-400 mb-8 flex-grow">
-          <li>✔ Find Breakout Stocks</li>
-          <li>✔ Swing Opportunities</li>
-          <li>✔ Momentum Stocks</li>
+          <li>✔ Investment Scanner</li>
+          <li>✔ Swing Trading Scanner</li>
+          <li>✔ Intraday Scanner</li>
           <li>✔ Trend Stocks</li>
         </ul>
-        <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">View Scanner</a>
+        <button type="button" id="scannerBtn" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Choose Your Scanner</button>
       </div>
+
+    <!-- Scanner category popup -->
+    <div id="scannerOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
+      <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
+        <button id="scannerClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
+        <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a category</span>
+        <h3 class="text-xl font-bold mt-2 mb-5">Trading Scanner</h3>
+        <div class="space-y-3">
+          <a href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Investment Scanner</div>
+              <div class="text-xs text-gray-500 mt-0.5">201 Framework · NSE</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+          <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Swing Trading Scanner</div>
+              <div class="text-xs text-gray-500 mt-0.5">Multi-day setups</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+          <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Intraday Scanner</div>
+              <div class="text-xs text-gray-500 mt-0.5">Same-day setups</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
 
       <!-- Trading eBooks -->
       <div data-aos="fade-up" data-aos-delay="200" class="lift glass rounded-3xl p-8 flex flex-col">
         <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6" style="background:linear-gradient(135deg,#ffca28,#ffa000);">📖</div>
         <h3 class="text-xl font-bold mb-3">Trading eBooks</h3>
         <ul class="space-y-2 text-sm text-gray-400 mb-8 flex-grow">
-          <li>✔ Structured Strategies</li>
-          <li>✔ Breakout Trading</li>
-          <li>✔ Price Action</li>
+          <li>✔ Investment Strategy</li>
+          <li>✔ Swing Trading Strategy</li>
+          <li>✔ Intraday Strategy</li>
           <li>✔ Risk Management</li>
         </ul>
-        <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Buy eBook</a>
+        <button type="button" id="ebookBtn" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Choose Your eBook</button>
+      </div>
+    </div>
+
+    <!-- eBook category popup -->
+    <div id="ebookOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
+      <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
+        <button id="ebookClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
+        <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a category</span>
+        <h3 class="text-xl font-bold mt-2 mb-5">Trading eBooks</h3>
+        <div class="space-y-3">
+          <a href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Investment Strategy</div>
+              <div class="text-xs text-gray-500 mt-0.5">201 Framework · NSE</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+          <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Swing Trading Strategy</div>
+              <div class="text-xs text-gray-500 mt-0.5">Multi-day setups</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+          <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+            <div>
+              <div class="font-semibold text-sm">Intraday Strategy</div>
+              <div class="text-xs text-gray-500 mt-0.5">Same-day setups</div>
+            </div>
+            <span class="text-lg" style="color:var(--primary);">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -648,7 +712,7 @@
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Beginner Friendly</li>
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Fast Results</li>
       </ul>
-      <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Explore Scanner</a>
+      <button type="button" onclick="document.getElementById('scannerOverlay').classList.remove('hidden'); document.getElementById('scannerOverlay').classList.add('flex');" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Explore Scanner</button>
     </div>
     <div data-aos="fade-left" class="glass rounded-3xl p-6">
       <svg viewBox="0 0 400 260" class="w-full h-auto">
@@ -1032,6 +1096,50 @@
     });
   }, { threshold: 0.4 });
   counters.forEach(c => counterObserver.observe(c));
+
+  // ===================== EBOOK CATEGORY POPUP =====================
+  const ebookBtn = document.getElementById('ebookBtn');
+  const ebookOverlay = document.getElementById('ebookOverlay');
+  const ebookClose = document.getElementById('ebookClose');
+
+  function openEbookPopup(){
+    ebookOverlay.classList.remove('hidden');
+    ebookOverlay.classList.add('flex');
+  }
+  function closeEbookPopup(){
+    ebookOverlay.classList.add('hidden');
+    ebookOverlay.classList.remove('flex');
+  }
+
+  ebookBtn.addEventListener('click', openEbookPopup);
+  ebookClose.addEventListener('click', closeEbookPopup);
+  ebookOverlay.addEventListener('click', (e) => {
+    if(e.target === ebookOverlay) closeEbookPopup();
+  });
+
+  // ===================== SCANNER CATEGORY POPUP =====================
+  const scannerBtn = document.getElementById('scannerBtn');
+  const scannerOverlay = document.getElementById('scannerOverlay');
+  const scannerClose = document.getElementById('scannerClose');
+
+  function openScannerPopup(){
+    scannerOverlay.classList.remove('hidden');
+    scannerOverlay.classList.add('flex');
+  }
+  function closeScannerPopup(){
+    scannerOverlay.classList.add('hidden');
+    scannerOverlay.classList.remove('flex');
+  }
+
+  scannerBtn.addEventListener('click', openScannerPopup);
+  scannerClose.addEventListener('click', closeScannerPopup);
+  scannerOverlay.addEventListener('click', (e) => {
+    if(e.target === scannerOverlay) closeScannerPopup();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){ closeEbookPopup(); closeScannerPopup(); }
+  });
 
   // Newsletter form (front-end only placeholder)
   const newsletterForm = document.getElementById('newsletterForm');
