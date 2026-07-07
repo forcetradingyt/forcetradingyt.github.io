@@ -82,14 +82,24 @@
     --text-secondary:#BDBDBD;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{
+    scroll-behavior:smooth;
+    overflow-x:hidden;
+    width:100%;
+  }
   body{
     background:var(--bg);
     color:var(--text);
     font-family:'Poppins',sans-serif;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    width:100%;
+    position:relative;
   }
+  section[id], header{
+    scroll-margin-top:88px;
+  }
+  img, svg{ max-width:100%; }
   .mono{ font-family:'JetBrains Mono',monospace; }
 
   ::selection{ background:var(--primary); color:#000; }
@@ -712,7 +722,7 @@
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Beginner Friendly</li>
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Fast Results</li>
       </ul>
-      <button type="button" onclick="document.getElementById('scannerOverlay').classList.remove('hidden'); document.getElementById('scannerOverlay').classList.add('flex');" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Explore Scanner</button>
+      <button type="button" onclick="openScannerPopup()" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Explore Scanner</button>
     </div>
     <div data-aos="fade-left" class="glass rounded-3xl p-6">
       <svg viewBox="0 0 400 260" class="w-full h-auto">
@@ -1105,10 +1115,12 @@
   function openEbookPopup(){
     ebookOverlay.classList.remove('hidden');
     ebookOverlay.classList.add('flex');
+    document.body.style.overflow = 'hidden';
   }
   function closeEbookPopup(){
     ebookOverlay.classList.add('hidden');
     ebookOverlay.classList.remove('flex');
+    document.body.style.overflow = '';
   }
 
   ebookBtn.addEventListener('click', openEbookPopup);
@@ -1125,10 +1137,12 @@
   function openScannerPopup(){
     scannerOverlay.classList.remove('hidden');
     scannerOverlay.classList.add('flex');
+    document.body.style.overflow = 'hidden';
   }
   function closeScannerPopup(){
     scannerOverlay.classList.add('hidden');
     scannerOverlay.classList.remove('flex');
+    document.body.style.overflow = '';
   }
 
   scannerBtn.addEventListener('click', openScannerPopup);
