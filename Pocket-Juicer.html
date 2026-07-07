@@ -1,1 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<!-- ============ SEO META ============ -->
+<title>Pocket Juicer – Portable Manual Citrus Juicer ₹99</title>
+<meta name="description" content="Pocket Juicer: a portable manual citrus juicer for lemon, orange, mosambi & malta. No electricity needed, easy to clean. COD available — only ₹99 today.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://pocketjuicer.in/pocket-juicer">
+
+<!-- Open Graph -->
+<meta property="og:type" content="product">
+<meta property="og:title" content="Pocket Juicer — Fresh Juice Anytime, Anywhere">
+<meta property="og:description" content="Portable manual citrus juicer for lemon, orange, mosambi & malta. No electricity, no mess. Only ₹99 with COD available.">
+<meta property="og:image" content="https://placehold.co/1200x630/FF6A00/ffffff?text=Pocket+Juicer">
+<meta property="og:url" content="https://pocketjuicer.in/pocket-juicer">
+<meta property="og:price:amount" content="99">
+<meta property="og:price:currency" content="INR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pocket Juicer — Fresh Juice Anytime, Anywhere">
+<meta name="twitter:description" content="Portable manual citrus juicer. No electricity. No mess. Only ₹99 with COD available.">
+<meta name="twitter:image" content="https://placehold.co/1200x630/FF6A00/ffffff?text=Pocket+Juicer">
+
+<!-- ============ STRUCTURED DATA ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Pocket Juicer — Portable Manual Citrus Juicer",
+  "image": "https://placehold.co/800x800/FF6A00/ffffff?text=Pocket+Juicer",
+  "description": "A portable manual citrus juicer that extracts fresh juice from lemon, orange, mosambi, malta and sweet lime without electricity or batteries.",
+  "brand": { "@type": "Brand", "name": "Pocket Juicer" },
+  "sku": "POCKET-JUICER-01",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://pocketjuicer.in/pocket-juicer",
+    "priceCurrency": "INR",
+    "price": "99",
+    "priceValidUntil": "2026-12-31",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1860"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": "Priya Sharma",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Did not expect such good quality for just ₹99. Works great every morning."
+    },
+    {
+      "@type": "Review",
+      "author": "Rohit Verma",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Daily lemon water banana ab bahut easy ho gaya. Very useful product."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://pocketjuicer.in/" },
+    { "@type": "ListItem", "position": 2, "name": "Pocket Juicer", "item": "https://pocketjuicer.in/pocket-juicer" }
+  ]
+}
+</script>
+<script type="application/ld+json" id="faqSchema">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": []
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+:root{
+  --primary:#FF6A00;
+  --primary-dark:#E25A00;
+  --secondary:#FFA726;
+  --accent:#34C759;
+  --accent-dark:#218838;
+  --ink:#2B2B2B;
+  --ink-soft:#6E6660;
+  --cream:#FFFAF5;
+  --line:#FFE1C2;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Poppins',sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden;}
+::selection{background:var(--primary);color:#fff;}
+
+.grad-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);}
+.grad-soft{background:linear-gradient(180deg,#FFF3E6 0%,#FFFFFF 60%);}
+.grad-accent{background:linear-gradient(135deg,var(--accent) 0%,#5FE07E 100%);}
+.text-grad{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+.glass{background:rgba(255,255,255,0.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.6);box-shadow:0 8px 32px rgba(255,106,0,0.10);}
+
+/* wedge / segment shapes — signature citrus motif, distinct color set from previous build */
+.segment-chip{clip-path:polygon(8% 0, 100% 0, 92% 100%, 0% 100%);padding:8px 22px 8px 16px;}
+.wedge-bullet{width:14px;height:14px;background:var(--primary);clip-path:polygon(50% 0%, 100% 100%, 0% 100%);display:inline-block;transform:rotate(180deg);}
+
+/* signature: fixed "juice-fill" scroll progress bar at very top of viewport */
+#juiceProgress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;z-index:60;transition:width .1s linear;}
+
+.juice-btn{position:relative;isolation:isolate;overflow:hidden;font-weight:700;color:#fff;background:var(--ink);transition:transform .25s ease, box-shadow .25s ease;}
+.juice-btn::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--primary),var(--secondary));transform:translateY(100%);transition:transform .45s cubic-bezier(.65,0,.35,1);z-index:-1;}
+.juice-btn:hover::before{transform:translateY(0);}
+.juice-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,106,0,0.35);}
+.juice-btn:active{transform:translateY(0);}
+
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+.floaty{animation:float 5.5s ease-in-out infinite;}
+@keyframes drip{0%{opacity:0;transform:translateY(0) scaleY(.6);}30%{opacity:1;}100%{opacity:0;transform:translateY(40px) scaleY(1.3);}}
+.drop{animation:drip 2.2s ease-in infinite;}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,106,0,.45);}50%{box-shadow:0 0 0 14px rgba(255,106,0,0);}}
+.pulse-ring{animation:pulseGlow 2.2s ease-out infinite;}
+@keyframes spinSlow{to{transform:rotate(360deg);}}
+.spin-slow{animation:spinSlow 18s linear infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.bob{animation:bob 2.4s ease-in-out infinite;}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+
+.vs-table td,.vs-table th{padding:14px 16px;}
+.vs-table tr:not(:last-child) td{border-bottom:1px dashed var(--line);}
+
+.faq-item .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-item.open .faq-a{max-height:400px;}
+.faq-item .chev{transition:transform .3s ease;}
+.faq-item.open .chev{transform:rotate(180deg);}
+
+#stickyBar{transform:translateY(120%);transition:transform .35s ease;}
+#stickyBar.show{transform:translateY(0);}
+
+.no-scrollbar::-webkit-scrollbar{display:none;}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}
+
+.slide{display:none;}
+.slide.active{display:block;}
+.dot{width:8px;height:8px;border-radius:999px;background:var(--line);transition:background .3s ease, width .3s ease;}
+.dot.active{background:var(--primary);width:22px;}
+
+@media (prefers-reduced-motion: reduce){
+  .floaty,.drop,.pulse-ring,.spin-slow,.bob{animation:none !important;}
+  .reveal{transition:none;opacity:1;transform:none;}
+}
+a:focus-visible, button:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+#lightbox{background:rgba(20,12,10,0.92);}
+</style>
+</head>
+
+<body class="antialiased">
+<div id="juiceProgress"></div>
+
+<!-- ============ TOP NAV / BREADCRUMB ============ -->
+<header class="w-full py-3 px-4 md:px-8 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-orange-100">
+  <div class="flex items-center gap-2">
+    <div class="w-9 h-9 rounded-full grad-primary flex items-center justify-center text-white text-lg">🍋</div>
+    <span class="font-extrabold text-lg">Pocket <span class="text-grad">Juicer</span></span>
+  </div>
+  <a href="#offer" class="hidden sm:inline-flex items-center gap-2 juice-btn rounded-full px-5 py-2 text-sm">🛒 Buy Now — ₹99</a>
+</header>
+<nav aria-label="Breadcrumb" class="max-w-6xl mx-auto px-4 pt-3 text-xs" style="color:var(--ink-soft)">
+  <a href="#" class="hover:underline">Home</a> <span class="mx-1">/</span> <span style="color:var(--primary)">Pocket Juicer</span>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="relative grad-soft pt-6 pb-14 md:pt-14 md:pb-24 px-4 overflow-hidden">
+  <div class="absolute -top-20 -right-24 w-72 h-72 rounded-full grad-primary opacity-20 blur-3xl"></div>
+  <div class="absolute top-40 -left-24 w-64 h-64 rounded-full grad-accent opacity-20 blur-3xl"></div>
+
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center relative z-10">
+    <div class="order-2 md:order-1 text-center md:text-left">
+      <span class="inline-flex items-center gap-2 segment-chip text-xs font-semibold bg-white shadow-sm border border-orange-100" style="color:var(--primary-dark)">
+        ✔ 10,000+ Happy Customers
+      </span>
+
+      <h1 class="mt-5 text-4xl md:text-6xl font-extrabold leading-tight">
+        Fresh Juice <span class="text-grad">Anytime, Anywhere.</span>
+      </h1>
+
+      <p class="mt-4 text-lg md:text-xl font-medium" style="color:var(--ink-soft)">
+        Make fresh juice in seconds — no electricity, no batteries.
+      </p>
+      <p class="mt-1 text-base md:text-lg" style="color:var(--ink-soft)">
+        Perfect for lemon, orange, mosambi and citrus fruits. Sirf <strong style="color:var(--primary)">₹99</strong> mein apna Pocket Juicer ghar layein.
+      </p>
+
+      <div class="mt-6 inline-flex items-end gap-4 glass rounded-2xl px-6 py-4">
+        <div>
+          <div class="text-sm line-through" style="color:var(--ink-soft)">₹199</div>
+          <div class="text-4xl font-extrabold" style="color:var(--primary)">Now ₹99</div>
+        </div>
+        <span class="mb-1 text-xs font-bold text-white px-3 py-1 rounded-full grad-accent">Save 50%</span>
+      </div>
+
+      <div class="mt-7 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+        <a href="#offer" class="juice-btn rounded-full px-8 py-4 text-center text-base pulse-ring">🛒 Buy Now</a>
+        <span class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-semibold border border-orange-200 bg-white" style="color:var(--accent-dark)">⚡ Cash on Delivery Available</span>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 justify-center md:justify-start text-sm font-medium" style="color:var(--ink-soft)">
+        <span>✔ Food Grade Plastic</span>
+        <span>✔ Portable</span>
+        <span>✔ Easy Cleaning</span>
+      </div>
+
+      <!-- countdown + live stock -->
+      <div class="mt-8 grid sm:grid-cols-2 gap-3">
+        <div class="glass rounded-2xl px-5 py-4">
+          <p class="text-xs font-semibold uppercase tracking-wide mb-2" style="color:var(--ink-soft)">Today's Offer Ends In</p>
+          <div id="countdown" class="flex gap-3 text-2xl font-extrabold" style="color:var(--primary)">
+            <div class="text-center"><span id="cd-h">00</span><div class="text-[10px] font-medium uppercase" style="color:var(--ink-soft)">Hrs</div></div>
+            <span>:</span>
+            <div class="text-center"><span id="cd-m">00</span><div class="text-[10px] font-medium uppercase" style="color:var(--ink-soft)">Min</div></div>
+            <span>:</span>
+            <div class="text-center"><span id="cd-s">00</span><div class="text-[10px] font-medium uppercase" style="color:var(--ink-soft)">Sec</div></div>
+          </div>
+        </div>
+        <div class="glass rounded-2xl px-5 py-4 flex flex-col justify-center">
+          <p class="text-xs font-semibold uppercase tracking-wide" style="color:var(--ink-soft)">Live Stock</p>
+          <p class="mt-1 text-lg font-extrabold" style="color:var(--accent-dark)">Only <span id="stockCount">14</span> pieces left today</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- hero illustration -->
+    <div class="order-1 md:order-2 flex justify-center relative">
+      <div class="floaty w-64 md:w-96">
+        <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand pressing Pocket Juicer over a glass of fresh citrus juice">
+          <path d="M150 300 L250 300 L240 400 Q200 415 160 400 Z" fill="#fff" stroke="#FFD9BE" stroke-width="4"/>
+          <path d="M156 310 L244 310 L237 385 Q200 397 163 385 Z" fill="url(#juiceGrad2)"/>
+          <defs>
+            <linearGradient id="juiceGrad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFC266"/>
+              <stop offset="100%" stop-color="#FF6A00"/>
+            </linearGradient>
+            <radialGradient id="citrusGrad" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#FFC266"/>
+              <stop offset="100%" stop-color="#FF6A00"/>
+            </radialGradient>
+          </defs>
+          <rect x="165" y="150" width="70" height="120" rx="22" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="3"/>
+          <rect x="175" y="130" width="50" height="40" rx="14" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="3"/>
+          <path d="M175 150 Q200 110 225 150 Z" fill="var(--secondary)"/>
+          <ellipse cx="200" cy="150" rx="25" ry="8" fill="#FFA726"/>
+          <g transform="translate(200,95)">
+            <circle r="42" fill="url(#citrusGrad)"/>
+            <circle r="42" fill="none" stroke="#E25A00" stroke-width="3" stroke-dasharray="2 6"/>
+            <g stroke="#FFE0B2" stroke-width="2">
+              <line x1="0" y1="0" x2="0" y2="-40"/><line x1="0" y1="0" x2="34" y2="-20"/><line x1="0" y1="0" x2="34" y2="20"/>
+              <line x1="0" y1="0" x2="0" y2="40"/><line x1="0" y1="0" x2="-34" y2="20"/><line x1="0" y1="0" x2="-34" y2="-20"/>
+            </g>
+          </g>
+          <ellipse class="drop" cx="192" cy="205" rx="4" ry="7" fill="#FFA726"/>
+          <ellipse class="drop" style="animation-delay:.7s" cx="208" cy="205" rx="3.5" ry="6" fill="#FFA726"/>
+          <ellipse class="drop" style="animation-delay:1.4s" cx="200" cy="205" rx="4" ry="7" fill="#FFC266"/>
+          <path d="M140 210 Q135 260 165 275 L235 275 Q265 260 260 210 L245 195 L155 195 Z" fill="#F7C9A0" stroke="#E8A876" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="absolute -bottom-2 md:bottom-6 right-2 md:right-0 spin-slow opacity-70">
+        <svg width="70" height="70" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="var(--secondary)" stroke-width="3" stroke-dasharray="6 10"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST BAR ============ -->
+<section class="bg-white border-y border-orange-100 py-5">
+  <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold" style="color:var(--ink-soft)">
+    <span>💵 COD Available</span>
+    <span>🚚 Fast Delivery</span>
+    <span>🔄 7 Days Replacement</span>
+    <span>🔒 Secure Checkout</span>
+    <span>🧪 Food Grade Plastic</span>
+    <span>📞 Customer Support</span>
+  </div>
+</section>
+
+<!-- ============ PROBLEM / AGITATE / SOLUTION ============ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-5xl mx-auto reveal">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center">Still Squeezing Lemons <span class="text-grad">by Hand?</span></h2>
+    <p class="mt-3 text-center max-w-2xl mx-auto" style="color:var(--ink-soft)">
+      Every Indian kitchen knows the struggle. You want fresh lemon water in the morning or a quick glass of orange juice, but squeezing citrus by hand always turns into a small ordeal.
+    </p>
+    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+      <div class="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 px-5 py-4"><span class="text-xl">❌</span><p class="font-medium">Hands become sticky</p></div>
+      <div class="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 px-5 py-4"><span class="text-xl">❌</span><p class="font-medium">Juice gets wasted</p></div>
+      <div class="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 px-5 py-4"><span class="text-xl">❌</span><p class="font-medium">Seeds fall into the juice</p></div>
+      <div class="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 px-5 py-4"><span class="text-xl">❌</span><p class="font-medium">Takes too much effort</p></div>
+      <div class="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 px-5 py-4 sm:col-span-2"><span class="text-xl">❌</span><p class="font-medium">Messy kitchen counter every single time</p></div>
+    </div>
+    <p class="mt-6 text-center max-w-2xl mx-auto" style="color:var(--ink-soft)">
+      That daily friction is exactly why we built Pocket Juicer — a compact, manual citrus press designed to remove every one of these pain points in a single, comfortable motion.
+    </p>
+    <div class="mt-6 mx-auto max-w-2xl rounded-2xl grad-accent text-white text-center px-6 py-5 font-semibold text-lg shadow-lg">
+      ✅ Pocket Juicer extracts more juice, with zero mess and zero effort.
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFITS (icon cards) ============ -->
+<section class="py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">Benefits That Make <span class="text-grad">Pocket Juicer Different</span></h2>
+    <div id="featureGrid" class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-10"></div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">How Pocket Juicer Works</h2>
+    <p class="text-center mt-2" style="color:var(--ink-soft)">Three simple steps to fresh juice, every single day.</p>
+    <div class="mt-12 grid md:grid-cols-3 gap-8 relative">
+      <div class="hidden md:block absolute top-14 left-[16%] right-[16%] h-[3px] border-t-2 border-dashed" style="border-color:var(--line)"></div>
+      <div class="reveal text-center">
+        <div class="mx-auto w-24 h-24 rounded-full grad-primary flex items-center justify-center text-4xl shadow-lg relative z-10 bob">🔪</div>
+        <span class="wedge-bullet mt-4 inline-block"></span>
+        <h3 class="font-bold text-lg mt-2">1. Cut the Fruit</h3>
+        <p class="text-sm mt-1" style="color:var(--ink-soft)">Slice your lemon, orange or mosambi in half.</p>
+      </div>
+      <div class="reveal text-center" style="transition-delay:.1s">
+        <div class="mx-auto w-24 h-24 rounded-full grad-primary flex items-center justify-center text-4xl shadow-lg relative z-10 bob" style="animation-delay:.3s">🍊</div>
+        <span class="wedge-bullet mt-4 inline-block"></span>
+        <h3 class="font-bold text-lg mt-2">2. Insert into Pocket Juicer</h3>
+        <p class="text-sm mt-1" style="color:var(--ink-soft)">Place the fruit half onto the reamer, facing down.</p>
+      </div>
+      <div class="reveal text-center" style="transition-delay:.2s">
+        <div class="mx-auto w-24 h-24 rounded-full grad-primary flex items-center justify-center text-4xl shadow-lg relative z-10 bob" style="animation-delay:.6s">🥤</div>
+        <span class="wedge-bullet mt-4 inline-block"></span>
+        <h3 class="font-bold text-lg mt-2">3. Press & Enjoy</h3>
+        <p class="text-sm mt-1" style="color:var(--ink-soft)">Press down gently — fresh juice flows straight into your glass.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCT FEATURES (detailed) ============ -->
+<section class="py-16 px-4">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">Product Features, Explained</h2>
+    <div id="detailedFeatures" class="mt-10 space-y-5"></div>
+  </div>
+</section>
+
+<!-- ============ PRODUCT SPECIFICATIONS ============ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-3xl mx-auto reveal">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center">Product Specifications</h2>
+    <div class="mt-8 rounded-2xl border border-orange-100 overflow-hidden shadow-sm">
+      <table class="w-full text-sm md:text-base">
+        <tbody>
+          <tr class="border-b border-orange-100 bg-orange-50/50"><td class="px-5 py-3 font-semibold w-1/3">Material</td><td class="px-5 py-3">Food Grade Plastic</td></tr>
+          <tr class="border-b border-orange-100"><td class="px-5 py-3 font-semibold">Weight</td><td class="px-5 py-3">Lightweight — fits in one hand or a small bag</td></tr>
+          <tr class="border-b border-orange-100 bg-orange-50/50"><td class="px-5 py-3 font-semibold">Available Colors</td><td class="px-5 py-3">Random (as per current stock)</td></tr>
+          <tr><td class="px-5 py-3 font-semibold">Suitable For</td><td class="px-5 py-3">Lemon, Orange, Mosambi, Malta, Sweet Lime</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON TABLE ============ -->
+<section class="py-16 px-4">
+  <div class="max-w-3xl mx-auto reveal">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center">Traditional Method <span style="color:var(--ink-soft)">vs</span> <span class="text-grad">Pocket Juicer</span></h2>
+    <div class="mt-10 overflow-hidden rounded-2xl border border-orange-100 shadow-sm">
+      <table class="vs-table w-full text-sm md:text-base bg-white">
+        <thead><tr class="text-left"><th class="w-1/2" style="color:var(--ink-soft)">✋ Traditional Method</th><th class="w-1/2 grad-primary text-white">🍋 Pocket Juicer</th></tr></thead>
+        <tbody>
+          <tr><td>Less Juice</td><td class="font-semibold" style="color:var(--primary-dark)">Maximum Juice</td></tr>
+          <tr><td>Messy</td><td class="font-semibold" style="color:var(--primary-dark)">Clean</td></tr>
+          <tr><td>Slow</td><td class="font-semibold" style="color:var(--primary-dark)">Fast</td></tr>
+          <tr><td>Painful</td><td class="font-semibold" style="color:var(--primary-dark)">Comfortable</td></tr>
+          <tr><td>Hard Cleaning</td><td class="font-semibold" style="color:var(--primary-dark)">Easy Cleaning</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIFESTYLE SECTION (SEO-rich content) ============ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-4xl mx-auto reveal">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center">Why Every Indian Kitchen Needs a Pocket Juicer</h2>
+    <div class="mt-6 space-y-4 text-sm md:text-base leading-relaxed" style="color:var(--ink-soft)">
+      <p>Fresh juice is part of daily life in most Indian households — a glass of warm lemon water first thing in the morning, a quick mosambi juice when someone is unwell, or fresh orange juice to start the day. The problem has never been the habit; it's the effort. A <strong style="color:var(--ink)">manual citrus juicer</strong> like Pocket Juicer removes that friction so the habit actually sticks.</p>
+      <p>For <strong style="color:var(--ink)">housewives</strong> managing a busy kitchen, Pocket Juicer cuts prep time without adding another electric appliance to clean and store. For <strong style="color:var(--ink)">students</strong> and <strong style="color:var(--ink)">working professionals</strong>, it fits in a bag and turns a hostel room, PG kitchen, or office pantry into a place where fresh juice is always possible. <strong style="color:var(--ink)">Fitness enthusiasts</strong> use it for a quick post-workout citrus boost, while <strong style="color:var(--ink)">travelers</strong> and <strong style="color:var(--ink)">campers</strong> rely on it precisely because it needs no electricity or batteries — just a fruit and a glass.</p>
+      <p>Families with <strong style="color:var(--ink)">kids</strong> find it useful for making juice without sharp knives or hot equipment involved, and <strong style="color:var(--ink)">parents</strong> appreciate a tool that's simple enough for teenagers to use safely on their own. It also makes a genuinely useful, low-cost <strong style="color:var(--ink)">gift</strong> — practical, novel, and something almost every kitchen can use.</p>
+      <p>At the core, Pocket Juicer supports a healthier daily routine: more fresh juice, less bottled or packaged juice, and one less reason to skip the morning glass of lemon water because squeezing it by hand felt like too much work.</p>
+    </div>
+    <div class="mt-8 grid sm:grid-cols-3 gap-3 text-center text-sm font-semibold">
+      <div class="rounded-xl bg-orange-50 py-3">☀️ Morning Lemon Water</div>
+      <div class="rounded-xl bg-orange-50 py-3">🍊 Fresh Orange Juice</div>
+      <div class="rounded-xl bg-orange-50 py-3">💚 Healthy Lifestyle</div>
+      <div class="rounded-xl bg-orange-50 py-3">⏱️ Saves Time Daily</div>
+      <div class="rounded-xl bg-orange-50 py-3">🏋️ Gym & Fitness</div>
+      <div class="rounded-xl bg-orange-50 py-3">🏕️ Travel & Camping</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">A Closer Look at Pocket Juicer</h2>
+    <div id="galleryGrid" class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </div>
+</section>
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-6">
+  <button id="lightboxClose" class="absolute top-6 right-6 text-white text-3xl leading-none" aria-label="Close image preview">×</button>
+  <img id="lightboxImg" src="" alt="" class="max-h-[80vh] max-w-full rounded-2xl shadow-2xl">
+</div>
+
+<!-- ============ REVIEWS / TESTIMONIAL SLIDER ============ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">What Verified Buyers Are Saying</h2>
+
+    <!-- slider -->
+    <div class="mt-10 max-w-2xl mx-auto relative">
+      <div id="sliderTrack"></div>
+      <div id="sliderDots" class="flex justify-center gap-2 mt-5"></div>
+    </div>
+
+    <!-- full grid below for SEO / crawlable content -->
+    <div id="reviewsGrid" class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="py-16 px-4">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center reveal">Frequently Asked Questions</h2>
+    <div id="faqList" class="mt-10 space-y-3"></div>
+  </div>
+</section>
+
+<!-- ============ OFFER ============ -->
+<section id="offer" class="py-16 px-4">
+  <div class="max-w-2xl mx-auto text-center glass rounded-3xl px-6 py-12 reveal">
+    <span class="inline-block segment-chip text-xs font-bold bg-white shadow-sm" style="color:var(--primary-dark)">ONLY TODAY</span>
+    <div class="mt-4 text-6xl font-extrabold" style="color:var(--primary)">₹99</div>
+    <p class="mt-1 text-sm font-semibold" style="color:var(--accent-dark)">✔ Cash on Delivery Available</p>
+    <a href="#" class="mt-8 inline-block juice-btn rounded-full px-10 py-5 text-lg">🛒 Buy Now</a>
+    <p class="mt-3 text-xs" style="color:var(--ink-soft)">⚠️ Limited Stock — order today to avoid missing this price.</p>
+  </div>
+</section>
+
+<!-- ============ GUARANTEE ============ -->
+<section class="py-14 px-4 bg-white">
+  <div class="max-w-5xl mx-auto grid sm:grid-cols-2 md:grid-cols-5 gap-6 text-center">
+    <div class="reveal"><div class="text-4xl">🔄</div><h3 class="font-bold mt-2 text-sm">7 Days Replacement</h3></div>
+    <div class="reveal" style="transition-delay:.05s"><div class="text-4xl">🔒</div><h3 class="font-bold mt-2 text-sm">Secure Checkout</h3></div>
+    <div class="reveal" style="transition-delay:.1s"><div class="text-4xl">✅</div><h3 class="font-bold mt-2 text-sm">Quality Checked</h3></div>
+    <div class="reveal" style="transition-delay:.15s"><div class="text-4xl">🚚</div><h3 class="font-bold mt-2 text-sm">Fast Delivery</h3></div>
+    <div class="reveal" style="transition-delay:.2s"><div class="text-4xl">📞</div><h3 class="font-bold mt-2 text-sm">Customer Support</h3></div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="py-20 px-4 grad-primary text-white text-center relative overflow-hidden">
+  <div class="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-white/10 blur-2xl"></div>
+  <div class="absolute -top-10 -right-10 w-56 h-56 rounded-full bg-white/10 blur-2xl"></div>
+  <div class="relative z-10 max-w-2xl mx-auto reveal">
+    <h2 class="text-3xl md:text-5xl font-extrabold">Bring Freshness Home Today.</h2>
+    <p class="mt-3 text-lg opacity-90">Pocket Juicer makes healthy living simple, affordable, and convenient.</p>
+    <a href="#offer" class="mt-8 inline-block bg-white rounded-full px-10 py-5 text-lg font-extrabold shadow-xl" style="color:var(--primary-dark)">🛒 Buy Now — ₹99</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="py-10 px-4 bg-[#231A12] text-white/80">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 text-sm">
+    <div>
+      <div class="flex items-center gap-2 text-white font-bold text-lg">
+        <span class="w-8 h-8 rounded-full grad-primary flex items-center justify-center">🍋</span> Pocket Juicer
+      </div>
+      <p class="mt-2 max-w-xs text-white/60">Fresh juice, anytime, anywhere — no electricity required.</p>
+    </div>
+    <div class="flex flex-wrap gap-x-8 gap-y-2">
+      <a href="#" class="hover:text-white">About Us</a>
+      <a href="#" class="hover:text-white">Privacy Policy</a>
+      <a href="#" class="hover:text-white">Shipping Policy</a>
+      <a href="#" class="hover:text-white">Refund Policy</a>
+      <a href="#" class="hover:text-white">Terms &amp; Conditions</a>
+      <a href="#" class="hover:text-white">Contact Us</a>
+    </div>
+  </div>
+  <p class="text-center text-white/40 text-xs mt-8">© 2026 Pocket Juicer. Made with ❤️ in India.</p>
+</footer>
+
+<!-- ============ STICKY MOBILE BUY BAR ============ -->
+<div id="stickyBar" class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-orange-100 px-4 py-3 flex items-center justify-between shadow-[0_-6px_20px_rgba(0,0,0,0.08)]">
+  <div><div class="text-xs" style="color:var(--ink-soft)">Only Today</div><div class="text-xl font-extrabold" style="color:var(--primary)">₹99</div></div>
+  <a href="#offer" class="juice-btn rounded-full px-6 py-3 text-sm">🛒 Buy Now</a>
+</div>
+
+<!-- ============ FLOATING WHATSAPP ============ -->
+<a href="https://wa.me/910000000000" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"
+   class="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-40 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-xl pulse-ring">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.3 0-.5s-.6-1.5-.9-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.3 4.9 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.5 13.5 3.5 12c0-4.7 3.8-8.5 8.5-8.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>
+</a>
+
+<script>
+/* ---------------- juice-fill scroll progress ---------------- */
+(function(){
+  const bar = document.getElementById('juiceProgress');
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+})();
+
+/* ---------------- countdown ---------------- */
+(function(){
+  const endTime = new Date(); endTime.setHours(23,59,59,999);
+  function tick(){
+    const now = new Date(); let diff = endTime - now;
+    if(diff < 0){ endTime.setDate(endTime.getDate()+1); diff = endTime - now; }
+    document.getElementById('cd-h').textContent = String(Math.floor(diff/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+})();
+
+/* ---------------- live stock counter (gentle random-ish decrease) ---------------- */
+(function(){
+  let stock = 14;
+  const el = document.getElementById('stockCount');
+  setInterval(()=>{
+    if(stock > 4 && Math.random() > 0.6){ stock -= 1; el.textContent = stock; }
+  }, 15000);
+})();
+
+/* ---------------- scroll reveal ---------------- */
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); obs.unobserve(e.target); } });
+},{threshold:0.12});
+function observeAll(){ document.querySelectorAll('.reveal:not(.in-view)').forEach(i=>obs.observe(i)); }
+observeAll();
+
+/* ---------------- sticky bar ---------------- */
+window.addEventListener('scroll', ()=>{
+  document.getElementById('stickyBar').classList.toggle('show', window.scrollY > 400);
+});
+
+/* ---------------- benefit / feature icon cards ---------------- */
+const features = [
+  ['🧃','Extracts More Juice'],['⚡','No Electricity Needed'],['🎒','Easy to Carry'],['🪶','Lightweight'],
+  ['🧽','Easy Cleaning'],['✈️','Travel Friendly'],['✋','Strong Grip'],['♻️','Reusable'],
+  ['🧪','Food Safe Material'],['💰','Budget Friendly']
+];
+document.getElementById('featureGrid').innerHTML = features.map(([icon,label],i)=>`
+  <div class="reveal glass rounded-2xl p-5 text-center hover:-translate-y-1 transition-transform" style="transition-delay:${(i%5)*0.06}s">
+    <div class="text-3xl">${icon}</div><p class="mt-2 text-sm font-semibold">${label}</p>
+  </div>`).join('');
+observeAll();
+
+/* ---------------- detailed product features ---------------- */
+const detailed = [
+  ['🧃 Maximum Juice Extraction','The curved reamer design applies even pressure across the fruit, pulling out significantly more juice than squeezing by hand — so less fruit is wasted and every glass goes further.'],
+  ['⚡ Works Without Electricity','There is nothing to charge, plug in, or replace batteries for. Pocket Juicer works anywhere — kitchen, office desk, hostel room, or campsite — using only your hand.'],
+  ['🧽 Cleans in Seconds','With no motor, blades, or electronic parts, cleanup is simply a rinse under running water. No disassembly, no hidden corners for pulp to get stuck in.'],
+  ['🎒 Built for Everyday Carry','Compact enough to sit in a kitchen drawer, an office bag, or a suitcase side pocket, Pocket Juicer travels as easily as it works at home.'],
+  ['🛡️ Durable, Food-Safe Build','Molded from food grade plastic, the juicer is designed to withstand daily use without cracking, staining, or holding on to odours from citrus oils.']
+];
+document.getElementById('detailedFeatures').innerHTML = detailed.map(([title,desc],i)=>`
+  <div class="reveal rounded-2xl bg-white border border-orange-100 p-6 shadow-sm" style="transition-delay:${(i%3)*0.07}s">
+    <h3 class="font-bold text-lg">${title}</h3>
+    <p class="text-sm mt-2" style="color:var(--ink-soft)">${desc}</p>
+  </div>`).join('');
+observeAll();
+
+/* ---------------- gallery ---------------- */
+const galleryColors = ['#FF6A00','#FFA726','#34C759','#FFC266'];
+const galleryGrid = document.getElementById('galleryGrid');
+galleryColors.forEach((c,i)=>{
+  const svg = `data:image/svg+xml,${encodeURIComponent(`
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'>
+      <rect width='300' height='300' fill='#FFF6EF'/>
+      <circle cx='150' cy='120' r='55' fill='${c}'/>
+      <rect x='120' y='170' width='60' height='90' rx='16' fill='#F5F5F5' stroke='#E0E0E0' stroke-width='3'/>
+      <path d='M120 170 Q150 140 180 170 Z' fill='#FFA726'/>
+    </svg>`)}`;
+  const div = document.createElement('div');
+  div.className = 'reveal rounded-2xl overflow-hidden shadow-sm border border-orange-100 cursor-zoom-in group';
+  div.style.transitionDelay = (i*0.08)+'s';
+  div.innerHTML = `<img src="${svg}" loading="lazy" alt="Pocket Juicer product view ${i+1} — portable manual citrus juicer" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">`;
+  div.addEventListener('click', ()=>{
+    document.getElementById('lightboxImg').src = svg;
+    document.getElementById('lightbox').classList.remove('hidden');
+    document.getElementById('lightbox').classList.add('flex');
+  });
+  galleryGrid.appendChild(div);
+});
+observeAll();
+document.getElementById('lightboxClose').addEventListener('click', ()=>{
+  document.getElementById('lightbox').classList.add('hidden'); document.getElementById('lightbox').classList.remove('flex');
+});
+document.getElementById('lightbox').addEventListener('click', (e)=>{
+  if(e.target.id === 'lightbox'){ e.currentTarget.classList.add('hidden'); e.currentTarget.classList.remove('flex'); }
+});
+
+/* ---------------- reviews: 10 items, slider + full grid ---------------- */
+const reviews = [
+  ['Priya Sharma','P','"Did not expect such good quality for just ₹99. Works great every morning."'],
+  ['Rohit Verma','R','"Daily lemon water banana ab bahut easy ho gaya. Very useful product."'],
+  ['Anjali Mehta','A','"Quality is much better than expected, grip bhi solid hai."'],
+  ['Suresh Yadav','S','"Office bag mein carry karta hoon, mosambi juice roz banata hoon."'],
+  ['Neha Kapoor','N','"Bachchon ke liye juice banana ab bahut easy ho gaya hai."'],
+  ['Amit Joshi','A','"COD mila aur delivery bhi fast thi. Paisa vasool product."'],
+  ['Kavita Rao','K','"Gym ke baad fresh orange juice — bilkul mess nahi hota."'],
+  ['Deepak Nair','D','"Chhota sa hai lekin kaam bahut acha karta hai. Recommended for every kitchen."'],
+  ['Simran Kaur','S','"Cleaning bhi easy hai, bas paani se dho lo aur ready."'],
+  ['Vikram Singh','V','"Travel ke time bhi fresh juice mil jaata hai. Best ₹99 spent this year."']
+];
+document.getElementById('reviewsGrid').innerHTML = reviews.map(([name,initial,text],i)=>`
+  <div class="reveal rounded-2xl bg-white border border-orange-100 p-5 shadow-sm" style="transition-delay:${(i%3)*0.06}s">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full grad-primary text-white flex items-center justify-center font-bold">${initial}</div>
+      <div><p class="font-semibold text-sm">${name} <span class="ml-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-50" style="color:var(--accent-dark)">Verified Buyer</span></p>
+      <p class="text-xs" style="color:var(--secondary)">★★★★★</p></div>
+    </div>
+    <p class="text-sm mt-3" style="color:var(--ink-soft)">${text}</p>
+  </div>`).join('');
+observeAll();
+
+/* slider (auto-advancing, uses first 5 reviews) */
+const sliderReviews = reviews.slice(0,5);
+const track = document.getElementById('sliderTrack');
+const dotsWrap = document.getElementById('sliderDots');
+track.innerHTML = sliderReviews.map(([name,initial,text],i)=>`
+  <div class="slide ${i===0?'active':''} glass rounded-2xl p-8 text-center">
+    <div class="w-14 h-14 mx-auto rounded-full grad-primary text-white flex items-center justify-center font-bold text-xl">${initial}</div>
+    <p class="mt-3 text-sm" style="color:var(--ink-soft)">${text}</p>
+    <p class="mt-3 font-semibold text-sm">${name}</p>
+    <p class="text-xs" style="color:var(--secondary)">★★★★★</p>
+  </div>`).join('');
+dotsWrap.innerHTML = sliderReviews.map((_,i)=>`<span class="dot ${i===0?'active':''}" data-i="${i}"></span>`).join('');
+let sIdx = 0;
+function showSlide(i){
+  document.querySelectorAll('.slide').forEach((s,idx)=>s.classList.toggle('active', idx===i));
+  document.querySelectorAll('.dot').forEach((d,idx)=>d.classList.toggle('active', idx===i));
+  sIdx = i;
+}
+dotsWrap.querySelectorAll('.dot').forEach(d=>d.addEventListener('click', ()=>showSlide(parseInt(d.dataset.i))));
+setInterval(()=>{ showSlide((sIdx+1) % sliderReviews.length); }, 4500);
+
+/* ---------------- FAQ (15 items) + schema injection ---------------- */
+const faqs = [
+  ['How do I use Pocket Juicer?','Cut your fruit in half, place it on the reamer facing down, and press gently. Fresh juice flows directly into your glass in seconds.'],
+  ['Which fruits can I use it for?','Pocket Juicer works best on lemon, orange, mosambi, malta and sweet lime — any citrus fruit that can be halved.'],
+  ['Is Cash on Delivery available?','Yes, COD is available. You can also pay online at checkout if you prefer.'],
+  ['How long does delivery take?','Orders are typically delivered within 4–7 business days depending on your location.'],
+  ['How do I clean Pocket Juicer?','Simply rinse it under running water after each use. No electronic parts means no complicated disassembly.'],
+  ['What is the plastic quality like?','It is made from food grade plastic that is safe for regular contact with food and citrus juice.'],
+  ['What is the replacement policy?','We offer a 7 day replacement window if the product arrives damaged or defective.'],
+  ['Is there a warranty on Pocket Juicer?','The product is covered under our 7 day replacement guarantee for manufacturing defects.'],
+  ['What is your return policy?','If you are not satisfied, reach out within 7 days of delivery and we will guide you through the replacement process.'],
+  ['Does it need electricity or batteries?','No. Pocket Juicer is fully manual and works anywhere without power.'],
+  ['Is it suitable for travel?','Yes, it is lightweight and compact enough to carry in a bag, suitcase, or car.'],
+  ['Can kids use it safely?','Yes, with adult supervision. There are no blades or sharp edges — just a smooth pressing motion.'],
+  ['What colour will I receive?','Colours are assigned randomly from current stock, so the exact shade may vary.'],
+  ['How is it better than an electric juicer?','It is cheaper, needs no power, has no motor to maintain, and cleans up in seconds — ideal for quick, single-glass juicing.'],
+  ['How do I track my order?','Once your order is shipped, you will receive tracking details via SMS or WhatsApp.']
+];
+document.getElementById('faqList').innerHTML = faqs.map(([q,a],i)=>`
+  <div class="faq-item reveal rounded-2xl bg-white border border-orange-100 overflow-hidden" style="transition-delay:${(i%5)*0.04}s">
+    <button class="faq-q w-full flex items-center justify-between px-5 py-4 text-left font-semibold" aria-expanded="false">
+      <span>${q}</span><span class="chev" style="color:var(--primary)">▾</span>
+    </button>
+    <div class="faq-a px-5 text-sm" style="color:var(--ink-soft)"><p class="pb-4">${a}</p></div>
+  </div>`).join('');
+observeAll();
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click', ()=>{
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o=>o.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+/* inject FAQ schema dynamically to keep JSON-LD in sync with visible content */
+try{
+  const faqSchemaEl = document.getElementById('faqSchema');
+  const data = JSON.parse(faqSchemaEl.textContent);
+  data.mainEntity = faqs.map(([q,a])=>({
+    "@type":"Question","name":q,
+    "acceptedAnswer":{"@type":"Answer","text":a}
+  }));
+  faqSchemaEl.textContent = JSON.stringify(data);
+}catch(e){ console.error('FAQ schema injection failed', e); }
+</script>
+</body>
+</html>
