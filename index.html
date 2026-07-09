@@ -257,9 +257,9 @@
       <a href="#contact" class="hover:text-white transition">Contact</a>
     </nav>
 
-    <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" class="btn-glow hidden md:inline-block grad-primary text-black font-semibold text-sm px-5 py-2.5 rounded-full">
+    <button type="button" onclick="openPremiumPopup()" class="btn-glow hidden md:inline-block grad-primary text-black font-semibold text-sm px-5 py-2.5 rounded-full">
       Join Premium
-    </a>
+    </button>
 
     <button id="menuBtn" class="md:hidden text-white" aria-label="Open menu">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -273,7 +273,7 @@
     <a href="#scanner" class="mobile-link">Scanner</a>
     <a href="#faq" class="mobile-link">FAQ</a>
     <a href="#contact" class="mobile-link">Contact</a>
-    <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" class="grad-primary text-black font-semibold text-sm px-5 py-3 rounded-full text-center">Join Premium</a>
+    <button type="button" onclick="openPremiumPopup()" class="grad-primary text-black font-semibold text-sm px-5 py-3 rounded-full text-center">Join Premium</button>
   </div>
 </header>
 
@@ -311,9 +311,9 @@
     </p>
 
     <div data-aos="fade-up" data-aos-delay="200" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-      <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center">
+      <button type="button" onclick="openPremiumPopup()" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center">
         Join Premium
-      </a>
+      </button>
       <a href="#scanner" class="border border-gray-700 hover:border-gray-500 text-white font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center transition">
         Explore Scanner
       </a>
@@ -460,7 +460,32 @@
           <li>✔ Educational Content</li>
           <li>✔ Priority Support</li>
         </ul>
-        <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Join Now</a>
+        <button type="button" onclick="openPremiumPopup()" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Join Now</button>
+      </div>
+
+      <!-- Premium market popup -->
+      <div id="premiumOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
+        <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
+          <button id="premiumClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
+          <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a market</span>
+          <h3 class="text-xl font-bold mt-2 mb-5">Premium Membership</h3>
+          <div class="space-y-3">
+            <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+              <div>
+                <div class="font-semibold text-sm">Indian Markets Premium</div>
+                <div class="text-xs text-gray-500 mt-0.5">NSE · Telegram community</div>
+              </div>
+              <span class="text-lg" style="color:var(--primary);">→</span>
+            </a>
+            <a href="https://superprofile.bio/vig/6a4daaf11a246f0013ed6482" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+              <div>
+                <div class="font-semibold text-sm">US Stocks Premium</div>
+                <div class="text-xs text-gray-500 mt-0.5">NYSE / NASDAQ · Telegram community</div>
+              </div>
+              <span class="text-lg" style="color:var(--primary);">→</span>
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Trading Scanner -->
@@ -700,9 +725,9 @@
       <div class="glass rounded-xl p-4"><span class="text-sm text-gray-300">✔ Exclusive Strategies</span></div>
       <div class="glass rounded-xl p-4"><span class="text-sm text-gray-300">✔ Priority Support</span></div>
     </div>
-    <a href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="200" class="btn-glow grad-primary text-black font-semibold px-10 py-4 rounded-full inline-block">
+    <button type="button" onclick="openPremiumPopup()" data-aos="fade-up" data-aos-delay="200" class="btn-glow grad-primary text-black font-semibold px-10 py-4 rounded-full inline-block">
       Join Premium
-    </a>
+    </button>
   </div>
 </section>
 
@@ -1107,6 +1132,29 @@
   }, { threshold: 0.4 });
   counters.forEach(c => counterObserver.observe(c));
 
+  // ===================== PREMIUM MARKET POPUP =====================
+  const premiumOverlay = document.getElementById('premiumOverlay');
+  const premiumClose = document.getElementById('premiumClose');
+
+  function openPremiumPopup(){
+    premiumOverlay.classList.remove('hidden');
+    premiumOverlay.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePremiumPopup(){
+    premiumOverlay.classList.add('hidden');
+    premiumOverlay.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  premiumClose.addEventListener('click', closePremiumPopup);
+  premiumOverlay.addEventListener('click', (e) => {
+    if(e.target === premiumOverlay) closePremiumPopup();
+  });
+  premiumOverlay.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closePremiumPopup);
+  });
+
   // ===================== EBOOK CATEGORY POPUP =====================
   const ebookBtn = document.getElementById('ebookBtn');
   const ebookOverlay = document.getElementById('ebookOverlay');
@@ -1152,7 +1200,7 @@
   });
 
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape'){ closeEbookPopup(); closeScannerPopup(); }
+    if(e.key === 'Escape'){ closeEbookPopup(); closeScannerPopup(); closePremiumPopup(); }
   });
 
   // Newsletter form (front-end only placeholder)
