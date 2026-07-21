@@ -8,27 +8,28 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --bg:#0B0F19;
-    --bg-raised:#0F1526;
-    --bg-card: rgba(255,255,255,0.045);
-    --bg-card-hover: rgba(255,255,255,0.07);
-    --border-soft: rgba(255,255,255,0.09);
-    --border-strong: rgba(34,197,94,0.4);
-    --emerald:#22C55E;
-    --emerald-bright:#4ADE80;
-    --emerald-deep:#0B3B24;
-    --emerald-glow: rgba(34,197,94,0.35);
-    --text-primary:#F5F7FA;
-    --text-secondary:#9AA6B8;
-    --text-tertiary:#64708A;
+    --bg:#050505;
+    --bg-raised:#111111;
+    --bg-card: rgba(17,17,17,0.55);
+    --bg-card-hover: rgba(22,22,22,0.75);
+    --border-soft: rgba(255,255,255,0.08);
+    --border-strong: rgba(0,230,118,0.4);
+    --emerald:#00E676;
+    --emerald-bright:#69F0AE;
+    --emerald-deep:#00C853;
+    --emerald-glow: rgba(0,230,118,0.35);
+    --accent:#1E88E5;
+    --text-primary:#FFFFFF;
+    --text-secondary:#BDBDBD;
+    --text-tertiary:#8A8A8A;
     --danger:#F87171;
-    --display: 'Space Grotesk', sans-serif;
-    --body: 'Inter', sans-serif;
-    --mono: 'IBM Plex Mono', monospace;
+    --display: 'Poppins', sans-serif;
+    --body: 'Poppins', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
     --radius-lg: 20px;
     --radius-md: 14px;
     --radius-sm: 8px;
@@ -49,7 +50,7 @@
   p{ margin:0; }
   :focus-visible{ outline:2px solid var(--emerald-bright); outline-offset:3px; border-radius:4px; }
 
-  .skip-link{ position:absolute; left:-9999px; top:0; background:var(--emerald); color:#04170D; padding:12px 18px; border-radius:var(--radius-sm); z-index:999; font-weight:600; }
+  .skip-link{ position:absolute; left:-9999px; top:0; background:var(--emerald); color:#000000; padding:12px 18px; border-radius:var(--radius-sm); z-index:999; font-weight:600; }
   .skip-link:focus{ left:16px; top:16px; }
 
   .bg-glow{
@@ -68,10 +69,10 @@
   }
   .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
   .logo{ display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:18px; }
-  .logo-mark{ width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,var(--emerald),var(--emerald-deep)); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:14px; color:#04170D; font-weight:700; }
+  .logo-mark{ width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,var(--emerald),var(--emerald-deep)); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:14px; color:#000000; font-weight:700; }
 
   .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--body); font-weight:700; font-size:15px; padding:14px 26px; border-radius:999px; cursor:pointer; border:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; white-space:nowrap; }
-  .btn-primary{ background:linear-gradient(135deg,var(--emerald-bright),var(--emerald)); color:#04170D; }
+  .btn-primary{ background:linear-gradient(135deg,var(--emerald),var(--emerald-deep)); color:#000000; }
   .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 32px var(--emerald-glow); }
   .btn-secondary{ background:rgba(255,255,255,0.06); color:var(--text-primary); border:1px solid var(--border-soft); }
   .btn-secondary:hover{ background:rgba(255,255,255,0.1); border-color:var(--border-strong); }
@@ -301,22 +302,9 @@
 
         <!-- Step 3 -->
         <div class="card step-card reveal">
-          <div class="step-head"><div class="step-num">3</div><h3>Upload screenshot proof &amp; submit</h3></div>
-
-          <form id="referralForm" novalidate>
-            <div class="field">
-              <label>Screenshot Proof of Invited Members (10)</label>
-              <div class="upload-zone" id="rUploadZone" tabindex="0" role="button" aria-label="Upload screenshots, PNG JPG JPEG or PDF">
-                <p>📤 Click or drag screenshots here</p>
-                <p class="hint">One screenshot per invited member — PNG, JPG, JPEG, PDF, up to 10 files</p>
-                <input type="file" id="rFileInput" multiple accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
-              </div>
-              <div class="file-list" id="rFileList"></div>
-              <span class="error-msg" data-for="rFiles"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block" id="referralSubmitBtn">Submit Verification</button>
-          </form>
+          <div class="step-head"><div class="step-num">3</div><h3>Send screenshot proof &amp; submit</h3></div>
+          <p class="desc">Send a screenshot for each of the 10 members you invited directly on WhatsApp — no upload needed.</p>
+          <a href="https://wa.me/918054393976?text=Hi%2C%20I%27ve%20invited%2010%20members%20to%20Force%20Trading%20YT.%20Sending%20my%20screenshot%20proof%20below." class="btn btn-primary btn-block" target="_blank" rel="noopener">🟢 Send Proof on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -351,55 +339,8 @@
 
       <div class="card step-card reveal" style="max-width:640px; margin:0 auto;">
         <h3 style="margin-bottom:6px;">Claim Your Premium Bundle</h3>
-        <p class="desc" style="margin-top:6px;">Opened an account? Submit your details below.</p>
-
-        <form id="claimForm" novalidate>
-          <div class="field">
-            <label for="cName">Full Name</label>
-            <input type="text" id="cName" name="cName" autocomplete="name" required>
-            <span class="error-msg" data-for="cName"></span>
-          </div>
-          <div class="field">
-            <label for="cEmail">Email Address</label>
-            <input type="email" id="cEmail" name="cEmail" autocomplete="email" required>
-            <span class="error-msg" data-for="cEmail"></span>
-          </div>
-          <div class="field">
-            <label for="cPhone">Phone Number</label>
-            <input type="tel" id="cPhone" name="cPhone" autocomplete="tel" required placeholder="10-digit mobile number">
-            <span class="error-msg" data-for="cPhone"></span>
-          </div>
-          <div class="field">
-            <label for="cBroker">Which Broker Did You Open?</label>
-            <select id="cBroker" name="cBroker" required>
-              <option value="" disabled selected>Select broker</option>
-              <option>Dhan</option>
-              <option>Zerodha</option>
-              <option>Angel One</option>
-              <option>Fyers</option>
-              <option>Delta Exchange</option>
-              <option>Binance</option>
-            </select>
-            <span class="error-msg" data-for="cBroker"></span>
-          </div>
-          <div class="field">
-            <label for="cClientId">Client ID / User ID / Demat ID</label>
-            <input type="text" id="cClientId" name="cClientId" required>
-            <span class="error-msg" data-for="cClientId"></span>
-          </div>
-          <div class="field">
-            <label>Screenshot Upload</label>
-            <div class="upload-zone" id="cUploadZone" tabindex="0" role="button" aria-label="Upload screenshots, PNG JPG JPEG or PDF">
-              <p>📤 Click or drag screenshots here</p>
-              <p class="hint">PNG, JPG, JPEG, PDF — multiple files allowed</p>
-              <input type="file" id="cFileInput" multiple accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
-            </div>
-            <div class="file-list" id="cFileList"></div>
-            <span class="error-msg" data-for="cFiles"></span>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block" id="claimSubmitBtn">Claim Premium Bundle</button>
-        </form>
+        <p class="desc" style="margin-top:6px;">Opened an account? Send your broker name, client ID and screenshot directly on WhatsApp — no form needed.</p>
+        <a href="https://wa.me/918054393976?text=Hi%2C%20I%27ve%20opened%20a%20demat%20account.%20I%27d%20like%20to%20claim%20my%20Premium%20Bundle.%20Sending%20my%20broker%20name%2C%20client%20ID%20and%20screenshot%20below." class="btn btn-primary btn-block" target="_blank" rel="noopener">🟢 Claim via WhatsApp</a>
       </div>
     </div>
   </section>
@@ -408,17 +349,6 @@
 <footer>
   <div class="wrap"><p>© <span id="year"></span> Force Trading YT. All rights reserved.</p></div>
 </footer>
-
-<!-- Success modal (shared) -->
-<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal">
-    <div class="check">✓</div>
-    <h3 id="modalTitle">Verification Submitted Successfully</h3>
-    <p id="modalBody">We'll verify your referrals.</p>
-    <div class="eta" id="modalEta">Estimated verification time: 24–48 hours</div>
-    <button type="button" class="btn btn-primary btn-block" id="modalCloseBtn">Done</button>
-  </div>
-</div>
 
 <script>
 (function(){
@@ -506,169 +436,6 @@
           if(!menu.contains(ev.target) && ev.target !== btn){ menu.remove(); document.removeEventListener('click', closeOnce); }
         });
       }, 0);
-    });
-  });
-
-  /* ---------------- File upload (shared logic) ---------------- */
-  function setupUpload(zoneId, inputId, listId, errorField, onChange){
-    var zone = document.getElementById(zoneId);
-    var input = document.getElementById(inputId);
-    var list = document.getElementById(listId);
-    var files = [];
-    var errorEl = document.querySelector('.error-msg[data-for="'+errorField+'"]');
-    var allowed = ['image/png','image/jpeg','application/pdf'];
-
-    zone.addEventListener('click', function(){ input.click(); });
-    zone.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); input.click(); } });
-    ['dragenter','dragover'].forEach(function(ev){ zone.addEventListener(ev, function(e){ e.preventDefault(); zone.classList.add('drag'); }); });
-    ['dragleave','drop'].forEach(function(ev){ zone.addEventListener(ev, function(e){ e.preventDefault(); zone.classList.remove('drag'); }); });
-    zone.addEventListener('drop', function(e){ addFiles(e.dataTransfer.files); });
-    input.addEventListener('change', function(){ addFiles(input.files); input.value=''; });
-
-    function addFiles(fileListObj){
-      Array.prototype.forEach.call(fileListObj, function(f){
-        if(allowed.indexOf(f.type) === -1){
-          if(errorEl) errorEl.textContent = 'Only PNG, JPG, JPEG or PDF files are allowed.';
-          return;
-        }
-        files.push(f);
-      });
-      if(files.length && errorEl && errorEl.textContent.indexOf('Only') === 0){ /* keep type error visible only if just triggered */ }
-      render();
-    }
-
-    function removeFile(idx){ files.splice(idx,1); render(); }
-
-    function render(){
-      list.innerHTML = '';
-      files.forEach(function(f, idx){
-        var chip = document.createElement('div');
-        chip.className = 'file-chip';
-        var thumbHtml;
-        if(f.type.indexOf('image/') === 0){
-          var url = URL.createObjectURL(f);
-          thumbHtml = '<img src="'+url+'" alt="">';
-        } else {
-          thumbHtml = '<span class="filetype-badge">PDF</span>';
-        }
-        chip.innerHTML = thumbHtml + '<span>'+ (f.name.length > 22 ? f.name.slice(0,19)+'…' : f.name) +'</span><button type="button" class="remove" aria-label="Remove file">×</button>';
-        chip.querySelector('.remove').addEventListener('click', function(){ removeFile(idx); });
-        list.appendChild(chip);
-      });
-      if(errorEl && files.length){ errorEl.textContent = ''; }
-      if(typeof onChange === 'function'){ onChange(files.length); }
-    }
-
-    return { getFiles: function(){ return files; }, clear: function(){ files = []; render(); } };
-  }
-  var referralUpload = setupUpload('rUploadZone','rFileInput','rFileList','rFiles');
-  var claimUpload = setupUpload('cUploadZone','cFileInput','cFileList','cFiles');
-
-  /* ---------------- Validation helpers ---------------- */
-  function showError(id, msg){
-    var el = document.querySelector('.error-msg[data-for="'+id+'"]');
-    var input = document.getElementById(id);
-    if(el) el.textContent = msg;
-    if(input) input.classList.toggle('invalid', !!msg);
-  }
-  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-  function isPhone(v){ return /^[0-9]{10}$/.test(v.replace(/\D/g,'').slice(-10)); }
-
-  /* ---------------- Modal ---------------- */
-  var overlay = document.getElementById('modalOverlay');
-  var modalTitle = document.getElementById('modalTitle');
-  var modalBody = document.getElementById('modalBody');
-  var modalEta = document.getElementById('modalEta');
-  function openModal(title, body, eta){
-    modalTitle.textContent = title; modalBody.textContent = body; modalEta.textContent = eta;
-    overlay.classList.add('open');
-  }
-  document.getElementById('modalCloseBtn').addEventListener('click', function(){ overlay.classList.remove('open'); });
-  overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('open'); });
-
-  /* ---------------- Placeholder API functions (Firebase / Google Sheets / Supabase ready) ---------------- */
-  function submitReferralVerification(data){
-    // TODO: replace with real backend call, e.g.:
-    // return fetch('https://YOUR_FIREBASE_FUNCTION_URL/submitReferral', { method:'POST', body: data });
-    // or push a row to a Google Sheet via Apps Script web app URL
-    // or supabase.from('referrals').insert([...])
-    console.log('submitReferralVerification (placeholder):', data);
-    return Promise.resolve({ ok:true });
-  }
-  function claimPremiumBundle(data){
-    // TODO: replace with real backend call (Firebase / Google Sheets / Supabase)
-    console.log('claimPremiumBundle (placeholder):', data);
-    return Promise.resolve({ ok:true });
-  }
-
-  /* ---------------- Referral form submit ---------------- */
-  document.getElementById('referralForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var valid = true;
-
-    var files = referralUpload.getFiles();
-    var filesError = document.querySelector('.error-msg[data-for="rFiles"]');
-    if(files.length === 0){ if(filesError) filesError.textContent = 'Please upload at least one screenshot.'; valid = false; }
-    else if(filesError){ filesError.textContent = ''; }
-
-    if(!valid) return;
-
-    var submitBtn = document.getElementById('referralSubmitBtn');
-    submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
-
-    submitReferralVerification({
-      screenshotCount: files.length
-    }).then(function(){
-      submitBtn.disabled = false; submitBtn.textContent = 'Submit Verification';
-      openModal('Verification Submitted Successfully', "We'll verify your referrals.", 'Estimated verification time: 24–48 hours');
-      document.getElementById('referralForm').reset();
-      referralUpload.clear();
-    });
-  });
-
-  /* ---------------- Claim form submit ---------------- */
-  document.getElementById('claimForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var name = document.getElementById('cName').value.trim();
-    var email = document.getElementById('cEmail').value.trim();
-    var phone = document.getElementById('cPhone').value.trim();
-    var broker = document.getElementById('cBroker').value;
-    var clientId = document.getElementById('cClientId').value.trim();
-    var valid = true;
-
-    showError('cName', name ? '' : 'Full name is required.');
-    if(!name) valid = false;
-
-    if(!email){ showError('cEmail','Email is required.'); valid = false; }
-    else if(!isEmail(email)){ showError('cEmail','Enter a valid email address.'); valid = false; }
-    else showError('cEmail','');
-
-    if(!phone){ showError('cPhone','Phone number is required.'); valid = false; }
-    else if(!isPhone(phone)){ showError('cPhone','Enter a valid 10-digit phone number.'); valid = false; }
-    else showError('cPhone','');
-
-    showError('cBroker', broker ? '' : 'Please select a broker.');
-    if(!broker) valid = false;
-
-    showError('cClientId', clientId ? '' : 'Client / User / Demat ID is required.');
-    if(!clientId) valid = false;
-
-    var files = claimUpload.getFiles();
-    var filesError = document.querySelector('.error-msg[data-for="cFiles"]');
-    if(files.length === 0){ if(filesError) filesError.textContent = 'Please upload at least one screenshot.'; valid = false; }
-
-    if(!valid) return;
-
-    var submitBtn = document.getElementById('claimSubmitBtn');
-    submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
-
-    claimPremiumBundle({
-      name: name, email: email, phone: phone, broker: broker, clientId: clientId, fileCount: files.length
-    }).then(function(){
-      submitBtn.disabled = false; submitBtn.textContent = 'Claim Premium Bundle';
-      openModal('Congratulations!', "Your request has been submitted. We'll verify your account.", 'After approval you\'ll receive your Premium Bundle');
-      document.getElementById('claimForm').reset();
-      claimUpload.clear();
     });
   });
 
