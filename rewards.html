@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Force Trading YT — Unlock Premium Learning</title>
+<meta name="description" content="Join the Force Trading YT referral program or open a demat account to unlock premium trading resources.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0B0F19;
+    --bg-raised:#0F1526;
+    --bg-card: rgba(255,255,255,0.045);
+    --bg-card-hover: rgba(255,255,255,0.07);
+    --border-soft: rgba(255,255,255,0.09);
+    --border-strong: rgba(34,197,94,0.4);
+    --emerald:#22C55E;
+    --emerald-bright:#4ADE80;
+    --emerald-deep:#0B3B24;
+    --emerald-glow: rgba(34,197,94,0.35);
+    --text-primary:#F5F7FA;
+    --text-secondary:#9AA6B8;
+    --text-tertiary:#64708A;
+    --danger:#F87171;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
+    --max-w: 1080px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
+  body{
+    margin:0; background:var(--bg); color:var(--text-primary);
+    font-family:var(--body); line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  h1,h2,h3,h4{ font-family:var(--display); font-weight:600; margin:0; letter-spacing:-0.01em; }
+  p{ margin:0; }
+  :focus-visible{ outline:2px solid var(--emerald-bright); outline-offset:3px; border-radius:4px; }
+
+  .skip-link{ position:absolute; left:-9999px; top:0; background:var(--emerald); color:#04170D; padding:12px 18px; border-radius:var(--radius-sm); z-index:999; font-weight:600; }
+  .skip-link:focus{ left:16px; top:16px; }
+
+  .bg-glow{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(600px 400px at 15% 0%, rgba(34,197,94,0.13), transparent 60%),
+      radial-gradient(700px 500px at 90% 20%, rgba(34,197,94,0.08), transparent 60%);
+  }
+
+  .wrap{ max-width:var(--max-w); margin:0 auto; padding:0 22px; position:relative; z-index:1; }
+
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,15,25,0.75); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
+  .logo{ display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:18px; }
+  .logo-mark{ width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,var(--emerald),var(--emerald-deep)); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:14px; color:#04170D; font-weight:700; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--body); font-weight:700; font-size:15px; padding:14px 26px; border-radius:999px; cursor:pointer; border:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease; white-space:nowrap; }
+  .btn-primary{ background:linear-gradient(135deg,var(--emerald-bright),var(--emerald)); color:#04170D; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 32px var(--emerald-glow); }
+  .btn-secondary{ background:rgba(255,255,255,0.06); color:var(--text-primary); border:1px solid var(--border-soft); }
+  .btn-secondary:hover{ background:rgba(255,255,255,0.1); border-color:var(--border-strong); }
+  .btn-sm{ padding:10px 18px; font-size:13.5px; }
+  .btn-block{ width:100%; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  /* Hero */
+  .hero{ padding:76px 0 56px; text-align:center; }
+  .badge{ display:inline-flex; align-items:center; gap:8px; background:rgba(34,197,94,0.1); border:1px solid var(--border-strong); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600; color:var(--emerald-bright); margin-bottom:22px; }
+  .hero h1{ font-size:clamp(2.1rem,4.6vw,3.1rem); line-height:1.12; margin-bottom:16px; }
+  .hero h1 .accent{ color:var(--emerald-bright); }
+  .hero p.sub{ font-size:16.5px; color:var(--text-secondary); max-width:520px; margin:0 auto 32px; }
+  .hero-actions{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+  .hero-paths{ display:flex; flex-direction:column; gap:14px; max-width:560px; margin:0 auto; }
+  .hero-path{
+    display:flex; align-items:center; gap:14px; text-align:left;
+    background:var(--bg-card); border:1px solid var(--border-soft); border-radius:var(--radius-md);
+    padding:16px 20px; transition:border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .hero-path:hover{ border-color:var(--border-strong); transform:translateY(-2px); background:var(--bg-card-hover); }
+  .hero-path-icon{ flex:none; width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,rgba(34,197,94,0.22),rgba(34,197,94,0.05)); display:flex; align-items:center; justify-content:center; font-size:17px; }
+  .hero-path-text{ font-size:14.5px; color:var(--text-secondary); line-height:1.5; }
+  .hero-path-text strong{ color:var(--text-primary); font-family:var(--display); font-weight:600; }
+  .hero-path-text .arrow{ color:var(--emerald-bright); font-weight:700; margin:0 4px; }
+
+  section.padded{ padding:70px 0; }
+  .section-head{ max-width:600px; margin:0 auto 34px; text-align:center; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--emerald-bright); }
+  .section-head h2{ font-size:clamp(1.6rem,2.8vw,2.1rem); margin:12px 0 10px; }
+  .section-head p{ color:var(--text-secondary); font-size:15px; }
+
+  .divider{ height:1px; background:var(--border-soft); margin:0; }
+
+  /* Glass card */
+  .card{ background:var(--bg-card); border:1px solid var(--border-soft); border-radius:var(--radius-lg); backdrop-filter:blur(10px); }
+
+  /* Step list */
+  .steps{ display:flex; flex-direction:column; gap:20px; }
+  .step-card{ padding:28px; }
+  .step-head{ display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .step-num{ flex:none; width:38px; height:38px; border-radius:50%; background:var(--bg-raised); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-weight:600; font-size:15px; color:var(--emerald-bright); }
+  .step-head h3{ font-size:17px; }
+  .step-card p.desc{ color:var(--text-secondary); font-size:14.5px; margin-bottom:16px; }
+
+  /* Referral link box */
+  .link-box{ display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.04); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:14px; flex-wrap:wrap; }
+  .link-box code{ font-family:var(--mono); font-size:13.5px; color:var(--emerald-bright); flex:1; min-width:200px; overflow-wrap:anywhere; }
+  .link-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .icon-btn{ display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.06); border:1px solid var(--border-soft); color:var(--text-primary); font-size:13px; font-weight:600; padding:9px 14px; border-radius:999px; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+  .icon-btn:hover{ border-color:var(--border-strong); background:rgba(255,255,255,0.1); }
+  .copy-confirm{ font-size:12.5px; color:var(--emerald-bright); margin-left:4px; opacity:0; transition:opacity .2s ease; }
+  .copy-confirm.show{ opacity:1; }
+
+  /* Share menu */
+  .share-wrap{ position:relative; display:inline-block; }
+  .share-menu{ position:absolute; bottom:calc(100% + 8px); left:0; background:var(--bg-raised); border:1px solid var(--border-soft); border-radius:var(--radius-md); padding:8px; display:none; flex-direction:column; gap:2px; min-width:180px; box-shadow:0 12px 30px rgba(0,0,0,0.4); z-index:20; }
+  .share-menu.open{ display:flex; }
+  .share-menu a, .share-menu button{ display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:var(--radius-sm); font-size:13.5px; color:var(--text-primary); background:none; border:none; text-align:left; cursor:pointer; width:100%; }
+  .share-menu a:hover, .share-menu button:hover{ background:rgba(255,255,255,0.07); }
+
+  /* Progress */
+  .progress-track{ position:relative; height:12px; border-radius:999px; background:rgba(255,255,255,0.06); margin-bottom:10px; }
+  .progress-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg,var(--emerald-deep),var(--emerald),var(--emerald-bright)); width:0%; transition:width .5s cubic-bezier(.2,.8,.2,1); box-shadow:0 0 16px var(--emerald-glow); }
+  .progress-label{ font-family:var(--mono); font-size:13.5px; color:var(--text-secondary); }
+  .progress-label strong{ color:var(--emerald-bright); font-size:16px; }
+
+  /* Member grid */
+  .member-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:16px 0 4px; }
+  .member-field{ position:relative; }
+  .member-field label{ display:block; font-size:12px; color:var(--text-tertiary); margin-bottom:5px; font-family:var(--mono); }
+  .member-field input{ width:100%; }
+
+  /* Form fields */
+  form{ display:flex; flex-direction:column; gap:16px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:13px; color:var(--text-secondary); }
+  .field .req{ color:var(--danger); }
+  input[type=text], input[type=email], input[type=tel], select{
+    width:100%; padding:12px 14px; border-radius:var(--radius-sm);
+    background:rgba(255,255,255,0.04); border:1px solid var(--border-soft); color:var(--text-primary); font-size:14px; font-family:var(--body);
+  }
+  input:focus, select:focus{ border-color:var(--emerald); outline:none; }
+  input.invalid, select.invalid{ border-color:var(--danger); }
+  .error-msg{ font-size:12px; color:var(--danger); min-height:14px; }
+  select{ appearance:none; background-image:linear-gradient(45deg,transparent 50%,var(--text-secondary) 50%),linear-gradient(135deg,var(--text-secondary) 50%,transparent 50%); background-position:calc(100% - 20px) center, calc(100% - 15px) center; background-size:5px 5px,5px 5px; background-repeat:no-repeat; }
+  input[readonly]{ color:var(--text-secondary); cursor:default; }
+
+  /* Upload */
+  .upload-zone{
+    border:1.5px dashed var(--border-soft); border-radius:var(--radius-md); padding:22px; text-align:center; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease; background:rgba(255,255,255,0.02);
+  }
+  .upload-zone:hover, .upload-zone.drag{ border-color:var(--border-strong); background:rgba(34,197,94,0.05); }
+  .upload-zone input[type=file]{ display:none; }
+  .upload-zone p{ font-size:13.5px; color:var(--text-secondary); }
+  .upload-zone .hint{ font-size:12px; color:var(--text-tertiary); margin-top:4px; }
+  .file-list{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .file-chip{ display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid var(--border-soft); border-radius:999px; padding:6px 8px 6px 12px; font-size:12.5px; }
+  .file-chip .remove{ background:none; border:none; color:var(--text-tertiary); cursor:pointer; font-size:14px; line-height:1; padding:2px 4px; }
+  .file-chip .remove:hover{ color:var(--danger); }
+  .file-chip img{ width:20px; height:20px; border-radius:4px; object-fit:cover; }
+  .file-chip .filetype-badge{ width:20px; height:20px; border-radius:4px; background:var(--emerald-deep); color:var(--emerald-bright); font-family:var(--mono); font-size:9px; display:flex; align-items:center; justify-content:center; }
+
+  /* Divider between hero option buttons */
+  .or-sep{ display:flex; align-items:center; gap:12px; color:var(--text-tertiary); font-family:var(--mono); font-size:12px; margin:8px 0; }
+  .or-sep::before,.or-sep::after{ content:''; flex:1; height:1px; background:var(--border-soft); }
+
+  /* Broker cards */
+  .broker-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:44px; }
+  .broker-card{ padding:22px; text-align:center; transition:transform .2s ease, border-color .2s ease; }
+  .broker-card:hover{ transform:translateY(-4px); border-color:var(--border-strong); }
+  .broker-logo{ width:52px; height:52px; border-radius:14px; margin:0 auto 14px; background:linear-gradient(135deg,rgba(34,197,94,0.22),rgba(34,197,94,0.05)); display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:700; font-size:18px; color:var(--emerald-bright); }
+  .broker-card h4{ font-size:15.5px; margin-bottom:6px; }
+  .broker-card p{ font-size:13px; color:var(--text-tertiary); margin-bottom:16px; min-height:34px; }
+
+  /* Bundle card */
+  .bundle-card{ padding:36px; text-align:center; background:linear-gradient(160deg, rgba(34,197,94,0.1), rgba(11,15,25,0.4)); border:1px solid var(--border-strong); margin-bottom:44px; }
+  .bundle-worth{ font-family:var(--mono); font-size:13px; color:var(--text-tertiary); text-decoration:line-through; }
+  .bundle-price{ font-family:var(--display); font-size:28px; color:var(--emerald-bright); margin:4px 0 22px; }
+  .bundle-list{ list-style:none; margin:0 auto 8px; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; max-width:520px; text-align:left; }
+  .bundle-list li{ font-size:14px; color:var(--text-secondary); }
+
+  /* Success modal */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(5,7,12,0.7); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:200; padding:20px; }
+  .modal-overlay.open{ display:flex; }
+  .modal{ background:var(--bg-raised); border:1px solid var(--border-strong); border-radius:var(--radius-lg); padding:36px 30px; max-width:400px; width:100%; text-align:center; box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+  .modal .check{ width:56px; height:56px; border-radius:50%; background:rgba(34,197,94,0.15); border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; font-size:26px; color:var(--emerald-bright); }
+  .modal h3{ font-size:20px; margin-bottom:10px; }
+  .modal p{ font-size:14px; color:var(--text-secondary); margin-bottom:6px; }
+  .modal .eta{ font-family:var(--mono); font-size:13px; color:var(--emerald-bright); margin:14px 0 22px; }
+
+  footer{ border-top:1px solid var(--border-soft); padding:28px 0; text-align:center; }
+  footer p{ font-size:12.5px; color:var(--text-tertiary); }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (max-width:720px){
+    .broker-grid{ grid-template-columns:1fr 1fr; }
+    .member-grid{ grid-template-columns:1fr; }
+    .bundle-list{ grid-template-columns:1fr; }
+  }
+  @media (max-width:480px){
+    .broker-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a href="#main" class="logo" aria-label="Force Trading YT home"><span class="logo-mark">F</span> Force Trading YT</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="badge">✨ Two ways in</span>
+      <h1>Choose Your Way to<br><span class="accent">Unlock Premium Benefits</span></h1>
+      <div class="hero-paths">
+        <a href="#referral" class="hero-path">
+          <span class="hero-path-icon">🎁</span>
+          <span class="hero-path-text"><strong>Invite 10 Friends</strong> <span class="arrow">→</span> Get Premium Membership Free for 3 Months</span>
+        </a>
+        <a href="#demat" class="hero-path">
+          <span class="hero-path-icon">🚀</span>
+          <span class="hero-path-text"><strong>Open a Demat Account</strong> <span class="arrow">→</span> Get All Premium Strategies + 1 Year Premium Group Access</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="divider"></div></div>
+
+  <!-- SECTION 1: REFERRAL PROGRAM -->
+  <section class="padded" id="referral">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">🎁 Referral Program</span>
+        <h2>Refer 10, unlock premium — free</h2>
+        <p>Four quick steps. No payment involved at any point.</p>
+      </div>
+
+      <div class="steps">
+        <!-- Step 1 -->
+        <div class="card step-card reveal">
+          <div class="step-head"><div class="step-num">1</div><h3>Join our free communities</h3></div>
+          <p class="desc">Join our free communities to learn technical analysis, trading, and investing.</p>
+          <div class="link-actions">
+            <a href="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&amp;p=a&amp;ilr=1" class="btn btn-primary btn-sm" target="_blank" rel="noopener">🟢 WhatsApp Community</a>
+            <a href="https://t.me/+RibGnKQct1JlOGNl" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">🔵 Telegram Community</a>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="card step-card reveal">
+          <div class="step-head"><div class="step-num">2</div><h3>Invite your friend to either group</h3></div>
+          <p class="desc">Share whichever link is easier — WhatsApp or Telegram — and get your friend into the free learning community.</p>
+
+          <div class="link-box">
+            <span style="font-family:var(--mono); font-size:12px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.05em; flex:none;">WhatsApp</span>
+            <code id="refLinkWhatsapp">https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&ilr=1</code>
+          </div>
+          <div class="link-actions" style="margin-bottom:18px;">
+            <button type="button" class="icon-btn copy-btn" data-link="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&ilr=1">📋 Copy Link</button>
+            <button type="button" class="icon-btn share-btn" data-link="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&ilr=1" data-label="WhatsApp community">📤 Share Link</button>
+            <span class="copy-confirm" id="copyConfirmWhatsapp">Copied!</span>
+          </div>
+
+          <div class="link-box">
+            <span style="font-family:var(--mono); font-size:12px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.05em; flex:none;">Telegram</span>
+            <code id="refLinkTelegram">https://t.me/+RibGnKQct1JlOGNl</code>
+          </div>
+          <div class="link-actions">
+            <button type="button" class="icon-btn copy-btn" data-link="https://t.me/+RibGnKQct1JlOGNl">📋 Copy Link</button>
+            <button type="button" class="icon-btn share-btn" data-link="https://t.me/+RibGnKQct1JlOGNl" data-label="Telegram community">📤 Share Link</button>
+            <span class="copy-confirm" id="copyConfirmTelegram">Copied!</span>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="card step-card reveal">
+          <div class="step-head"><div class="step-num">3</div><h3>Upload screenshot proof &amp; submit</h3></div>
+
+          <form id="referralForm" novalidate>
+            <div class="field">
+              <label>Screenshot Proof of Invited Members (10)</label>
+              <div class="upload-zone" id="rUploadZone" tabindex="0" role="button" aria-label="Upload screenshots, PNG JPG JPEG or PDF">
+                <p>📤 Click or drag screenshots here</p>
+                <p class="hint">One screenshot per invited member — PNG, JPG, JPEG, PDF, up to 10 files</p>
+                <input type="file" id="rFileInput" multiple accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
+              </div>
+              <div class="file-list" id="rFileList"></div>
+              <span class="error-msg" data-for="rFiles"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="referralSubmitBtn">Submit Verification</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="divider"></div></div>
+
+  <!-- SECTION 2: DEMAT ACCOUNT -->
+  <section class="padded" id="demat">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">🚀 Open Demat Account</span>
+        <h2>Pick a broker, open an account</h2>
+        <p>Choose any broker below and open your account through our link.</p>
+      </div>
+
+      <div class="broker-grid" id="brokerGrid"><!-- generated by JS --></div>
+
+      <div class="card bundle-card reveal">
+        <span class="eyebrow">Premium bundle</span>
+        <div class="bundle-worth">Worth ₹9,999</div>
+        <div class="bundle-price">Yours free after account opening</div>
+        <ul class="bundle-list">
+          <li>✅ All Premium Trading Strategies</li>
+          <li>✅ Premium Group Access (2 Months)</li>
+          <li>✅ Premium Scanner</li>
+          <li>✅ Premium Ebooks</li>
+          <li>✅ Trading PDFs</li>
+          <li>✅ Video Tutorials</li>
+        </ul>
+      </div>
+
+      <div class="card step-card reveal" style="max-width:640px; margin:0 auto;">
+        <h3 style="margin-bottom:6px;">Claim Your Premium Bundle</h3>
+        <p class="desc" style="margin-top:6px;">Opened an account? Submit your details below.</p>
+
+        <form id="claimForm" novalidate>
+          <div class="field">
+            <label for="cName">Full Name</label>
+            <input type="text" id="cName" name="cName" autocomplete="name" required>
+            <span class="error-msg" data-for="cName"></span>
+          </div>
+          <div class="field">
+            <label for="cEmail">Email Address</label>
+            <input type="email" id="cEmail" name="cEmail" autocomplete="email" required>
+            <span class="error-msg" data-for="cEmail"></span>
+          </div>
+          <div class="field">
+            <label for="cPhone">Phone Number</label>
+            <input type="tel" id="cPhone" name="cPhone" autocomplete="tel" required placeholder="10-digit mobile number">
+            <span class="error-msg" data-for="cPhone"></span>
+          </div>
+          <div class="field">
+            <label for="cBroker">Which Broker Did You Open?</label>
+            <select id="cBroker" name="cBroker" required>
+              <option value="" disabled selected>Select broker</option>
+              <option>Dhan</option>
+              <option>Zerodha</option>
+              <option>Angel One</option>
+              <option>Fyers</option>
+              <option>Delta Exchange</option>
+              <option>Binance</option>
+            </select>
+            <span class="error-msg" data-for="cBroker"></span>
+          </div>
+          <div class="field">
+            <label for="cClientId">Client ID / User ID / Demat ID</label>
+            <input type="text" id="cClientId" name="cClientId" required>
+            <span class="error-msg" data-for="cClientId"></span>
+          </div>
+          <div class="field">
+            <label>Screenshot Upload</label>
+            <div class="upload-zone" id="cUploadZone" tabindex="0" role="button" aria-label="Upload screenshots, PNG JPG JPEG or PDF">
+              <p>📤 Click or drag screenshots here</p>
+              <p class="hint">PNG, JPG, JPEG, PDF — multiple files allowed</p>
+              <input type="file" id="cFileInput" multiple accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
+            </div>
+            <div class="file-list" id="cFileList"></div>
+            <span class="error-msg" data-for="cFiles"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="claimSubmitBtn">Claim Premium Bundle</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><p>© <span id="year"></span> Force Trading YT. All rights reserved.</p></div>
+</footer>
+
+<!-- Success modal (shared) -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="check">✓</div>
+    <h3 id="modalTitle">Verification Submitted Successfully</h3>
+    <p id="modalBody">We'll verify your referrals.</p>
+    <div class="eta" id="modalEta">Estimated verification time: 24–48 hours</div>
+    <button type="button" class="btn btn-primary btn-block" id="modalCloseBtn">Done</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------------- Reveal on scroll ---------------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else { reveals.forEach(function(el){ el.classList.add('in'); }); }
+
+  /* ---------------- Config: community + referral links ---------------- */
+  var WHATSAPP_COMMUNITY = 'https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC?s=cl&p=a&ilr=1';
+  var TELEGRAM_COMMUNITY = 'https://t.me/+RibGnKQct1JlOGNl';
+  var BROKER_REF_LINKS = {
+    'Dhan': '#',            // TODO: Dhan referral URL
+    'Zerodha': '#',         // TODO: Zerodha referral URL
+    'Angel One': '#',       // TODO: Angel One referral URL
+    'Fyers': '#',           // TODO: Fyers referral URL
+    'Delta Exchange': '#',  // TODO: Delta Exchange referral URL
+    'Binance': '#'          // TODO: Binance referral URL
+  };
+  var BROKER_DESCRIPTIONS = {
+    'Dhan': 'Zero brokerage delivery, fast app experience.',
+    'Zerodha': 'India\'s largest broker, trusted platform.',
+    'Angel One': 'Full-service broker with research tools.',
+    'Fyers': 'Advanced charting for active traders.',
+    'Delta Exchange': 'Crypto derivatives and futures trading.',
+    'Binance': 'Global crypto spot and futures exchange.'
+  };
+
+  /* ---------------- Copy link (generic) ---------------- */
+  function copyText(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    }
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    return Promise.resolve();
+  }
+  function flashCopied(el){
+    if(!el) return;
+    el.classList.add('show');
+    setTimeout(function(){ el.classList.remove('show'); }, 1800);
+  }
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var link = btn.getAttribute('data-link');
+      var confirmEl = link === WHATSAPP_COMMUNITY ? document.getElementById('copyConfirmWhatsapp') : document.getElementById('copyConfirmTelegram');
+      copyText(link).then(function(){ flashCopied(confirmEl); });
+    });
+  });
+
+  /* ---------------- Share (generic, native share with WhatsApp/Telegram/Facebook/Email fallback) ---------------- */
+  document.querySelectorAll('.share-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      var link = btn.getAttribute('data-link');
+      var label = btn.getAttribute('data-label') || 'Force Trading YT community';
+      if(navigator.share){
+        navigator.share({ title:'Force Trading YT', text:'Join our free '+label+' to learn technical analysis, trading, and investing:', url: link }).catch(function(){});
+        return;
+      }
+      // Fallback: build a small menu on the fly next to the clicked button
+      var existing = document.querySelector('.share-menu.open');
+      if(existing) existing.remove();
+      var text = encodeURIComponent('Join our free '+label+' to learn technical analysis, trading, and investing: ' + link);
+      var menu = document.createElement('div');
+      menu.className = 'share-menu open';
+      menu.innerHTML =
+        '<a href="https://wa.me/?text='+text+'" target="_blank" rel="noopener">🟢 WhatsApp</a>'+
+        '<a href="https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent('Join our free '+label)+'" target="_blank" rel="noopener">🔵 Telegram</a>'+
+        '<a href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(link)+'" target="_blank" rel="noopener">🔷 Facebook</a>'+
+        '<a href="mailto:?subject='+encodeURIComponent('Join Force Trading YT')+'&body='+text+'">✉️ Email</a>';
+      btn.parentElement.style.position = 'relative';
+      btn.parentElement.appendChild(menu);
+      setTimeout(function(){
+        document.addEventListener('click', function closeOnce(ev){
+          if(!menu.contains(ev.target) && ev.target !== btn){ menu.remove(); document.removeEventListener('click', closeOnce); }
+        });
+      }, 0);
+    });
+  });
+
+  /* ---------------- File upload (shared logic) ---------------- */
+  function setupUpload(zoneId, inputId, listId, errorField, onChange){
+    var zone = document.getElementById(zoneId);
+    var input = document.getElementById(inputId);
+    var list = document.getElementById(listId);
+    var files = [];
+    var errorEl = document.querySelector('.error-msg[data-for="'+errorField+'"]');
+    var allowed = ['image/png','image/jpeg','application/pdf'];
+
+    zone.addEventListener('click', function(){ input.click(); });
+    zone.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); input.click(); } });
+    ['dragenter','dragover'].forEach(function(ev){ zone.addEventListener(ev, function(e){ e.preventDefault(); zone.classList.add('drag'); }); });
+    ['dragleave','drop'].forEach(function(ev){ zone.addEventListener(ev, function(e){ e.preventDefault(); zone.classList.remove('drag'); }); });
+    zone.addEventListener('drop', function(e){ addFiles(e.dataTransfer.files); });
+    input.addEventListener('change', function(){ addFiles(input.files); input.value=''; });
+
+    function addFiles(fileListObj){
+      Array.prototype.forEach.call(fileListObj, function(f){
+        if(allowed.indexOf(f.type) === -1){
+          if(errorEl) errorEl.textContent = 'Only PNG, JPG, JPEG or PDF files are allowed.';
+          return;
+        }
+        files.push(f);
+      });
+      if(files.length && errorEl && errorEl.textContent.indexOf('Only') === 0){ /* keep type error visible only if just triggered */ }
+      render();
+    }
+
+    function removeFile(idx){ files.splice(idx,1); render(); }
+
+    function render(){
+      list.innerHTML = '';
+      files.forEach(function(f, idx){
+        var chip = document.createElement('div');
+        chip.className = 'file-chip';
+        var thumbHtml;
+        if(f.type.indexOf('image/') === 0){
+          var url = URL.createObjectURL(f);
+          thumbHtml = '<img src="'+url+'" alt="">';
+        } else {
+          thumbHtml = '<span class="filetype-badge">PDF</span>';
+        }
+        chip.innerHTML = thumbHtml + '<span>'+ (f.name.length > 22 ? f.name.slice(0,19)+'…' : f.name) +'</span><button type="button" class="remove" aria-label="Remove file">×</button>';
+        chip.querySelector('.remove').addEventListener('click', function(){ removeFile(idx); });
+        list.appendChild(chip);
+      });
+      if(errorEl && files.length){ errorEl.textContent = ''; }
+      if(typeof onChange === 'function'){ onChange(files.length); }
+    }
+
+    return { getFiles: function(){ return files; }, clear: function(){ files = []; render(); } };
+  }
+  var referralUpload = setupUpload('rUploadZone','rFileInput','rFileList','rFiles');
+  var claimUpload = setupUpload('cUploadZone','cFileInput','cFileList','cFiles');
+
+  /* ---------------- Validation helpers ---------------- */
+  function showError(id, msg){
+    var el = document.querySelector('.error-msg[data-for="'+id+'"]');
+    var input = document.getElementById(id);
+    if(el) el.textContent = msg;
+    if(input) input.classList.toggle('invalid', !!msg);
+  }
+  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  function isPhone(v){ return /^[0-9]{10}$/.test(v.replace(/\D/g,'').slice(-10)); }
+
+  /* ---------------- Modal ---------------- */
+  var overlay = document.getElementById('modalOverlay');
+  var modalTitle = document.getElementById('modalTitle');
+  var modalBody = document.getElementById('modalBody');
+  var modalEta = document.getElementById('modalEta');
+  function openModal(title, body, eta){
+    modalTitle.textContent = title; modalBody.textContent = body; modalEta.textContent = eta;
+    overlay.classList.add('open');
+  }
+  document.getElementById('modalCloseBtn').addEventListener('click', function(){ overlay.classList.remove('open'); });
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('open'); });
+
+  /* ---------------- Placeholder API functions (Firebase / Google Sheets / Supabase ready) ---------------- */
+  function submitReferralVerification(data){
+    // TODO: replace with real backend call, e.g.:
+    // return fetch('https://YOUR_FIREBASE_FUNCTION_URL/submitReferral', { method:'POST', body: data });
+    // or push a row to a Google Sheet via Apps Script web app URL
+    // or supabase.from('referrals').insert([...])
+    console.log('submitReferralVerification (placeholder):', data);
+    return Promise.resolve({ ok:true });
+  }
+  function claimPremiumBundle(data){
+    // TODO: replace with real backend call (Firebase / Google Sheets / Supabase)
+    console.log('claimPremiumBundle (placeholder):', data);
+    return Promise.resolve({ ok:true });
+  }
+
+  /* ---------------- Referral form submit ---------------- */
+  document.getElementById('referralForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var valid = true;
+
+    var files = referralUpload.getFiles();
+    var filesError = document.querySelector('.error-msg[data-for="rFiles"]');
+    if(files.length === 0){ if(filesError) filesError.textContent = 'Please upload at least one screenshot.'; valid = false; }
+    else if(filesError){ filesError.textContent = ''; }
+
+    if(!valid) return;
+
+    var submitBtn = document.getElementById('referralSubmitBtn');
+    submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
+
+    submitReferralVerification({
+      screenshotCount: files.length
+    }).then(function(){
+      submitBtn.disabled = false; submitBtn.textContent = 'Submit Verification';
+      openModal('Verification Submitted Successfully', "We'll verify your referrals.", 'Estimated verification time: 24–48 hours');
+      document.getElementById('referralForm').reset();
+      referralUpload.clear();
+    });
+  });
+
+  /* ---------------- Claim form submit ---------------- */
+  document.getElementById('claimForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('cName').value.trim();
+    var email = document.getElementById('cEmail').value.trim();
+    var phone = document.getElementById('cPhone').value.trim();
+    var broker = document.getElementById('cBroker').value;
+    var clientId = document.getElementById('cClientId').value.trim();
+    var valid = true;
+
+    showError('cName', name ? '' : 'Full name is required.');
+    if(!name) valid = false;
+
+    if(!email){ showError('cEmail','Email is required.'); valid = false; }
+    else if(!isEmail(email)){ showError('cEmail','Enter a valid email address.'); valid = false; }
+    else showError('cEmail','');
+
+    if(!phone){ showError('cPhone','Phone number is required.'); valid = false; }
+    else if(!isPhone(phone)){ showError('cPhone','Enter a valid 10-digit phone number.'); valid = false; }
+    else showError('cPhone','');
+
+    showError('cBroker', broker ? '' : 'Please select a broker.');
+    if(!broker) valid = false;
+
+    showError('cClientId', clientId ? '' : 'Client / User / Demat ID is required.');
+    if(!clientId) valid = false;
+
+    var files = claimUpload.getFiles();
+    var filesError = document.querySelector('.error-msg[data-for="cFiles"]');
+    if(files.length === 0){ if(filesError) filesError.textContent = 'Please upload at least one screenshot.'; valid = false; }
+
+    if(!valid) return;
+
+    var submitBtn = document.getElementById('claimSubmitBtn');
+    submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
+
+    claimPremiumBundle({
+      name: name, email: email, phone: phone, broker: broker, clientId: clientId, fileCount: files.length
+    }).then(function(){
+      submitBtn.disabled = false; submitBtn.textContent = 'Claim Premium Bundle';
+      openModal('Congratulations!', "Your request has been submitted. We'll verify your account.", 'After approval you\'ll receive your Premium Bundle');
+      document.getElementById('claimForm').reset();
+      claimUpload.clear();
+    });
+  });
+
+  /* ---------------- Broker cards ---------------- */
+  var brokerGrid = document.getElementById('brokerGrid');
+  Object.keys(BROKER_REF_LINKS).forEach(function(name){
+    var initials = name.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase();
+    var card = document.createElement('div');
+    card.className = 'card broker-card reveal in';
+    card.innerHTML =
+      '<div class="broker-logo">'+initials+'</div>'+
+      '<h4>'+name+'</h4>'+
+      '<p>'+BROKER_DESCRIPTIONS[name]+'</p>'+
+      '<a class="btn btn-secondary btn-sm btn-block" href="'+BROKER_REF_LINKS[name]+'" target="_blank" rel="noopener">Open Account</a>';
+    brokerGrid.appendChild(card);
+  });
+
+})();
+</script>
+</body>
+</html>
