@@ -842,6 +842,16 @@
           <h3>Investment Planning</h3>
           <p>Create a long-term investment plan and stick to it.</p>
         </div>
+        <div class="card feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>2nd Strategies</h3>
+          <p>Advanced secondary strategies to complement your primary trading approach.</p>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>11+21 Intraday Framework</h3>
+          <p>Proven intraday framework combining 11 and 21-period setups for high-probability trades.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1242,16 +1252,7 @@
   <!-- WhatsApp Button -->
   <a href="https://wa.me/1234567890" class="whatsapp-btn" aria-label="Contact via WhatsApp">💬</a>
 
-  <!-- Popups -->
-  <div class="popup" id="exitPopup">
-    <div class="popup-content card">
-      <button class="popup-close" id="exitPopupClose">×</button>
-      <h3>Wait! Don't Miss Out</h3>
-      <p>Get 80% OFF today only.</p>
-      <a href="https://forcetradingyt.github.io/" target="_blank" rel="noopener" class="btn btn-primary">Claim Discount</a>
-    </div>
-  </div>
-
+  <!-- Lead Capture Popup -->
   <div class="popup" id="leadPopup">
     <div class="popup-content card">
       <button class="popup-close" id="leadPopupClose">×</button>
@@ -1334,20 +1335,10 @@
       });
 
       // Popups
-      const exitPopup = document.getElementById('exitPopup');
       const leadPopup = document.getElementById('leadPopup');
-      const exitPopupClose = document.getElementById('exitPopupClose');
       const leadPopupClose = document.getElementById('leadPopupClose');
 
-      exitPopupClose.addEventListener('click', () => exitPopup.classList.remove('active'));
       leadPopupClose.addEventListener('click', () => leadPopup.classList.remove('active'));
-
-      // Exit Intent Popup
-      document.addEventListener('mouseout', (e) => {
-        if (e.relatedTarget === null) {
-          exitPopup.classList.add('active');
-        }
-      });
 
       // Lead Capture Form
       document.getElementById('leadForm').addEventListener('submit', (e) => {
