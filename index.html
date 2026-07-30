@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Force Trading YT — Learn Trading with Price Action & Proven Strategies</title>
-<meta name="description" content="Force Trading YT teaches Indian stock market traders practical, rule-based trading — price action, swing trading, breakouts, and risk management. Join the Premium community, use the Trading Scanner, and learn with real market examples.">
+<title>Force Trading YT — Laxman Rekha Strategy | Price Action Trading Education</title>
+<meta name="description" content="Force Trading YT teaches the Laxman Rekha Strategy — a rule-based price action trading system for Indian stock market traders. Join the Premium community, learn swing trading, breakouts, and risk management with real market examples.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://forcetradingyt.github.io/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Force Trading YT — Learn Trading with Price Action & Proven Strategies">
-<meta property="og:description" content="Practical, rule-based trading education for Indian stock market traders — price action, swing trading, breakouts, risk management, and a premium trading community.">
+<meta property="og:title" content="Force Trading YT — Laxman Rekha Strategy | Price Action Trading Education">
+<meta property="og:description" content="Learn the Laxman Rekha Strategy — a rule-based price action trading system for Indian stock market traders, plus swing trading, breakouts, risk management, and a premium trading community.">
 <meta property="og:url" content="https://forcetradingyt.github.io/">
 <meta property="og:site_name" content="Force Trading YT">
 <meta property="og:locale" content="en_IN">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Force Trading YT — Learn Trading with Price Action & Proven Strategies">
-<meta name="twitter:description" content="Practical, rule-based trading education for Indian stock market traders — price action, swing trading, breakouts, risk management, and a premium trading community.">
+<meta name="twitter:title" content="Force Trading YT — Laxman Rekha Strategy | Price Action Trading Education">
+<meta name="twitter:description" content="Learn the Laxman Rekha Strategy — a rule-based price action trading system for Indian stock market traders, plus swing trading, breakouts, risk management, and a premium trading community.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,7 @@
     "https://t.me/forcetradingyt1",
     "https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC"
   ],
-  "description": "Force Trading YT is a trading education brand teaching Indian stock market traders practical, rule-based strategies — price action, swing trading, breakouts, and risk management."
+  "description": "Force Trading YT is a trading education brand teaching the Laxman Rekha Strategy — a rule-based price action trading system for Indian stock market traders, alongside swing trading, breakouts, and risk management."
 }
 </script>
 
@@ -206,33 +206,105 @@
   .testi-scroll::-webkit-scrollbar-thumb{ background:var(--border); border-radius:10px; }
   .testi-card{ scroll-snap-align:start; flex:0 0 320px; }
 
-  /* Floating WhatsApp */
-  .wa-float{
+  /* ---------- Floating Contact FAB ---------- */
+  .fab-wrap{
     position:fixed;
     bottom:calc(20px + env(safe-area-inset-bottom, 0px));
     right:calc(18px + env(safe-area-inset-right, 0px));
     z-index:200;
+    display:flex;
+    flex-direction:column-reverse;
+    align-items:flex-end;
+    gap:14px;
+    max-width:calc(100vw - 36px);
+  }
+
+  .fab-main{
+    position:relative;
     width:58px; height:58px;
     border-radius:50%;
+    border:none;
+    cursor:pointer;
     background:linear-gradient(135deg, #2be370, #1da851);
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 6px 24px rgba(0,0,0,0.55), 0 0 18px rgba(43,227,112,0.5);
+    box-shadow:0 6px 24px rgba(0,0,0,0.55), 0 0 18px rgba(43,227,112,0.55);
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+    overflow:hidden;
   }
-  .wa-float::before{
+  .fab-main::before{
     content:"";
     position:absolute; inset:0; border-radius:50%;
-    background:rgba(43,227,112,0.55);
-    animation:wa-ripple 2.2s ease-out infinite;
+    background:rgba(43,227,112,0.6);
+    animation:fab-ripple 2s ease-out infinite;
     z-index:-1;
   }
-  @keyframes wa-ripple{ 0%{transform:scale(1);opacity:.6;} 100%{transform:scale(1.9);opacity:0;} }
+  .fab-main::after{
+    content:"";
+    position:absolute;
+    top:-50%; left:-150%;
+    width:60%; height:200%;
+    background:linear-gradient(75deg, transparent, rgba(255,255,255,0.75), transparent);
+    transform:rotate(20deg);
+    animation:fab-shine 2.8s ease-in-out infinite;
+  }
+  @keyframes fab-ripple{ 0%{transform:scale(1);opacity:.7;} 100%{transform:scale(2);opacity:0;} }
+  @keyframes fab-shine{ 0%{left:-150%;} 35%{left:160%;} 100%{left:160%;} }
+
+  .fab-main svg{
+    width:26px; height:26px;
+    position:relative;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .fab-main .icon-close{ position:absolute; opacity:0; transform:rotate(-45deg) scale(0.6); }
+  .fab-main .icon-chat{ opacity:1; transform:rotate(0) scale(1); }
+  .fab-wrap.open .fab-main .icon-chat{ opacity:0; transform:rotate(45deg) scale(0.6); }
+  .fab-wrap.open .fab-main .icon-close{ opacity:1; transform:rotate(0) scale(1); }
+  .fab-wrap.open .fab-main{ transform:scale(1.04); }
+  .fab-wrap.open .fab-main::before{ animation:none; opacity:0; }
+
+  .fab-option{
+    display:flex; align-items:center; gap:10px;
+    opacity:0;
+    transform:translateY(14px) scale(0.85);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .fab-wrap.open .fab-option{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+  .fab-wrap.open .fab-option:nth-child(2){ transition-delay:.04s; }
+  .fab-wrap.open .fab-option:nth-child(1){ transition-delay:.09s; }
+
+  .fab-option .fab-icon{
+    width:48px; height:48px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    box-shadow:0 4px 16px rgba(0,0,0,0.45);
+    transition:transform .2s ease;
+  }
+  .fab-option:hover .fab-icon{ transform:scale(1.08); }
+  .fab-option .fab-icon svg{ width:24px; height:24px; }
+  .fab-icon.wa{ background:linear-gradient(135deg, #2be370, #1da851); }
+  .fab-icon.tg{ background:linear-gradient(135deg, #4fc3f7, #1e88c7); }
+
+  .fab-option .fab-tag{
+    background:var(--card);
+    border:1px solid var(--primary);
+    color:#69f0ae;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    padding:9px 15px;
+    border-radius:20px;
+    white-space:nowrap;
+    box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  }
 
   /* Animated counter number */
   .stat-num{ font-family:'JetBrains Mono',monospace; }
 
   @media (prefers-reduced-motion: reduce){
     .hero-chart-line{ animation:none; stroke-dashoffset:0; }
-    .wa-float::before{ animation:none; }
+    .fab-main::before, .fab-main::after{ animation:none; }
   }
 </style>
 </head>
@@ -252,7 +324,7 @@
       <a href="#about" class="hover:text-white transition">About</a>
       <a href="#products" class="hover:text-white transition">Products</a>
       <a href="#premium" class="hover:text-white transition">Premium</a>
-      <a href="#scanner" class="hover:text-white transition">Scanner</a>
+      <a href="#scanner" class="hover:text-white transition">Strategies</a>
       <a href="#faq" class="hover:text-white transition">FAQ</a>
       <a href="#contact" class="hover:text-white transition">Contact</a>
     </nav>
@@ -270,7 +342,7 @@
     <a href="#about" class="mobile-link">About</a>
     <a href="#products" class="mobile-link">Products</a>
     <a href="#premium" class="mobile-link">Premium</a>
-    <a href="#scanner" class="mobile-link">Scanner</a>
+    <a href="#scanner" class="mobile-link">Strategies</a>
     <a href="#faq" class="mobile-link">FAQ</a>
     <a href="#contact" class="mobile-link">Contact</a>
     <button type="button" onclick="openPremiumPopup()" class="grad-primary text-black font-semibold text-sm px-5 py-3 rounded-full text-center">Join Premium</button>
@@ -314,14 +386,11 @@
       <button type="button" onclick="openPremiumPopup()" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center">
         Join Premium
       </button>
+      <button type="button" onclick="openStrategiesPopup()" class="border border-gray-700 hover:border-gray-500 text-white font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center transition flex items-center justify-center gap-2">
+        📈 Laxman Rekha Strategy
+      </button>
       <a href="https://forcetradingyt.github.io/rewards.html" id="referHeroBtn" class="border border-gray-700 hover:border-gray-500 text-white font-semibold px-8 py-3.5 rounded-full w-full sm:w-auto text-center transition flex items-center justify-center gap-2">
         🎁 Refer & Get Free Premium
-      </a>
-    </div>
-
-    <div data-aos="fade-up" data-aos-delay="250" class="mb-8">
-      <a href="https://superprofile.bio/vig/6a4daaf11a246f0013ed6482" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-gray-300 underline underline-offset-2 transition">
-        Looking for US Stocks Premium instead? →
       </a>
     </div>
 
@@ -455,7 +524,7 @@
       <h2 class="text-3xl md:text-4xl font-bold mt-3">Everything You Need to Trade Smarter</h2>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
       <!-- Premium Membership -->
       <div data-aos="fade-up" class="lift glass rounded-3xl p-8 flex flex-col">
         <div class="w-12 h-12 rounded-xl grad-primary flex items-center justify-center text-xl mb-6">👑</div>
@@ -494,90 +563,51 @@
         </div>
       </div>
 
-      <!-- Trading Scanner -->
+      <!-- Laxman Rekha Strategy (merged Scanner + eBook) -->
       <div data-aos="fade-up" data-aos-delay="100" class="lift glass rounded-3xl p-8 flex flex-col border-2" style="border-color:var(--primary);">
         <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6" style="background:linear-gradient(135deg,var(--accent),#4fc3f7);">🔍</div>
-        <h3 class="text-xl font-bold mb-3">Trading Scanner</h3>
-        <ul class="space-y-2 text-sm text-gray-400 mb-8 flex-grow">
-          <li>✔ Investment Scanner</li>
-          <li>✔ Swing Trading Scanner</li>
-          <li>✔ Intraday Scanner</li>
-          <li>✔ Trend Stocks</li>
-        </ul>
-        <button type="button" id="scannerBtn" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Choose Your Scanner</button>
-      </div>
-
-    <!-- Scanner category popup -->
-    <div id="scannerOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
-      <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
-        <button id="scannerClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
-        <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a category</span>
-        <h3 class="text-xl font-bold mt-2 mb-5">Trading Scanner</h3>
-        <div class="space-y-3">
-          <a href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Investment Scanner</div>
-              <div class="text-xs text-gray-500 mt-0.5">201 Framework · NSE</div>
-            </div>
-            <span class="text-lg" style="color:var(--primary);">→</span>
-          </a>
-          <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Swing Trading Scanner</div>
-              <div class="text-xs text-gray-500 mt-0.5">Multi-day setups</div>
-            </div>
-            <span class="text-lg" style="color:var(--primary);">→</span>
-          </a>
-          <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Intraday Scanner</div>
-              <div class="text-xs text-gray-500 mt-0.5">Same-day setups</div>
-            </div>
-            <span class="text-lg" style="color:var(--primary);">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-      <!-- Trading eBooks -->
-      <div data-aos="fade-up" data-aos-delay="200" class="lift glass rounded-3xl p-8 flex flex-col">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6" style="background:linear-gradient(135deg,#ffca28,#ffa000);">📖</div>
-        <h3 class="text-xl font-bold mb-3">Trading eBooks</h3>
+        <h3 class="text-xl font-bold mb-3">Laxman Rekha Strategy</h3>
         <ul class="space-y-2 text-sm text-gray-400 mb-8 flex-grow">
           <li>✔ Investment Strategy</li>
           <li>✔ Swing Trading Strategy</li>
           <li>✔ Intraday Strategy</li>
           <li>✔ Risk Management</li>
         </ul>
-        <button type="button" id="ebookBtn" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Choose Your eBook</button>
+        <button type="button" id="strategiesBtn" class="btn-glow grad-primary text-black font-semibold text-center py-3 rounded-full">Unlock Strategies</button>
+      </div>
+
+      <!-- Strategies category popup -->
+      <div id="strategiesOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
+        <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
+          <button id="strategiesClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
+          <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a category</span>
+          <h3 class="text-xl font-bold mt-2 mb-5">Laxman Rekha Strategy</h3>
+          <div class="space-y-3">
+            <a href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+              <div>
+                <div class="font-semibold text-sm">Investment Strategy</div>
+                <div class="text-xs text-gray-500 mt-0.5">201 Framework · NSE</div>
+              </div>
+              <span class="text-lg" style="color:var(--primary);">→</span>
+            </a>
+            <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+              <div>
+                <div class="font-semibold text-sm">Swing Trading Strategy</div>
+                <div class="text-xs text-gray-500 mt-0.5">Multi-day setups</div>
+              </div>
+              <span class="text-lg" style="color:var(--primary);">→</span>
+            </a>
+            <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
+              <div>
+                <div class="font-semibold text-sm">Intraday Strategy</div>
+                <div class="text-xs text-gray-500 mt-0.5">Same-day setups</div>
+              </div>
+              <span class="text-lg" style="color:var(--primary);">→</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- eBook category popup -->
-    <div id="ebookOverlay" class="fixed inset-0 z-50 hidden items-center justify-center px-5" style="background:rgba(0,0,0,0.7); backdrop-filter:blur(4px);">
-      <div class="glass rounded-3xl p-7 max-w-sm w-full relative" style="border-color:rgba(0,230,118,0.3);">
-        <button id="ebookClose" class="absolute top-4 right-4 w-8 h-8 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition" aria-label="Close">✕</button>
-        <span class="mono text-xs tracking-widest uppercase" style="color:var(--primary);">Choose a category</span>
-        <h3 class="text-xl font-bold mt-2 mb-5">Trading eBooks</h3>
-        <div class="space-y-3">
-          <a href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Investment Strategy</div>
-              <div class="text-xs text-gray-500 mt-0.5">201 Framework · NSE</div>
-            </div>
-            <span class="text-lg" style="color:var(--primary);">→</span>
-          </a>
-          <a href="https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Swing Trading Strategy</div>
-              <div class="text-xs text-gray-500 mt-0.5">Multi-day setups</div>
-            </div>
-            <span class="text-lg" style="color:var(--primary);">→</span>
-          </a>
-          <a href="https://superprofile.bio/vp/11-21-intraday-edge-system" target="_blank" rel="noopener" class="flex items-center justify-between glass rounded-xl px-5 py-4 hover:border-green-400 transition" style="border:1px solid var(--border);">
-            <div>
-              <div class="font-semibold text-sm">Intraday Strategy</div>
-              <div class="text-xs text-gray-500 mt-0.5">Same-day setups</div>
             </div>
             <span class="text-lg" style="color:var(--primary);">→</span>
           </a>
@@ -734,6 +764,11 @@
     <button type="button" onclick="openPremiumPopup()" data-aos="fade-up" data-aos-delay="200" class="btn-glow grad-primary text-black font-semibold px-10 py-4 rounded-full inline-block">
       Join Premium
     </button>
+    <div data-aos="fade-up" data-aos-delay="250" class="mt-6">
+      <a href="https://superprofile.bio/vig/6a4daaf11a246f0013ed6482" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-gray-300 underline underline-offset-2 transition">
+        Trading US stocks instead? Explore US Stocks Premium →
+      </a>
+    </div>
   </div>
 </section>
 
@@ -743,9 +778,9 @@
 <section id="scanner" class="py-20 md:py-28 px-5" style="background:var(--card);">
   <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
     <div data-aos="fade-right">
-      <span class="mono text-xs tracking-widest uppercase" style="color:var(--accent);">Trading Scanner</span>
+      <span class="mono text-xs tracking-widest uppercase" style="color:var(--accent);">Laxman Rekha Strategy</span>
       <h2 class="text-3xl md:text-4xl font-bold mt-3 mb-5">Stop Searching. Start Scanning.</h2>
-      <p class="text-gray-400 mb-6 leading-relaxed">Our scanner filters thousands of NSE stocks daily and surfaces only the setups that match proven price-action criteria — so you spend your time trading, not searching.</p>
+      <p class="text-gray-400 mb-6 leading-relaxed">Our strategies filter thousands of NSE stocks daily and surface only the setups that match proven price-action criteria — so you spend your time trading, not searching.</p>
       <ul class="space-y-3 mb-8">
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Find Quality Stocks</li>
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Save Research Time</li>
@@ -753,7 +788,7 @@
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Beginner Friendly</li>
         <li class="flex items-center gap-2 text-gray-300 text-sm">✔ Fast Results</li>
       </ul>
-      <button type="button" onclick="openScannerPopup()" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Explore Scanner</button>
+      <button type="button" onclick="openStrategiesPopup()" class="btn-glow grad-primary text-black font-semibold px-8 py-3.5 rounded-full inline-block">Unlock Strategies</button>
     </div>
     <div data-aos="fade-left" class="glass rounded-3xl p-6">
       <svg viewBox="0 0 400 260" class="w-full h-auto">
@@ -1014,7 +1049,7 @@
           <h4 class="font-semibold mb-3 text-gray-300">Products</h4>
           <ul class="space-y-2 text-gray-500">
             <li><a href="#premium" class="hover:text-white transition">Premium</a></li>
-            <li><a href="#scanner" class="hover:text-white transition">Scanner</a></li>
+            <li><a href="#scanner" class="hover:text-white transition">Strategies</a></li>
             <li><a href="#products" class="hover:text-white transition">eBooks</a></li>
           </ul>
         </div>
@@ -1034,10 +1069,26 @@
   </div>
 </footer>
 
-<!-- Floating WhatsApp -->
-<a href="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2c-5.523 0-10 4.477-10 10 0 1.766.464 3.492 1.345 5.008L2 22l5.14-1.35A9.96 9.96 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18.19a8.17 8.17 0 0 1-4.166-1.143l-.299-.177-3.05.8.815-2.973-.194-.307A8.18 8.18 0 1 1 20.184 12c0 4.517-3.667 8.19-8.18 8.19z"/></svg>
-</a>
+<!-- Floating Contact FAB -->
+<div class="fab-wrap" id="fabWrap">
+  <a class="fab-option" href="https://t.me/+RibGnKQct1JlOGNl" target="_blank" rel="noopener">
+    <span class="fab-tag">Telegram Channel</span>
+    <span class="fab-icon tg">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M21.5 4.5 2.7 11.9c-1.1.44-1.1 1.06-.2 1.34l4.8 1.5 1.85 5.7c.22.62.36.86.75.86.3 0 .43-.14.6-.3l1.98-1.9 4.1 3.03c.75.42 1.3.2 1.5-.7l2.7-12.9c.28-1.13-.4-1.63-1.28-1.26z"/></svg>
+    </span>
+  </a>
+  <a class="fab-option" href="https://chat.whatsapp.com/H80PiJEBOqSHmXpSEK3OAC" target="_blank" rel="noopener">
+    <span class="fab-tag">WhatsApp Group</span>
+    <span class="fab-icon wa">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2c-5.523 0-10 4.477-10 10 0 1.766.464 3.492 1.345 5.008L2 22l5.14-1.35A9.96 9.96 0 0 0 12.004 22c5.523 0 10-4.477 10-10s-4.477-10-10-10zm0 18.19a8.17 8.17 0 0 1-4.166-1.143l-.299-.177-3.05.8.815-2.973-.194-.307A8.18 8.18 0 1 1 20.184 12c0 4.517-3.667 8.19-8.18 8.19z"/></svg>
+    </span>
+  </a>
+
+  <button class="fab-main" id="fabMain" type="button" aria-label="Contact options">
+    <svg class="icon-chat" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>
 
 <!-- FAQ Schema (kept in sync with #faqList content via JS-safe static duplication) -->
 <script type="application/ld+json" id="faqSchema">
@@ -1051,6 +1102,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
 <script>
   AOS.init({ duration: 700, once: true, offset: 60 });
+
+  // ===================== CONTACT FAB (WhatsApp + Telegram) =====================
+  const fabWrap = document.getElementById('fabWrap');
+  const fabMain = document.getElementById('fabMain');
+
+  fabMain.addEventListener('click', () => {
+    fabWrap.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if(fabWrap.classList.contains('open') && !fabWrap.contains(e.target)){
+      fabWrap.classList.remove('open');
+    }
+  });
+
+  document.querySelectorAll('.fab-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      setTimeout(() => fabWrap.classList.remove('open'), 200);
+    });
+  });
 
   // Sticky nav background on scroll
   const navbar = document.getElementById('navbar');
@@ -1161,52 +1232,30 @@
     link.addEventListener('click', closePremiumPopup);
   });
 
-  // ===================== EBOOK CATEGORY POPUP =====================
-  const ebookBtn = document.getElementById('ebookBtn');
-  const ebookOverlay = document.getElementById('ebookOverlay');
-  const ebookClose = document.getElementById('ebookClose');
+  // ===================== TRADING STRATEGIES POPUP =====================
+  const strategiesBtn = document.getElementById('strategiesBtn');
+  const strategiesOverlay = document.getElementById('strategiesOverlay');
+  const strategiesClose = document.getElementById('strategiesClose');
 
-  function openEbookPopup(){
-    ebookOverlay.classList.remove('hidden');
-    ebookOverlay.classList.add('flex');
+  function openStrategiesPopup(){
+    strategiesOverlay.classList.remove('hidden');
+    strategiesOverlay.classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
-  function closeEbookPopup(){
-    ebookOverlay.classList.add('hidden');
-    ebookOverlay.classList.remove('flex');
+  function closeStrategiesPopup(){
+    strategiesOverlay.classList.add('hidden');
+    strategiesOverlay.classList.remove('flex');
     document.body.style.overflow = '';
   }
 
-  ebookBtn.addEventListener('click', openEbookPopup);
-  ebookClose.addEventListener('click', closeEbookPopup);
-  ebookOverlay.addEventListener('click', (e) => {
-    if(e.target === ebookOverlay) closeEbookPopup();
-  });
-
-  // ===================== SCANNER CATEGORY POPUP =====================
-  const scannerBtn = document.getElementById('scannerBtn');
-  const scannerOverlay = document.getElementById('scannerOverlay');
-  const scannerClose = document.getElementById('scannerClose');
-
-  function openScannerPopup(){
-    scannerOverlay.classList.remove('hidden');
-    scannerOverlay.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeScannerPopup(){
-    scannerOverlay.classList.add('hidden');
-    scannerOverlay.classList.remove('flex');
-    document.body.style.overflow = '';
-  }
-
-  scannerBtn.addEventListener('click', openScannerPopup);
-  scannerClose.addEventListener('click', closeScannerPopup);
-  scannerOverlay.addEventListener('click', (e) => {
-    if(e.target === scannerOverlay) closeScannerPopup();
+  strategiesBtn.addEventListener('click', openStrategiesPopup);
+  strategiesClose.addEventListener('click', closeStrategiesPopup);
+  strategiesOverlay.addEventListener('click', (e) => {
+    if(e.target === strategiesOverlay) closeStrategiesPopup();
   });
 
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape'){ closeEbookPopup(); closeScannerPopup(); closePremiumPopup(); }
+    if(e.key === 'Escape'){ closeStrategiesPopup(); closePremiumPopup(); }
   });
 
   // Newsletter form (front-end only placeholder)
