@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ═══════ SEO TITLE & DESCRIPTION ═══════ -->
+    <title>TradingView Watchlist Splitter – Chartink to TradingView | Split 30 Symbols</title>
+    <meta name="description" content="Copy symbols from Chartink, TradingView Screener, or any scanner. Auto-split into batches of 30 for TradingView free watchlist. One-click copy each batch." />
+    <meta name="keywords" content="TradingView watchlist splitter, Chartink to TradingView, split 30 symbols, tradingview scanner, bulk import tradingview" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="TradingView Watchlist Splitter – Chartink / Scanner to TradingView" />
+    <meta property="og:description" content="Copy symbols from any scanner, paste here, get batches of 30, and copy to TradingView instantly." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tradingview-watchlist-splitter.netlify.app/" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://tradingview-watchlist-splitter.netlify.app/" />
+
+    <!-- SheetJS for Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
+    </script>
+
+    <style>
+        /* ───────────── Reset & Base ───────────── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0e1219;
+            color: #e8edf5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        .app {
+            max-width: 1100px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ───────────── Header ───────────── */
+        .header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #64b5f6, #42e695);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .header .sub-headline {
+            margin-top: 0.75rem;
+            font-size: 1.1rem;
+            color: #94a3b8;
+            background: #1a2230;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #293548;
+            display: inline-block;
+            max-width: 800px;
+        }
+        .header .sub-headline strong {
+            color: #64b5f6;
+        }
+        .header .badge-group {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem 1.2rem;
+        }
+        .header .badge-group .badge {
+            font-size: 0.8rem;
+            background: #1e293b;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            color: #94a3b8;
+            border: 1px solid #2d3a4f;
+        }
+        .header .badge-group .badge span {
+            color: #e8edf5;
+            font-weight: 600;
+        }
+
+        /* ───────────── URL Badge ───────────── */
+        .url-badge {
+            display: inline-block;
+            margin-top: 0.8rem;
+            background: #0e141f;
+            border: 1px solid #2d3a4f;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+        .url-badge span {
+            color: #64b5f6;
+        }
+
+        /* ───────────── GUIDE SECTION ───────────── */
+        .guide-section {
+            background: #1a2230;
+            border: 1px solid #293548;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        .guide-section .guide-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            user-select: none;
+        }
+        .guide-section .guide-header .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .guide-section .guide-header h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e8edf5;
+        }
+        .guide-section .guide-header .guide-badge {
+            background: #2d3a4f;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            border: 1px solid #4a6180;
+        }
+        .guide-section .guide-content {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #2d3a4f;
+            display: none;
+            color: #c8d0dc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .guide-section .guide-content.open {
+            display: block;
+        }
+        .guide-section .guide-content ol {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0 0.8rem;
+        }
+        .guide-section .guide-content ol li {
+            margin-bottom: 0.5rem;
+        }
+        .guide-section .guide-content .scanner-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin: 0.8rem 0;
+        }
+        .guide-section .guide-content .scanner-list .scanner-tag {
+            background: #0e141f;
+            border: 1px solid #2d3a4f;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .guide-section .guide-content .scanner-list .scanner-tag span {
+            color: #64b5f6;
+        }
+        .guide-section .guide-content .tip {
+            background: #0e141f;
+            border-left: 3px solid #64b5f6;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        .guide-section .guide-content .tip strong {
+            color: #42e695;
+        }
+
+        /* ───────────── Upload Zone ───────────── */
+        .upload-zone {
+            background: #1a2230;
+            border: 2px dashed #334155;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: #64b5f6;
+            background: #1f2a3d;
+            box-shadow: 0 0 0 4px rgba(100, 181, 246, 0.08);
+        }
+        .upload-zone .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .upload-zone h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #e8edf5;
+        }
+        .upload-zone p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+        .upload-zone .hint {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.6rem;
+        }
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* ───────────── Divider ───────────── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.2rem 0 1.5rem;
+            color: #475569;
+            font-size: 0.85rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2d3a4f;
+        }
+
+        /* ───────────── Text Input Zone ───────────── */
+        .text-input-zone {
+            background: #1a2230;
+            border: 2px solid #293548;
+            border-radius: 20px;
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        .text-input-zone:focus-within {
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 4px rgba(100, 181, 246, 0.06);
+        }
+        .text-input-zone .input-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.8rem;
+        }
+        .text-input-zone .input-header .icon {
+            font-size: 1.8rem;
+        }
+        .text-input-zone .input-header h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #e8edf5;
+        }
+        .text-input-zone .input-header .sub {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-left: 0.4rem;
+            font-weight: 400;
+        }
+        .text-input-zone textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: #0e141f;
+            border: 1px solid #2d3a4f;
+            border-radius: 14px;
+            color: #e8edf5;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', system-ui, monospace;
+            resize: vertical;
+            min-height: 100px;
+            max-height: 280px;
+            transition: border 0.2s ease;
+            line-height: 1.6;
+        }
+        .text-input-zone textarea:focus {
+            outline: none;
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.1);
+        }
+        .text-input-zone textarea::placeholder {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .text-input-zone .input-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem 1.2rem;
+            margin-top: 1rem;
+        }
+        .text-input-zone .input-actions .process-btn {
+            background: linear-gradient(135deg, #64b5f6, #3d8fd9);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 16px rgba(100, 181, 246, 0.25);
+        }
+        .text-input-zone .input-actions .process-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(100, 181, 246, 0.4);
+            background: linear-gradient(135deg, #7ac4ff, #4a9ae8);
+        }
+        .text-input-zone .input-actions .process-btn:active {
+            transform: scale(0.96);
+        }
+        .text-input-zone .input-actions .clear-btn {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .text-input-zone .input-actions .clear-btn:hover {
+            background: #2d3a4f;
+            color: #e8edf5;
+            border-color: #4a6180;
+        }
+        .text-input-zone .input-actions .symbol-count {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            background: #0e141f;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #2d3a4f;
+        }
+        .text-input-zone .input-actions .symbol-count strong {
+            color: #64b5f6;
+            font-size: 1rem;
+        }
+
+        /* ───────────── Stats Bar ───────────── */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem 2.5rem;
+            background: #1a2230;
+            padding: 1rem 1.8rem;
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #293548;
+        }
+        .stats-bar .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .stats-bar .stat .label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        .stats-bar .stat .value {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #e8edf5;
+        }
+        .stats-bar .stat .value.highlight {
+            color: #64b5f6;
+        }
+
+        /* ───────────── Search Bar ───────────── */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #1a2230;
+            border: 1px solid #293548;
+            border-radius: 14px;
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .search-bar:focus-within {
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.08);
+        }
+        .search-bar .search-icon {
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #e8edf5;
+            font-size: 0.95rem;
+            padding: 0.4rem 0;
+            width: 100%;
+            outline: none;
+        }
+        .search-bar input::placeholder {
+            color: #475569;
+        }
+        .search-bar .clear-search {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 0.3rem;
+            display: none;
+        }
+        .search-bar .clear-search.visible {
+            display: block;
+        }
+        .search-bar .clear-search:hover {
+            color: #e8edf5;
+        }
+        .search-bar .search-count {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            white-space: nowrap;
+            background: #0e141f;
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            border: 1px solid #2d3a4f;
+        }
+
+        /* ───────────── Batches Grid ───────────── */
+        .batches-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .batch-card {
+            background: #1a2230;
+            border: 1px solid #293548;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem 1.5rem;
+            transition: all 0.35s ease;
+            animation: slideIn 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        .batch-card.copied {
+            opacity: 0;
+            transform: scale(0.96);
+            max-height: 0;
+            padding: 0 1.5rem;
+            margin: 0;
+            overflow: hidden;
+            border-color: transparent;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+        .batch-card.hidden-by-search {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .batch-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 0.9rem;
+        }
+        .batch-header .batch-label {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #c8d0dc;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .batch-header .batch-label .count {
+            background: #2d3a4f;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .batch-header .copy-btn {
+            background: #2d3a4f;
+            border: none;
+            color: #e8edf5;
+            padding: 0.45rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .batch-header .copy-btn:hover {
+            background: #3b4a63;
+            border-color: #64b5f6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(100, 181, 246, 0.15);
+        }
+        .batch-header .copy-btn:active {
+            transform: scale(0.96);
+        }
+        .batch-header .copy-btn.copied-btn {
+            background: #1e3a2a;
+            border-color: #42e695;
+            color: #42e695;
+            pointer-events: none;
+        }
+        .batch-header .copy-btn .icon {
+            font-size: 1.1rem;
+        }
+
+        .batch-symbols {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem 0.7rem;
+        }
+        .batch-symbols .symbol-pill {
+            background: #263244;
+            padding: 0.25rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #c8d0dc;
+            border: 1px solid #2d3a4f;
+            transition: all 0.15s ease;
+            letter-spacing: 0.2px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        .batch-symbols .symbol-pill:hover {
+            background: #2f3f58;
+            border-color: #4a6180;
+        }
+        .batch-symbols .symbol-pill.hidden-by-search {
+            display: none;
+        }
+        .batch-symbols .symbol-pill.match-highlight {
+            background: #1e3a3a;
+            border-color: #42e695;
+            box-shadow: 0 0 12px rgba(66, 230, 149, 0.15);
+        }
+
+        /* ───────────── Empty State ───────────── */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: #64748b;
+        }
+        .empty-state .big-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        /* ───────────── Toast ───────────── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 0.9rem 1.6rem;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 99999;
+            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.92);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast .toast-icon {
+            font-size: 1.4rem;
+        }
+        .toast .toast-msg {
+            color: #e8edf5;
+        }
+        .toast .toast-msg strong {
+            color: #64b5f6;
+        }
+
+        /* ───────────── Telegram Footer ───────────── */
+        .telegram-footer {
+            margin-top: 3.5rem;
+            padding: 2.5rem 2rem;
+            background: linear-gradient(145deg, #1a2230, #0e141f);
+            border-radius: 24px;
+            border: 1px solid #293548;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .telegram-footer h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e8edf5;
+            margin-bottom: 0.5rem;
+        }
+        .telegram-footer p {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 1.8rem;
+        }
+        .telegram-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #0088cc;
+            background: linear-gradient(135deg, #2AABEE, #0088cc);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 0.9rem 3rem;
+            border-radius: 60px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 24px rgba(42, 171, 238, 0.3);
+            letter-spacing: 0.5px;
+        }
+        .telegram-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 36px rgba(42, 171, 238, 0.45);
+            background: linear-gradient(135deg, #3db6f0, #0099dd);
+            border-color: #2AABEE;
+        }
+        .telegram-btn:active {
+            transform: scale(0.96);
+        }
+        .telegram-btn .telegram-icon {
+            font-size: 1.8rem;
+        }
+
+        /* ───────────── Responsive ───────────── */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0.8rem;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .header .sub-headline {
+                font-size: 0.95rem;
+                padding: 0.8rem 1rem;
+            }
+            .upload-zone {
+                padding: 1.8rem 1rem;
+            }
+            .upload-zone .icon {
+                font-size: 2.4rem;
+            }
+            .text-input-zone {
+                padding: 1.2rem 1rem;
+            }
+            .text-input-zone .input-header h3 {
+                font-size: 1rem;
+            }
+            .text-input-zone textarea {
+                min-height: 80px;
+                font-size: 0.85rem;
+                padding: 0.8rem 1rem;
+            }
+            .text-input-zone .input-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .text-input-zone .input-actions .process-btn {
+                justify-content: center;
+            }
+            .text-input-zone .input-actions .symbol-count {
+                margin-left: 0;
+                text-align: center;
+            }
+            .stats-bar {
+                padding: 0.8rem 1rem;
+                gap: 1rem;
+            }
+            .search-bar {
+                padding: 0.5rem 1rem;
+            }
+            .search-bar input {
+                font-size: 0.85rem;
+            }
+            .batch-card {
+                padding: 1rem;
+            }
+            .batch-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .batch-header .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .batch-symbols .symbol-pill {
+                font-size: 0.72rem;
+                padding: 0.15rem 0.6rem;
+            }
+            .toast {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.85rem;
+            }
+            .telegram-footer {
+                padding: 1.8rem 1rem;
+            }
+            .telegram-footer h3 {
+                font-size: 1.4rem;
+            }
+            .telegram-btn {
+                font-size: 1rem;
+                padding: 0.7rem 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .guide-section {
+                padding: 1rem 1.2rem;
+            }
+            .guide-section .guide-content {
+                font-size: 0.9rem;
+            }
+            .url-badge {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.8rem;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e1219;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a6180;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app" id="app">
+        <!-- ═══ Header ═══ -->
+        <div class="header">
+            <h1>📊 TradingView Watchlist Splitter</h1>
+            <div class="sub-headline">
+                ⚡ <strong>Chartink → TradingView</strong> · 
+                Copy symbols from any scanner · Auto‑split into <strong>batches of 30</strong> · One‑click copy
+            </div>
+            <div class="badge-group">
+                <span class="badge">🔗 Chartink</span>
+                <span class="badge">📈 TradingView Screener</span>
+                <span class="badge">📊 Screener.in</span>
+                <span class="badge">✂️ Batches of <span>30</span></span>
+                <span class="badge">📋 One‑Click Copy</span>
+            </div>
+            <div class="url-badge">
+                🔗 tradingview-watchlist-splitter
+            </div>
+        </div>
+
+        <!-- ═══ GUIDE SECTION (collapsible) ═══ -->
+        <div class="guide-section" id="guideSection">
+            <div class="guide-header" id="guideToggle">
+                <span class="toggle-icon" id="guideIcon">▶</span>
+                <h3>📖 How to use with Chartink, TradingView Screener &amp; other scanners</h3>
+                <span class="guide-badge">Show / Hide</span>
+            </div>
+            <div class="guide-content" id="guideContent">
+                <p><strong>Follow these steps to copy symbols from any online stock scanner and import them into TradingView watchlists:</strong></p>
+                <ol>
+                    <li><strong>Open your scanner</strong> – e.g., <span style="color:#64b5f6;">Chartink</span>, <span style="color:#64b5f6;">TradingView Screener</span>, <span style="color:#64b5f6;">Screener.in</span>, or any other.</li>
+                    <li><strong>Select the symbols</strong> you want (you can filter or sort as needed).</li>
+                    <li><strong>Copy the symbol column</strong> – most scanners let you select and copy the list of symbols (e.g., “RELIANCE”, “TCS”, etc.).</li>
+                    <li><strong>Paste</strong> them into the text area below (comma, space, or newline separated).</li>
+                    <li>Click <strong>“Split into Batches”</strong> – the tool will automatically divide them into groups of <strong>30</strong> (TradingView free limit).</li>
+                    <li>For each batch, click <strong>“Copy Batch”</strong> and paste it directly into a new TradingView watchlist.</li>
+                </ol>
+                <div class="scanner-list">
+                    <span class="scanner-tag">📊 <span>Chartink</span></span>
+                    <span class="scanner-tag">📈 <span>TradingView Screener</span></span>
+                    <span class="scanner-tag">📉 <span>Screener.in</span></span>
+                    <span class="scanner-tag">🔎 <span>Finviz</span></span>
+                    <span class="scanner-tag">📊 <span>StockEdge</span></span>
+                    <span class="scanner-tag">📈 <span>Moneycontrol</span></span>
+                    <span class="scanner-tag">➕ <span>and any other scanner</span></span>
+                </div>
+                <div class="tip">
+                    💡 <strong>Pro tip:</strong> If your scanner exports to Excel, you can also <strong>upload the Excel file</strong> above – we automatically read the <strong>Symbol column</strong>.
+                </div>
+                <p style="color:#94a3b8; font-size:0.9rem; margin-top:0.5rem;">
+                    ✅ No limits – paste hundreds of symbols, we’ll split them all.
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══ Upload Zone ═══ -->
+        <div class="upload-zone" id="uploadZone">
+            <span class="icon">📁</span>
+            <h3>Upload Excel (.xlsx / .xls) from scanner</h3>
+            <p>Auto‑reads <strong>column C</strong> (Symbol) – works with exports from Chartink, TradingView, etc.</p>
+            <div class="hint">💡 Drag & drop or click to browse</div>
+            <input type="file" id="fileInput" accept=".xlsx,.xls" />
+        </div>
+
+        <div class="divider">— OR paste copied symbols —</div>
+
+        <!-- ═══ Text Input ═══ -->
+        <div class="text-input-zone" id="textInputZone">
+            <div class="input-header">
+                <span class="icon">📝</span>
+                <h3>Paste Symbols from Scanner <span class="sub">(comma, space, or newline separated)</span></h3>
+            </div>
+            <textarea id="symbolInput" rows="4" placeholder="e.g. RELIANCE, TCS, INFY, HDFC, ICICIBANK, SBIN, ...&#10;Or paste the entire symbol column from Chartink, TradingView Screener, etc."></textarea>
+            <div class="input-actions">
+                <button class="process-btn" id="processTextBtn">⚡ Split into Batches</button>
+                <button class="clear-btn" id="clearTextBtn">🗑️ Clear</button>
+                <span class="symbol-count" id="symbolCount">Recognised <strong>0</strong> symbols</span>
+            </div>
+        </div>
+
+        <!-- ═══ Stats ═══ -->
+        <div class="stats-bar" id="statsBar" style="display:none;">
+            <div class="stat"><span class="label">📦 Total</span><span class="value highlight" id="totalSymbols">0</span></div>
+            <div class="stat"><span class="label">📋 Batches (30)</span><span class="value" id="totalBatches">0</span></div>
+            <div class="stat"><span class="label">✅ Copied</span><span class="value" id="copiedCount">0</span></div>
+            <div class="stat"><span class="label">⏳ Remaining</span><span class="value" id="remainingCount">0</span></div>
+        </div>
+
+        <!-- ═══ Search Bar ═══ -->
+        <div class="search-bar" id="searchBar" style="display:none;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search symbols across all batches..." />
+            <button class="clear-search" id="clearSearchBtn">✕</button>
+            <span class="search-count" id="searchCount">0 matches</span>
+        </div>
+
+        <!-- ═══ Batches Container ═══ -->
+        <div class="batches-container" id="batchesContainer">
+            <div class="empty-state" id="emptyState">
+                <span class="big-icon">📤</span>
+                <h3>Paste symbols from Chartink / Scanner or upload Excel</h3>
+                <p style="color:#64748b; font-size:0.9rem; margin-top:0.3rem;">
+                    Unlimited symbols → auto‑split into batches of 30 for TradingView watchlists
+                </p>
+            </div>
+        </div>
+
+        <!-- ═══ Telegram ═══ -->
+        <div class="telegram-footer">
+            <h3>🚀 Join Our Trading Community</h3>
+            <p>Get more tools, tips &amp; real‑time updates</p>
+            <a href="https://t.me/+RibGnKQct1JlOGNl" target="_blank" class="telegram-btn" rel="noopener noreferrer">
+                <span class="telegram-icon">📲</span> Join Telegram Channel
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══ Toast ═══ -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✅</span>
+        <span class="toast-msg" id="toastMsg">Copied <strong>30</strong> symbols to clipboard!</span>
+    </div>
+
+    <script>
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // STATE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let allSymbols = [];
+        let batchSize = 30;
+        let copiedIndices = new Set();
+
+        // DOM refs
+        const fileInput = document.getElementById('fileInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const batchesContainer = document.getElementById('batchesContainer');
+        const emptyState = document.getElementById('emptyState');
+        const statsBar = document.getElementById('statsBar');
+        const totalSymbolsEl = document.getElementById('totalSymbols');
+        const totalBatchesEl = document.getElementById('totalBatches');
+        const copiedCountEl = document.getElementById('copiedCount');
+        const remainingCountEl = document.getElementById('remainingCount');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+
+        const symbolInput = document.getElementById('symbolInput');
+        const processTextBtn = document.getElementById('processTextBtn');
+        const clearTextBtn = document.getElementById('clearTextBtn');
+        const symbolCountEl = document.getElementById('symbolCount');
+
+        const searchBar = document.getElementById('searchBar');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const searchCount = document.getElementById('searchCount');
+
+        // Guide toggle
+        const guideToggle = document.getElementById('guideToggle');
+        const guideContent = document.getElementById('guideContent');
+        const guideIcon = document.getElementById('guideIcon');
+        let guideOpen = false;
+
+        guideToggle.addEventListener('click', function() {
+            guideOpen = !guideOpen;
+            guideContent.classList.toggle('open', guideOpen);
+            guideIcon.textContent = guideOpen ? '▼' : '▶';
+        });
+
+        let toastTimer = null;
+        let searchTerm = '';
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // TOAST
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function showToast(message, icon = '✅') {
+            if (toastTimer) clearTimeout(toastTimer);
+            toast.querySelector('.toast-icon').textContent = icon;
+            toastMsg.innerHTML = message;
+            toast.classList.add('show');
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2800);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // PARSE SYMBOLS FROM TEXT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function parseSymbolsFromText(text) {
+            const raw = text.split(/[,;\n\t]+/);
+            const result = [];
+            for (let item of raw) {
+                item = item.trim();
+                if (item && item !== '' && item !== 'Symbol' && item !== 'symbol' && item !== '股票代码') {
+                    const cleaned = item.replace(/^[^a-zA-Z0-9&\-./]+/, '').replace(/[^a-zA-Z0-9&\-./]+$/, '');
+                    if (cleaned && cleaned.length > 0) {
+                        result.push(cleaned);
+                    }
+                }
+            }
+            return result;
+        }
+
+        function updateSymbolCount() {
+            const text = symbolInput.value;
+            const symbols = parseSymbolsFromText(text);
+            const count = symbols.length;
+            symbolCountEl.innerHTML = `Recognised <strong>${count}</strong> symbols`;
+            return symbols;
+        }
+
+        let countDebounce = null;
+        symbolInput.addEventListener('input', function() {
+            if (countDebounce) clearTimeout(countDebounce);
+            countDebounce = setTimeout(() => {
+                updateSymbolCount();
+            }, 300);
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // RENDER BATCHES + SEARCH
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderBatches() {
+            const visibleSymbols = allSymbols.filter((_, idx) => !copiedIndices.has(idx));
+            const totalVisible = visibleSymbols.length;
+            const totalCopied = allSymbols.length - totalVisible;
+            const batchCount = Math.ceil(totalVisible / batchSize);
+
+            totalSymbolsEl.textContent = allSymbols.length;
+            totalBatchesEl.textContent = batchCount;
+            copiedCountEl.textContent = totalCopied;
+            remainingCountEl.textContent = totalVisible;
+            statsBar.style.display = 'block';
+
+            if (allSymbols.length > 0) {
+                searchBar.style.display = 'flex';
+            } else {
+                searchBar.style.display = 'none';
+            }
+
+            if (totalVisible === 0 && allSymbols.length > 0) {
+                batchesContainer.innerHTML = `
+                    <div class="empty-state" style="padding:3rem 1rem;">
+                        <span class="big-icon">🎉</span>
+                        <h3 style="color:#42e695;">All batches copied!</h3>
+                        <p style="color:#64748b; font-size:0.9rem; margin-top:0.3rem;">
+                            ${allSymbols.length} symbols processed in ${Math.ceil(allSymbols.length / batchSize)} batches.
+                            Ready to paste into TradingView!
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (allSymbols.length === 0) {
+                batchesContainer.innerHTML = `
+                    <div class="empty-state" id="emptyState">
+                        <span class="big-icon">📤</span>
+                        <h3>Paste symbols from Chartink / Scanner or upload Excel</h3>
+                        <p style="color:#64748b; font-size:0.9rem; margin-top:0.3rem;">
+                            Unlimited symbols → auto‑split into batches of 30 for TradingView watchlists
+                        </p>
+                    </div>
+                `;
+                statsBar.style.display = 'none';
+                searchBar.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            for (let b = 0; b < batchCount; b++) {
+                const start = b * batchSize;
+                const end = Math.min(start + batchSize, totalVisible);
+                const batchSymbols = visibleSymbols.slice(start, end);
+
+                const batchNum = b + 1;
+                const batchLabel = (batchSymbols.length < batchSize) ?
+                    `Batch ${batchNum} (${batchSymbols.length})` :
+                    `Batch ${batchNum}`;
+
+                const pills = batchSymbols.map((sym, idx) => {
+                    const globalIdx = allSymbols.indexOf(sym);
+                    const dataAttrs = `data-symbol="${sym}" data-global="${globalIdx}"`;
+                    return `<span class="symbol-pill" ${dataAttrs}>${sym}</span>`;
+                }).join('');
+
+                const copyText = batchSymbols.join(',');
+
+                html += `
+                    <div class="batch-card" id="batch-${b}" data-batch-index="${b}">
+                        <div class="batch-header">
+                            <div class="batch-label">
+                                📋 ${batchLabel}
+                                <span class="count">${batchSymbols.length} symbols</span>
+                            </div>
+                            <button class="copy-btn" data-batch="${b}" data-copy="${copyText}">
+                                <span class="icon">📋</span> Copy Batch (${batchSymbols.length})
+                            </button>
+                        </div>
+                        <div class="batch-symbols">${pills}</div>
+                    </div>
+                `;
+            }
+
+            batchesContainer.innerHTML = html;
+
+            if (searchTerm.trim().length > 0) {
+                applySearch(searchTerm.trim());
+            }
+
+            // ─── Copy Events ───
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const text = this.dataset.copy;
+                    const batchId = this.dataset.batch;
+
+                    const visibleList = allSymbols.filter((_, idx) => !copiedIndices.has(idx));
+                    const startIdx = parseInt(batchId) * batchSize;
+                    const endIdx = Math.min(startIdx + batchSize, visibleList.length);
+                    const batchSymbolsVisible = visibleList.slice(startIdx, endIdx);
+
+                    const origIndices = [];
+                    for (const sym of batchSymbolsVisible) {
+                        const idx = allSymbols.indexOf(sym);
+                        if (idx !== -1 && !copiedIndices.has(idx)) {
+                            origIndices.push(idx);
+                        }
+                    }
+
+                    navigator.clipboard.writeText(text).then(() => {
+                        origIndices.forEach(idx => copiedIndices.add(idx));
+                        const card = document.getElementById(`batch-${batchId}`);
+                        if (card) card.classList.add('copied');
+                        setTimeout(() => renderBatches(), 420);
+                        showToast(
+                            `Copied <strong>${batchSymbolsVisible.length}</strong> symbols to clipboard!`,
+                            '📋'
+                        );
+                    }).catch(() => {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = text;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        origIndices.forEach(idx => copiedIndices.add(idx));
+                        const card = document.getElementById(`batch-${batchId}`);
+                        if (card) card.classList.add('copied');
+                        setTimeout(() => renderBatches(), 420);
+                        showToast(
+                            `Copied <strong>${batchSymbolsVisible.length}</strong> symbols to clipboard!`,
+                            '📋'
+                        );
+                    });
+                });
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SEARCH / FILTER
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function applySearch(term) {
+            searchTerm = term;
+            const pills = document.querySelectorAll('.symbol-pill');
+            let matchCount = 0;
+
+            if (!term || term.trim() === '') {
+                pills.forEach(p => {
+                    p.classList.remove('hidden-by-search', 'match-highlight');
+                });
+                document.querySelectorAll('.batch-card').forEach(card => {
+                    card.classList.remove('hidden-by-search');
+                });
+                searchCount.textContent = `${pills.length} matches`;
+                clearSearchBtn.classList.remove('visible');
+                return;
+            }
+
+            const lowerTerm = term.toLowerCase();
+            pills.forEach(p => {
+                const symbol = p.dataset.symbol.toLowerCase();
+                if (symbol.includes(lowerTerm)) {
+                    p.classList.remove('hidden-by-search');
+                    p.classList.add('match-highlight');
+                    matchCount++;
+                } else {
+                    p.classList.add('hidden-by-search');
+                    p.classList.remove('match-highlight');
+                }
+            });
+
+            document.querySelectorAll('.batch-card').forEach(card => {
+                const visiblePills = card.querySelectorAll('.symbol-pill:not(.hidden-by-search)');
+                if (visiblePills.length === 0) {
+                    card.classList.add('hidden-by-search');
+                } else {
+                    card.classList.remove('hidden-by-search');
+                }
+            });
+
+            searchCount.textContent = `${matchCount} matches`;
+            clearSearchBtn.classList.add('visible');
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // PROCESS TEXT INPUT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function processTextInput() {
+            const text = symbolInput.value;
+            const symbols = parseSymbolsFromText(text);
+
+            if (symbols.length === 0) {
+                showToast('❌ No symbols recognised. Check format.', '⚠️');
+                symbolInput.style.borderColor = '#f87171';
+                setTimeout(() => {
+                    symbolInput.style.borderColor = '';
+                }, 1500);
+                return;
+            }
+
+            const unique = [];
+            const seen = new Set();
+            for (const s of symbols) {
+                if (!seen.has(s)) {
+                    seen.add(s);
+                    unique.push(s);
+                }
+            }
+
+            allSymbols = unique;
+            copiedIndices = new Set();
+            searchTerm = '';
+            searchInput.value = '';
+            renderBatches();
+            showToast(
+                `✅ Loaded <strong>${unique.length}</strong> unique symbols (${Math.ceil(unique.length / batchSize)} batches)`,
+                '📊'
+            );
+            symbolCountEl.innerHTML = `Recognised <strong>${unique.length}</strong> symbols`;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // CLEAR
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function clearAll() {
+            symbolInput.value = '';
+            symbolCountEl.innerHTML = 'Recognised <strong>0</strong> symbols';
+            allSymbols = [];
+            copiedIndices = new Set();
+            searchTerm = '';
+            searchInput.value = '';
+            renderBatches();
+            showToast('Cleared all data', '🗑️');
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // PARSE EXCEL
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function parseExcelFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+                    let symbolColumnIndex = 2;
+                    let startRow = 0;
+                    for (let i = 0; i < Math.min(10, json.length); i++) {
+                        const row = json[i];
+                        if (row && row.length > 2) {
+                            const cell = String(row[2] || '').toLowerCase().trim();
+                            if (cell === 'symbol' || cell.includes('symbol')) {
+                                symbolColumnIndex = 2;
+                                startRow = i + 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    const symbols = [];
+                    for (let i = startRow; i < json.length; i++) {
+                        const row = json[i];
+                        if (!row || row.length <= symbolColumnIndex) continue;
+                        const val = String(row[symbolColumnIndex] || '').trim();
+                        if (val && val !== '' && val !== 'Symbol' && val !== 'symbol') {
+                            symbols.push(val);
+                        }
+                    }
+
+                    if (symbols.length === 0) {
+                        showToast('❌ No symbols found in column C.', '⚠️');
+                        return;
+                    }
+
+                    const unique = [];
+                    const seen = new Set();
+                    for (const s of symbols) {
+                        if (!seen.has(s)) {
+                            seen.add(s);
+                            unique.push(s);
+                        }
+                    }
+
+                    allSymbols = unique;
+                    copiedIndices = new Set();
+                    searchTerm = '';
+                    searchInput.value = '';
+                    renderBatches();
+                    showToast(
+                        `✅ Loaded <strong>${unique.length}</strong> symbols from <strong>${file.name}</strong>`,
+                        '📊'
+                    );
+
+                } catch (err) {
+                    showToast('❌ Error reading file: ' + err.message, '🚫');
+                    console.error(err);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // EVENTS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                parseExcelFile(this.files[0]);
+            }
+            this.value = '';
+        });
+
+        uploadZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        uploadZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files && files[0]) {
+                const ext = files[0].name.split('.').pop().toLowerCase();
+                if (ext === 'xlsx' || ext === 'xls') {
+                    parseExcelFile(files[0]);
+                } else {
+                    showToast('❌ Please upload .xlsx or .xls', '⚠️');
+                }
+            }
+        });
+        uploadZone.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'INPUT') {
+                fileInput.click();
+            }
+        });
+
+        processTextBtn.addEventListener('click', processTextInput);
+        symbolInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                processTextInput();
+            }
+        });
+        clearTextBtn.addEventListener('click', clearAll);
+
+        searchInput.addEventListener('input', function() {
+            applySearch(this.value);
+        });
+        clearSearchBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            applySearch('');
+            searchInput.focus();
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // INIT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        renderBatches();
+        updateSymbolCount();
+
+        console.log('🚀 TradingView Watchlist Splitter ready for scanners!');
+        console.log('🔗 Works with Chartink, TradingView Screener, and more.');
+        console.log('📲 Join Telegram: https://t.me/+RibGnKQct1JlOGNl');
+    </script>
+
+</body>
+</html>
