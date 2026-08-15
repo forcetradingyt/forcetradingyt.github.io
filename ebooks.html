@@ -1,0 +1,3767 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Force Trading YT — Learn to Trade</title>
+    <meta
+      name="description"
+      content="Interactive 3D showcase for Force Trading YT — price action, risk management and intraday trading, explained candle by candle."
+    />
+    <!--
+  Interactive 3D book showcase for Force Trading YT. Single file, no build step.
+
+  Notes for editing:
+  - Book data + procedural cover painters live in the BOOKS array below.
+  - Each book's coverURL points at a real image in covers/ (same-origin, so it
+    always loads). Drop a replacement image over covers/<book>.png or point
+    coverURL at any external URL — the code attempts a CORS texture load,
+    falling back to the painted cover if the host does not send
+    Access-Control-Allow-Origin (Amazon image CDNs do not).
+  - All geometry, textures, lighting and the environment map are procedural.
+  - Forest theme: the backdrop canvas paints a dark tropical forest (canopy,
+    trunks, hanging vines, golden sunbeams, wet reflective ground) — purely
+    visual, no text baked in. The UI accent is dark emerald / leaf green.
+  - All books are visible from the first frame; each book's detail view lists
+    the other books as clickable recommendations (in-place 3D swap).
+  - The logo (open book + leaf-green path mark) and both "Join Premium" buttons
+    link to https://forcetradingyt.github.io/ (new tab) — the URL is never shown
+    as visible text. The "Watch on YouTube" pill is still a plain button — drop
+    your YouTube channel URL into it in the .actions block to wire it up.
+-->
+    <style>
+      :root {
+        /* forest palette: dark greens, leaf green accent, warm beige text */
+        --navy: #141a32;
+        --ink: #0c1428;
+        --pink: #9ecf9f; /* leaf-green accent (kept name for existing usages) */
+        --green-bright: #b7e0b0;
+        --green-deep: #2f8f5b; /* emerald for primary buttons */
+        --green-deep2: #1c6b43;
+        --cream: #f6efe0; /* warm beige */
+        --lav: #e9e4d4; /* warm beige text (kept name for existing usages) */
+        --peri: #2e9e6b; /* emerald accent (kept name for existing usages) */
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            60% 50% at 18% 8%,
+            rgba(158, 207, 159, 0.07) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            120% 100% at 50% 0%,
+            #0d1a0f 0%,
+            #08120a 55%,
+            #040803 100%
+          );
+        color: var(--lav);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+          Arial, sans-serif;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: 0;
+      }
+      button:focus-visible {
+        outline: 2px solid var(--pink);
+        outline-offset: 3px;
+      }
+
+      /* ---------- hero word ---------- */
+      .hero-word {
+        position: fixed;
+        top: 18vh;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        user-select: none;
+        pointer-events: none;
+        transition:
+          opacity 0.55s ease,
+          transform 0.55s ease;
+      }
+      .hero-word span {
+        display: block;
+        white-space: nowrap;
+        font-size: min(22.5vw, 45vh);
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        line-height: 0.85;
+        color: var(--pink);
+        text-shadow:
+          0 0 34px rgba(158, 207, 159, 0.4),
+          0 0 90px rgba(158, 207, 159, 0.22);
+        animation: heroIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+      }
+      @keyframes heroIn {
+        from {
+          opacity: 0;
+          transform: translateY(60px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      body.detail-open .hero-word,
+      body.transit .hero-word {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-44px);
+      }
+
+      /* ---------- hero tagline: a quiet bottom note, clear of the books ---------- */
+      .hero-tag {
+        position: fixed;
+        left: 50%;
+        bottom: 4vh;
+        transform: translateX(-50%);
+        z-index: 1;
+        user-select: none;
+        pointer-events: none;
+        color: var(--lav);
+        font-size: clamp(12px, 1.3vw, 16px);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0;
+        animation: tagIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+        transition:
+          opacity 0.55s ease,
+          transform 0.55s ease;
+      }
+      @keyframes tagIn {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+      body.detail-open .hero-tag,
+      body.transit .hero-tag {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+
+      /* ---------- space backdrop canvas ---------- */
+      #bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        display: block;
+        pointer-events: none;
+      }
+
+      /* ---------- canvas ---------- */
+      #gl {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        display: block;
+        touch-action: none;
+      }
+
+      /* ---------- nav ---------- */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 40;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 26px 42px;
+        pointer-events: none;
+      }
+      nav > * {
+        pointer-events: auto;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--pink);
+        font-weight: 800;
+        font-size: clamp(19px, 2.1vw, 27px);
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .logo:hover {
+        transform: scale(1.03);
+      }
+      .logo:focus-visible {
+        outline: 2px solid var(--pink);
+        outline-offset: 3px;
+      }
+      .logo-mark {
+        width: 30px;
+        height: 30px;
+        flex: none;
+        filter: drop-shadow(0 0 10px rgba(158, 207, 159, 0.4));
+      }
+      .nav-r {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .menu-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--cream);
+        color: var(--navy);
+        font-size: 20px;
+        font-weight: 800;
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .cta {
+        height: 48px;
+        padding: 0 26px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(180deg, var(--green-deep), var(--green-deep2));
+        color: #eaf6ea;
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(47, 143, 91, 0.35);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .menu-btn:hover,
+      .cta:hover {
+        transform: scale(1.05);
+      }
+      .cta:focus-visible,
+      .pill:focus-visible {
+        outline: 2px solid var(--pink);
+        outline-offset: 3px;
+      }
+      .nav-back {
+        height: 48px;
+        padding: 0 22px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        background: transparent;
+        color: var(--lav);
+        border: 1.5px solid rgba(233, 228, 212, 0.35);
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition:
+          transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+          border-color 0.25s ease,
+          color 0.25s ease;
+      }
+      .nav-back:hover {
+        transform: scale(1.05);
+        border-color: rgba(158, 207, 159, 0.85);
+        color: #fff;
+      }
+      .nav-back:focus-visible {
+        outline: 2px solid var(--pink);
+        outline-offset: 3px;
+      }
+      .nav-back svg {
+        width: 17px;
+        height: 17px;
+        flex: none;
+      }
+
+      /* ---------- open slip: a torn scrap of page that trails the cursor ----------
+         clip-path gives every edge a deckled tear; drop-shadow (not box-shadow)
+         is used so the shadow follows the torn silhouette instead of a rectangle.
+         Never interactive: the click is handled by the book underneath. */
+      #openBtn {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 30;
+        padding: 16px 38px 18px;
+        border: 0;
+        border-radius: 0;
+        background:
+          repeating-linear-gradient(
+            92deg,
+            rgba(90, 74, 40, 0.03) 0 2px,
+            transparent 2px 6px
+          ),
+          radial-gradient(
+            125% 150% at 28% 0%,
+            #fffdf7 0%,
+            #f8f2e3 58%,
+            #ede4cf 100%
+          );
+        color: var(--navy);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        clip-path: polygon(
+          0% 0.9%,
+          8.3% 0.8%,
+          16.7% 6.3%,
+          25% 3.8%,
+          33.3% 5.5%,
+          41.7% 2.7%,
+          50% 5.2%,
+          58.3% 0.4%,
+          66.7% 5.9%,
+          75% 6.5%,
+          83.3% 1%,
+          91.7% 6.4%,
+          100% 0.7%,
+          97.7% 20%,
+          97% 40%,
+          99.6% 60%,
+          98.7% 80%,
+          100% 96.5%,
+          91.7% 99.8%,
+          83.3% 95.6%,
+          75% 94.9%,
+          66.7% 96.6%,
+          58.3% 93.5%,
+          50% 97.9%,
+          41.7% 99.5%,
+          33.3% 93.2%,
+          25% 93.6%,
+          16.7% 93.2%,
+          8.3% 93.1%,
+          0% 93.5%,
+          0.2% 80%,
+          1.1% 60%,
+          3.9% 40%,
+          3.8% 20%
+        );
+        filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.16))
+          drop-shadow(0 14px 26px rgba(0, 0, 0, 0.4));
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) rotate(-1.6deg) scale(0.94);
+        transition:
+          opacity 0.24s ease,
+          transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform, opacity, left, top;
+      }
+      #openBtn.on {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-1.6deg) scale(1);
+      }
+
+      /* ---------- close button ---------- */
+      #closeBtn {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 40;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--cream);
+        border: 1.5px solid rgba(253, 251, 244, 0.4);
+        font-size: 17px;
+        line-height: 1;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.4s ease 0.15s,
+          border-color 0.25s ease;
+      }
+      #closeBtn:hover {
+        border-color: rgba(253, 251, 244, 0.9);
+      }
+      body.detail-open #closeBtn {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* ---------- detail panel ---------- */
+      .dp {
+        position: fixed;
+        right: 7vw;
+        top: 50%;
+        transform: translateY(-50%);
+        width: min(560px, 42vw);
+        max-height: calc(100vh - 48px);
+        overflow-y: auto;
+        z-index: 15;
+        pointer-events: none;
+        visibility: hidden;
+        transition: visibility 0s 0.5s;
+      }
+      .dp::-webkit-scrollbar {
+        width: 6px;
+      }
+      .dp::-webkit-scrollbar-thumb {
+        background: rgba(158, 207, 159, 0.3);
+        border-radius: 3px;
+      }
+      body.detail-open .dp {
+        visibility: visible;
+        transition: visibility 0s 0s;
+      }
+      .dp > * {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.28s ease,
+          transform 0.28s ease;
+      }
+      body.detail-open .dp > * {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      body.detail-open .dp > *:nth-child(1) {
+        transition-delay: 0.05s;
+      }
+      body.detail-open .dp > *:nth-child(2) {
+        transition-delay: 0.13s;
+      }
+      body.detail-open .dp > *:nth-child(3) {
+        transition-delay: 0.21s;
+      }
+      body.detail-open .dp > *:nth-child(4) {
+        transition-delay: 0.27s;
+      }
+      body.detail-open .dp > *:nth-child(5) {
+        transition-delay: 0.33s;
+      }
+      body.detail-open .dp > *:nth-child(6) {
+        transition-delay: 0.39s;
+      }
+
+      .dp-cover {
+        width: 188px;
+        aspect-ratio: 2 / 3;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 26px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(158, 207, 159, 0.22);
+        box-shadow:
+          0 34px 70px rgba(0, 0, 0, 0.5),
+          0 8px 18px rgba(0, 0, 0, 0.35),
+          0 0 34px rgba(158, 207, 159, 0.12);
+      }
+      .dp-cover img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+      body.detail-open .dp .dp-cover {
+        transform: rotate(-2.5deg);
+      }
+
+      .dp h1 {
+        margin: 0;
+        color: var(--pink);
+        font-size: clamp(30px, 3.2vw, 46px);
+        font-weight: 800;
+        line-height: 1.06;
+        letter-spacing: -0.015em;
+        text-shadow: 0 0 30px rgba(158, 207, 159, 0.35);
+      }
+      .dp p {
+        margin: 26px 0 0;
+        color: var(--lav);
+        font-size: clamp(16px, 1.25vw, 19px);
+        line-height: 1.65;
+        font-weight: 400;
+        max-width: 54ch;
+      }
+      .meta {
+        margin-top: 34px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .stars {
+        display: flex;
+        gap: 5px;
+      }
+      .stars svg {
+        width: 25px;
+        height: 25px;
+        fill: var(--pink);
+      }
+      .stars svg.dim {
+        opacity: 0.25;
+      }
+      .sep {
+        width: 1px;
+        height: 24px;
+        background: rgba(158, 207, 159, 0.32);
+      }
+      .src,
+      .year {
+        color: #c9bfa4;
+        font-style: italic;
+        font-size: 19px;
+      }
+      .year {
+        margin-left: auto;
+      }
+      .rule {
+        margin-top: 26px;
+        border-top: 1px solid rgba(158, 207, 159, 0.22);
+      }
+      .actions {
+        margin-top: 32px;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(13, 28, 19, 0.92),
+          rgba(8, 18, 12, 0.92)
+        );
+        border: 1px solid rgba(158, 207, 159, 0.3);
+        border-radius: 28px;
+        padding: 10px;
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(158, 207, 159, 0.1);
+        pointer-events: auto;
+      }
+      .pill {
+        height: 54px;
+        padding: 0 26px;
+        border-radius: 999px;
+        font-size: 16.5px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        transition:
+          transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.2s;
+      }
+      .pill:hover {
+        transform: scale(1.04);
+        filter: brightness(1.05);
+      }
+      .pill.lang {
+        background: var(--cream);
+        color: var(--navy);
+      }
+      .pill.buy {
+        background: var(--peri);
+        color: #0c1428;
+        font-weight: 700;
+      }
+      .pill.gold {
+        background: linear-gradient(180deg, var(--green-deep), var(--green-deep2));
+        color: #eaf6ea;
+        font-weight: 700;
+        box-shadow: 0 10px 30px rgba(47, 143, 91, 0.3);
+      }
+      .pill.iconb {
+        width: 54px;
+        padding: 0;
+        justify-content: center;
+        background: #12261a;
+        color: var(--lav);
+      }
+      .pill svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      /* ---------- book recommendations inside the detail panel ---------- */
+      .recs {
+        margin-top: 26px;
+        pointer-events: auto;
+      }
+      .recs-head {
+        margin-bottom: 12px;
+        color: rgba(233, 228, 212, 0.62);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .recs-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .rec {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px 8px 8px;
+        pointer-events: auto;
+        border-radius: 14px;
+        background: rgba(13, 28, 19, 0.55);
+        border: 1px solid rgba(158, 207, 159, 0.22);
+        color: var(--lav);
+        text-align: left;
+        cursor: pointer;
+        transition:
+          transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+      .rec:hover {
+        transform: translateY(-2px);
+        border-color: rgba(158, 207, 159, 0.6);
+        background: rgba(13, 28, 19, 0.85);
+      }
+      .rec:focus-visible {
+        outline: 2px solid var(--pink);
+        outline-offset: 2px;
+      }
+      .rec-cover {
+        width: 44px;
+        aspect-ratio: 2 / 3;
+        border-radius: 5px;
+        object-fit: cover;
+        flex: none;
+      }
+      .rec-cover-fb {
+        background: linear-gradient(160deg, #1c3a26, #0d2014);
+      }
+      .rec-title {
+        font-size: 14.5px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+
+      /* ---------- portrait / small screens ---------- */
+      @media (max-aspect-ratio: 17/20), (max-width: 760px) {
+        nav {
+          padding: 18px 20px;
+        }
+        .nav-back {
+          width: 48px;
+          padding: 0;
+          justify-content: center;
+        }
+        .nav-back span {
+          display: none;
+        }
+        .hero-word {
+          top: 7vh;
+        }
+        .hero-word span {
+          font-size: 34vw;
+        }
+        .dp-cover {
+          width: 132px;
+          margin-bottom: 16px;
+        }
+        .dp {
+          right: auto;
+          left: 50%;
+          top: auto;
+          bottom: 3.5vh;
+          transform: translateX(-50%);
+          width: min(560px, 92vw);
+        }
+      .nav-back span {
+        display: inline;
+      }
+      .dp h1 {
+        font-size: clamp(25px, 6.6vw, 36px);
+      }
+        .dp p {
+          font-size: 15px;
+          margin-top: 16px;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .meta {
+          margin-top: 18px;
+        }
+        .rule {
+          margin-top: 16px;
+        }
+        .actions {
+          margin-top: 18px;
+          flex-wrap: wrap;
+          border-radius: 28px;
+        }
+        .pill {
+          height: 48px;
+          padding: 0 20px;
+          font-size: 15px;
+        }
+        #closeBtn {
+          top: 18px;
+          left: auto;
+          right: 18px;
+          transform: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01s !important;
+          transition-duration: 0.01s !important;
+        }
+      }
+
+      .webgl-fail {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+        color: var(--lav);
+        font-size: 18px;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero-word"><span>FORCE</span></div>
+    <div class="hero-tag" aria-hidden="true">Trade with structure, not noise.</div>
+
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <canvas id="gl"></canvas>
+
+    <nav>
+      <a
+        class="logo"
+        href="https://forcetradingyt.github.io/"
+        target="_blank"
+        rel="noopener"
+        aria-label="Force Trading YT"
+      >
+        <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path
+            d="M16 22.6c-3.2-2.1-6.6-2.6-11-1.8V8.4c4.4-.8 7.8-.3 11 1.8v12.4Z"
+            fill="#f6efe0"
+          />
+          <path
+            d="M16 22.6c3.2-2.1 6.6-2.6 11-1.8V8.4c-4.4-.8-7.8-.3-11 1.8v12.4Z"
+            fill="#e6dcc2"
+          />
+          <path d="M16 10.2v12.4" stroke="#9ecf9f" stroke-width="1.1" />
+          <path
+            d="M6.6 11.4c2.9-.4 5.3.1 7.2 1.8"
+            stroke="#c9b98f"
+            stroke-width="0.9"
+            stroke-linecap="round"
+          />
+          <path
+            d="M25.4 11.4c-2.9-.4-5.3.1-7.2 1.8"
+            stroke="#c9b98f"
+            stroke-width="0.9"
+            stroke-linecap="round"
+          />
+          <path
+            d="M16 9.4C16.6 6.6 18.9 5.3 21.7 4"
+            stroke="#9ecf9f"
+            stroke-width="1.7"
+            stroke-linecap="round"
+          />
+          <path
+            d="M23.6 0.4C23.9 1.4 24.4 1.9 25.4 2.2C24.4 2.5 23.9 3 23.6 4C23.3 3 22.8 2.5 21.8 2.2C22.8 1.9 23.3 1.4 23.6 0.4Z"
+            fill="#9ecf9f"
+          />
+        </svg>
+        <span>Force Trading YT</span>
+      </a>
+      <div class="nav-r">
+        <a class="nav-back" href="index.html" aria-label="Back to the scanner">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 17l6-6 4 4 8-8" />
+            <path d="M15 7h6v6" />
+          </svg>
+          <span>Scanner</span>
+        </a>
+        <button class="menu-btn" aria-label="Menu">=</button>
+        <a
+          class="cta"
+          href="https://forcetradingyt.github.io/"
+          target="_blank"
+          rel="noopener"
+          >Join Premium</a
+        >
+      </div>
+    </nav>
+
+    <button id="openBtn">Open</button>
+    <button id="closeBtn" aria-label="Close detail view">&#10005;</button>
+
+    <div class="dp" id="dp" aria-live="polite">
+      <div class="dp-cover">
+        <img id="dpCover" alt="" />
+      </div>
+      <h1 id="dpTitle"></h1>
+      <p id="dpDesc"></p>
+      <div class="meta">
+        <div class="stars" id="dpStars"></div>
+        <div class="sep"></div>
+        <div class="src">YouTube</div>
+        <div class="year" id="dpYear"></div>
+      </div>
+      <div class="rule"></div>
+      <div class="actions">
+        <button class="pill lang">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path
+              d="M3 12h18M12 3c2.8 2.6 2.8 15.4 0 18M12 3c-2.8 2.6-2.8 15.4 0 18"
+            />
+          </svg>
+          <span>English</span>
+        </button>
+        <button class="pill buy">Watch on YouTube</button>
+        <a
+          id="buyBtn"
+          class="pill buy"
+          href="https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f"
+          target="_blank"
+          rel="noopener"
+          >Buy</a
+        >
+        <a
+          class="pill buy gold"
+          href="https://forcetradingyt.github.io/"
+          target="_blank"
+          rel="noopener"
+          >Join Premium</a
+        >
+        <button class="pill iconb" aria-label="Save">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+          >
+            <path d="M7 3h10v18l-5-4-5 4z" />
+          </svg>
+        </button>
+      </div>
+      <div class="recs" aria-label="More books">
+        <div class="recs-head">More books</div>
+        <div class="recs-list" id="recsList"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      /* =========================================================================
+   0. Small utilities
+   ========================================================================= */
+      const RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+      class Spring {
+        constructor(v, k, d) {
+          this.v = v;
+          this.t = v;
+          this.vel = 0;
+          this.k = k || 120;
+          this.d = d || 14;
+        }
+        set(v) {
+          this.v = v;
+          this.t = v;
+          this.vel = 0;
+          return this;
+        }
+        update(dt) {
+          const a = this.k * (this.t - this.v) - this.d * this.vel;
+          this.vel += a * dt;
+          this.v += this.vel * dt;
+          return this.v;
+        }
+      }
+
+      function mkCanvas(w, h) {
+        const c = document.createElement("canvas");
+        c.width = w;
+        c.height = h;
+        return c;
+      }
+
+      function drawSpaced(x, text, cx, y, ls) {
+        const prev = x.textAlign;
+        x.textAlign = "left";
+        const chars = [...text];
+        let tot = 0;
+        const ws = chars.map((ch) => {
+          const w = x.measureText(ch).width;
+          tot += w;
+          return w;
+        });
+        tot += ls * (chars.length - 1);
+        let px = cx - tot / 2;
+        chars.forEach((ch, i) => {
+          x.fillText(ch, px, y);
+          px += ws[i] + ls;
+        });
+        x.textAlign = prev;
+      }
+
+      function rr(x, px, py, w, h, r) {
+        x.beginPath();
+        x.moveTo(px + r, py);
+        x.arcTo(px + w, py, px + w, py + h, r);
+        x.arcTo(px + w, py + h, px, py + h, r);
+        x.arcTo(px, py + h, px, py, r);
+        x.arcTo(px, py, px + w, py, r);
+        x.closePath();
+      }
+
+      /* =========================================================================
+   0.5 Forest backdrop — dark canopy, trunks and vines, golden sunbeams,
+       wet ground. Painted from the reference image's description; purely
+       visual (no text, symbols or logos). Seeded, so it is stable on resize.
+   ========================================================================= */
+      function mulberry32(a) {
+        return function () {
+          a |= 0;
+          a = (a + 0x6d2b79f5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      const bgCanvas = document.getElementById("bg");
+      const bgCtx = bgCanvas.getContext("2d");
+      function paintForestBg() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        bgCanvas.width = Math.round(innerWidth * dpr);
+        bgCanvas.height = Math.round(innerHeight * dpr);
+        bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const w = innerWidth,
+          h = innerHeight;
+        const rnd = mulberry32(20260815);
+
+        /* 1 — deep forest gradient (black-green shadows) */
+        const sky = bgCtx.createLinearGradient(0, 0, 0, h);
+        sky.addColorStop(0, "#0f1b10");
+        sky.addColorStop(0.5, "#0a120b");
+        sky.addColorStop(0.85, "#050a06");
+        sky.addColorStop(1, "#020402");
+        bgCtx.fillStyle = sky;
+        bgCtx.fillRect(0, 0, w, h);
+
+        /* 2 — warm light source glow, upper left */
+        const glow = bgCtx.createRadialGradient(
+          w * 0.16,
+          h * 0.04,
+          0,
+          w * 0.16,
+          h * 0.04,
+          w * 0.55,
+        );
+        glow.addColorStop(0, "rgba(255,240,180,0.4)");
+        glow.addColorStop(0.3, "rgba(255,214,120,0.13)");
+        glow.addColorStop(1, "rgba(255,214,120,0)");
+        bgCtx.fillStyle = glow;
+        bgCtx.fillRect(0, 0, w, h);
+
+        /* 3 — layered canopy silhouettes */
+        const canopy = (y0, spread, color) => {
+          bgCtx.fillStyle = color;
+          for (let i = 0; i < 64; i++) {
+            const cx = rnd() * w;
+            const cy = y0 + (rnd() - 0.5) * spread;
+            const r = spread * (0.3 + rnd() * 0.75);
+            bgCtx.beginPath();
+            bgCtx.arc(cx, cy, r, 0, 6.2832);
+            bgCtx.fill();
+          }
+        };
+        canopy(h * 0.06, h * 0.14, "rgba(10,22,12,0.92)");
+        canopy(h * 0.18, h * 0.16, "rgba(5,12,6,0.95)");
+
+        /* 4 — tree trunks framing the scene */
+        const trunk = (tx, tw, top, bot) => {
+          const grad = bgCtx.createLinearGradient(tx - tw, 0, tx + tw, 0);
+          grad.addColorStop(0, "#0a130b");
+          grad.addColorStop(0.5, "#040803");
+          grad.addColorStop(1, "#060d07");
+          bgCtx.fillStyle = grad;
+          bgCtx.beginPath();
+          bgCtx.moveTo(tx - tw, top);
+          bgCtx.quadraticCurveTo(
+            tx,
+            top + (bot - top) * 0.05,
+            tx - tw * 0.6,
+            bot,
+          );
+          bgCtx.lineTo(tx + tw * 0.7, bot);
+          bgCtx.quadraticCurveTo(
+            tx,
+            top + (bot - top) * 0.05,
+            tx + tw,
+            top,
+          );
+          bgCtx.closePath();
+          bgCtx.fill();
+        };
+        trunk(w * 0.055, w * 0.03, h * 0.05, h);
+        trunk(w * 0.31, w * 0.02, h * 0.03, h * 0.97);
+        trunk(w * 0.79, w * 0.025, h * 0.04, h);
+        trunk(w * 0.955, w * 0.032, h * 0.09, h);
+
+        /* 5 — hanging roots and vines */
+        bgCtx.strokeStyle = "rgba(9,17,10,0.9)";
+        bgCtx.lineWidth = 1.6;
+        for (let i = 0; i < 30; i++) {
+          const vx = rnd() * w;
+          const len = h * (0.12 + rnd() * 0.3);
+          const sway = (rnd() - 0.5) * 44;
+          bgCtx.beginPath();
+          bgCtx.moveTo(vx, 0);
+          bgCtx.quadraticCurveTo(vx + sway * 0.3, len * 0.5, vx + sway, len);
+          bgCtx.stroke();
+        }
+
+        /* 6 — wet ground path with a golden reflection sheen */
+        const ground = bgCtx.createLinearGradient(0, h * 0.78, 0, h);
+        ground.addColorStop(0, "rgba(5,9,5,0)");
+        ground.addColorStop(1, "rgba(2,3,2,0.92)");
+        bgCtx.fillStyle = ground;
+        bgCtx.fillRect(0, h * 0.78, w, h * 0.22);
+        const sheen = bgCtx.createLinearGradient(0, h * 0.82, 0, h);
+        sheen.addColorStop(0, "rgba(255,214,120,0.12)");
+        sheen.addColorStop(0.55, "rgba(255,214,120,0.04)");
+        sheen.addColorStop(1, "rgba(255,214,120,0)");
+        bgCtx.fillStyle = sheen;
+        bgCtx.beginPath();
+        bgCtx.moveTo(0, h);
+        bgCtx.quadraticCurveTo(w * 0.4, h * 0.74, w, h * 0.87);
+        bgCtx.lineTo(w, h);
+        bgCtx.closePath();
+        bgCtx.fill();
+
+        /* 7 — ferns and undergrowth in the lower left, catching the light */
+        const fern = (fx, fy, s, col, lw) => {
+          bgCtx.strokeStyle = col;
+          bgCtx.lineWidth = lw;
+          for (let k = 0; k < 8; k++) {
+            const a = -2.5 + k * 0.38 + (rnd() - 0.5) * 0.1;
+            const ex = fx + Math.cos(a) * s;
+            const ey = fy + Math.sin(a) * s;
+            bgCtx.beginPath();
+            bgCtx.moveTo(fx, fy);
+            bgCtx.quadraticCurveTo(
+              fx + Math.cos(a) * s * 0.5,
+              fy + Math.sin(a) * s * 0.5 - s * 0.3,
+              ex,
+              ey,
+            );
+            bgCtx.stroke();
+          }
+        };
+        for (let i = 0; i < 26; i++) {
+          fern(
+            w * (0.02 + rnd() * 0.32),
+            h * (0.8 + rnd() * 0.18),
+            20 + rnd() * 34,
+            "rgba(22,46,24,0.95)",
+            1.7,
+          );
+        }
+        for (let i = 0; i < 14; i++) {
+          fern(
+            w * (0.04 + rnd() * 0.22),
+            h * (0.82 + rnd() * 0.16),
+            14 + rnd() * 22,
+            "rgba(126,152,66,0.5)",
+            1.4,
+          );
+        }
+
+        /* 8 — rain streaks hanging from the canopy */
+        bgCtx.strokeStyle = "rgba(190,216,192,0.13)";
+        bgCtx.lineWidth = 1;
+        for (let i = 0; i < 110; i++) {
+          const rx = rnd() * w;
+          const ry = rnd() * h * 0.55;
+          const rl = 8 + rnd() * 28;
+          bgCtx.beginPath();
+          bgCtx.moveTo(rx, ry);
+          bgCtx.lineTo(rx - 2, ry + rl);
+          bgCtx.stroke();
+        }
+
+        /* 9 — golden sunbeams slanting down-right, additive */
+        bgCtx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < 16; i++) {
+          const sx = w * (0.04 + rnd() * 0.26);
+          const sy = -h * 0.02;
+          const len = h * (0.65 + rnd() * 0.55);
+          const ex = sx + len * (0.42 + rnd() * 0.3);
+          const ey = sy + len;
+          const bw = w * (0.012 + rnd() * 0.03);
+          const grad = bgCtx.createLinearGradient(sx, sy, ex, ey);
+          grad.addColorStop(0, "rgba(255,222,132,0.2)");
+          grad.addColorStop(0.6, "rgba(255,198,98,0.07)");
+          grad.addColorStop(1, "rgba(255,198,98,0)");
+          bgCtx.strokeStyle = grad;
+          bgCtx.lineWidth = bw;
+          bgCtx.beginPath();
+          bgCtx.moveTo(sx, sy);
+          bgCtx.lineTo(ex, ey);
+          bgCtx.stroke();
+        }
+        const core = bgCtx.createRadialGradient(
+          w * 0.16,
+          h * 0.03,
+          0,
+          w * 0.16,
+          h * 0.03,
+          w * 0.2,
+        );
+        core.addColorStop(0, "rgba(255,244,208,0.38)");
+        core.addColorStop(1, "rgba(255,244,208,0)");
+        bgCtx.fillStyle = core;
+        bgCtx.fillRect(0, 0, w, h);
+        bgCtx.globalCompositeOperation = "source-over";
+
+        /* 10 — droplet ripples on the wet ground */
+        bgCtx.strokeStyle = "rgba(255,220,150,0.13)";
+        bgCtx.lineWidth = 1;
+        for (let i = 0; i < 14; i++) {
+          const rx = w * (0.08 + rnd() * 0.84);
+          const ry = h * (0.87 + rnd() * 0.12);
+          const rr = 3 + rnd() * 11;
+          bgCtx.beginPath();
+          bgCtx.arc(rx, ry, rr, 0, 6.2832);
+          bgCtx.stroke();
+        }
+      }
+      paintForestBg();
+      window.addEventListener("resize", paintForestBg);
+
+      /* =========================================================================
+   1. Renderer, scene, camera, lights
+   ========================================================================= */
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas: document.getElementById("gl"),
+          antialias: true,
+          alpha: true,
+        });
+      } catch (e) {
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          '<div class="webgl-fail">This experience needs WebGL, which your browser blocked or does not support.</div>',
+        );
+        throw e;
+      }
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      /* held just under 1 so cover art keeps its printed saturation instead of
+         being rolled off toward white by the filmic curve */
+      renderer.toneMappingExposure = 0.92;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      const ANISO = renderer.capabilities.getMaxAnisotropy();
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        26,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        100,
+      );
+      camera.position.set(0, 0.1, 9.6);
+
+      /* studio environment: painted equirect, prefiltered */
+      function envBlob(x, cx, cy, r, rgb, a) {
+        const g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+        g.addColorStop(0, "rgba(" + rgb + "," + a + ")");
+        g.addColorStop(1, "rgba(" + rgb + ",0)");
+        x.fillStyle = g;
+        x.beginPath();
+        x.arc(cx, cy, r, 0, 6.2832);
+        x.fill();
+      }
+      (function buildEnv() {
+        const c = mkCanvas(512, 256),
+          x = c.getContext("2d");
+        const g = x.createLinearGradient(0, 0, 0, 256);
+        g.addColorStop(0, "#3a543f");
+        g.addColorStop(0.55, "#1d2f22");
+        g.addColorStop(1, "#0a120c");
+        x.fillStyle = g;
+        x.fillRect(0, 0, 512, 256);
+        envBlob(x, 140, 66, 95, "255,255,255", 0.95); // key
+        envBlob(x, 405, 84, 55, "158,215,150", 0.5); // leaf kicker
+        envBlob(x, 256, 150, 120, "80,210,180", 0.3); // teal wash
+        const tex = new THREE.CanvasTexture(c);
+        tex.mapping = THREE.EquirectangularReflectionMapping;
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromEquirectangular(tex).texture;
+        tex.dispose();
+        pmrem.dispose();
+      })();
+
+      const hemi = new THREE.HemisphereLight(0x9fc8a8, 0x0c1022, 0.32);
+      scene.add(hemi);
+      const key = new THREE.DirectionalLight(0xfff8e8, 0.85);
+      key.position.set(3.5, 5, 6);
+      key.castShadow = true;
+      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.camera.left = -4;
+      key.shadow.camera.right = 4;
+      key.shadow.camera.top = 4;
+      key.shadow.camera.bottom = -4;
+      key.shadow.camera.near = 1;
+      key.shadow.camera.far = 20;
+      key.shadow.bias = -0.0004;
+      key.shadow.normalBias = 0.02;
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0x8fd8c8, 0.22);
+      fill.position.set(-4, 1, 4);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xa8d8a0, 0.35);
+      rim.position.set(-2, 3, -5);
+      scene.add(rim);
+
+      /* everything book-related lives under one root so it can be fit-scaled */
+      const bookRoot = new THREE.Group();
+      scene.add(bookRoot);
+
+      /* =========================================================================
+   2. Shared procedural textures
+   ========================================================================= */
+      function tex(c) {
+        const t = new THREE.CanvasTexture(c);
+        t.encoding = THREE.sRGBEncoding;
+        t.anisotropy = ANISO;
+        return t;
+      }
+
+      function noiseTexture(base, amp, scratches) {
+        const s = 256,
+          c = mkCanvas(s, s),
+          x = c.getContext("2d");
+        const img = x.createImageData(s, s),
+          d = img.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const v = base + (Math.random() - 0.5) * 2 * amp;
+          d[i] = d[i + 1] = d[i + 2] = v;
+          d[i + 3] = 255;
+        }
+        x.putImageData(img, 0, 0);
+        if (scratches) {
+          x.strokeStyle = "rgba(200,200,200,.25)";
+          x.lineWidth = 1;
+          for (let i = 0; i < 5; i++) {
+            x.beginPath();
+            const y = Math.random() * s;
+            x.moveTo(0, y);
+            x.lineTo(s, y + (Math.random() - 0.5) * 22);
+            x.stroke();
+          }
+        }
+        return new THREE.CanvasTexture(c);
+      }
+      const laminateBump = noiseTexture(128, 10, true);
+      const clothBump = (function () {
+        const s = 128,
+          c = mkCanvas(s, s),
+          x = c.getContext("2d");
+        x.fillStyle = "#808080";
+        x.fillRect(0, 0, s, s);
+        for (let i = 0; i < s; i += 2) {
+          x.fillStyle =
+            i % 4 === 0 ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.22)";
+          x.fillRect(i, 0, 1, s);
+          x.fillRect(0, i, s, 1);
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+
+      function striationTexture(vertical) {
+        const s = 512,
+          c = mkCanvas(s, s),
+          x = c.getContext("2d");
+        x.fillStyle = "#ece4d2";
+        x.fillRect(0, 0, s, s);
+        let p = 0;
+        while (p < s) {
+          const w = 1 + Math.random() * 2.4,
+            tone = Math.random();
+          x.fillStyle =
+            tone < 0.12
+              ? "rgba(140,125,95,.5)"
+              : tone < 0.5
+                ? "rgba(255,255,252,.55)"
+                : "rgba(190,178,150,.45)";
+          if (vertical) x.fillRect(p, 0, w, s);
+          else x.fillRect(0, p, s, w);
+          p += w + 0.6 + Math.random() * 1.6;
+        }
+        for (let i = 0; i < 2600; i++) {
+          x.fillStyle =
+            "rgba(120,108,84," + (Math.random() * 0.1).toFixed(3) + ")";
+          x.fillRect(Math.random() * s, Math.random() * s, 1.2, 1.2);
+        }
+        return tex(c);
+      }
+      const striV = striationTexture(true); // fore edge (±x faces)
+      const striH = striationTexture(false); // top and bottom (±y faces)
+
+      const endpaperTex = (function () {
+        const s = 512,
+          c = mkCanvas(s, s),
+          x = c.getContext("2d");
+        x.fillStyle = "#f3edde";
+        x.fillRect(0, 0, s, s);
+        for (let i = 0; i < 1400; i++) {
+          x.fillStyle =
+            "rgba(120,105,70," + (0.04 + Math.random() * 0.08).toFixed(3) + ")";
+          x.fillRect(Math.random() * s, Math.random() * s, 1.4, 1.4);
+        }
+        const g = x.createLinearGradient(0, 0, s, 0);
+        g.addColorStop(0, "rgba(0,0,0,.07)");
+        g.addColorStop(0.12, "rgba(0,0,0,0)");
+        g.addColorStop(0.88, "rgba(0,0,0,0)");
+        g.addColorStop(1, "rgba(0,0,0,.07)");
+        x.fillStyle = g;
+        x.fillRect(0, 0, s, s);
+        return tex(c);
+      })();
+
+      const blobTex = (function () {
+        const s = 256,
+          c = mkCanvas(s, s),
+          x = c.getContext("2d");
+        const g = x.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+        g.addColorStop(0, "rgba(0,0,0,.85)");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        x.fillStyle = g;
+        x.fillRect(0, 0, s, s);
+        return new THREE.CanvasTexture(c);
+      })();
+
+      /* =========================================================================
+   3. Cover painters + book data
+   ========================================================================= */
+      function paintPriceAction(x, w, h) {
+        const GREEN = "#37d67a",
+          PAPER = "#f6f0e2",
+          RED = "#ff5c6c";
+        /* deep navy canvas with a faint trading grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#1c2340");
+        g.addColorStop(0.55, "#12172b");
+        g.addColorStop(1, "#0a0d18");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(160,180,235,0.09)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* volume bars under the chart */
+        const N = 11,
+          gap = 48,
+          sx = 150,
+          base = 1200;
+        for (let i = 0; i < N; i++) {
+          const cx = sx + i * gap;
+          const vh = 40 + ((i * 61) % 180);
+          x.fillStyle =
+            i % 3 !== 0 ? "rgba(55,214,122,.22)" : "rgba(255,92,108,.22)";
+          x.fillRect(cx - 15, base + 60 - vh, 30, vh);
+        }
+
+        /* candlestick chart climbing the cover */
+        for (let i = 0; i < N; i++) {
+          const cx = sx + i * gap;
+          const up = i % 3 !== 0;
+          const o = base - i * 44 + Math.sin(i * 1.7) * 14;
+          const body = 26 + ((i * 37) % 34);
+          const c = up ? o - body : o + body;
+          x.strokeStyle = up ? GREEN : RED;
+          x.fillStyle = up ? GREEN : RED;
+          x.lineWidth = 5;
+          x.beginPath();
+          x.moveTo(cx, o - 30);
+          x.lineTo(cx, c + 30);
+          x.stroke();
+          x.fillRect(cx - 14, Math.min(o, c), 28, Math.max(Math.abs(o - c), 5));
+        }
+
+        /* dashed trend line riding the closes */
+        x.strokeStyle = "rgba(246,240,226,.6)";
+        x.lineWidth = 4;
+        x.setLineDash([9, 9]);
+        x.beginPath();
+        x.moveTo(sx - 30, base + 6);
+        x.lineTo(sx + (N - 1) * gap + 30, base - (N - 1) * 44 + 6);
+        x.stroke();
+        x.setLineDash([]);
+
+        /* breakout arrow */
+        const ax = sx + (N - 1) * gap + 60,
+          ay = base - (N - 1) * 44 + 2;
+        x.fillStyle = GREEN;
+        x.beginPath();
+        x.moveTo(ax - 46, ay + 34);
+        x.lineTo(ax + 10, ay - 40);
+        x.lineTo(ax + 14, ay + 22);
+        x.closePath();
+        x.fill();
+
+        /* title block */
+        x.fillStyle = GREEN;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "THE LANGUAGE OF THE MARKET", w / 2, 118, 4);
+        x.fillStyle = PAPER;
+        x.font = "700 156px Georgia";
+        x.textAlign = "center";
+        x.fillText("Price", w / 2, 330);
+        x.textAlign = "left";
+        x.fillStyle = GREEN;
+        x.font = "700 156px Georgia";
+        drawSpaced(x, "ACTION", w / 2, 470, 6);
+        x.fillStyle = "rgba(246,240,226,.75)";
+        x.font = "italic 40px Georgia";
+        x.textAlign = "center";
+        x.fillText("read the tape, not the indicators", w / 2, 566);
+        x.textAlign = "left";
+
+        /* setups roundel */
+        x.fillStyle = PAPER;
+        x.beginPath();
+        x.arc(w - 180, 146, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#161c33";
+        x.font = "700 62px Arial";
+        x.fillText("64+", w - 180, 118);
+        x.font = "600 22px Arial";
+        x.fillText("Proven Setups", w - 180, 158);
+        x.fillStyle = GREEN;
+        x.font = "700 21px Arial";
+        x.fillText("Candle by Candle", w - 180, 196);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = PAPER;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "TIMELESS LESSONS ON PRICE,", w / 2, 1300, 4);
+        drawSpaced(x, "VOLUME, AND LIQUIDITY", w / 2, 1352, 4);
+        x.fillStyle = "rgba(246,240,226,.55)";
+        x.font = "italic 30px Georgia";
+        x.textAlign = "center";
+        x.fillText("No indicators. Just structure.", w / 2, 1506);
+        x.textAlign = "left";
+      }
+
+      function paintRisk(x, w, h) {
+        const CREAM = "#f6f1e3",
+          GREEN = "#2f9a52",
+          DEEP = "#14532d",
+          INK = "#1c2433";
+        x.fillStyle = CREAM;
+        x.fillRect(0, 0, w, h);
+        /* faint watermark grid */
+        x.strokeStyle = "rgba(28,36,51,.06)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+
+        /* big shield */
+        const cx = w / 2,
+          cy = 800,
+          SW = 520,
+          SH = 560;
+        const shield = () => {
+          x.beginPath();
+          x.moveTo(cx, cy - SH / 2 - 40);
+          x.lineTo(cx + SW / 2, cy - SH / 2 + 60);
+          x.quadraticCurveTo(cx + SW / 2, cy + SH / 2 - 60, cx, cy + SH / 2 + 90);
+          x.quadraticCurveTo(cx - SW / 2, cy + SH / 2 - 60, cx - SW / 2, cy - SH / 2 + 60);
+          x.closePath();
+        };
+        x.fillStyle = GREEN;
+        shield();
+        x.fill();
+        x.strokeStyle = DEEP;
+        x.lineWidth = 14;
+        shield();
+        x.stroke();
+        /* inner plate */
+        x.fillStyle = "#ffffff";
+        shield();
+        x.fill();
+        x.save();
+        shield();
+        x.clip();
+        x.fillStyle = "rgba(20,83,45,.08)";
+        x.fillRect(0, cy - 260, w, 520);
+        x.restore();
+        /* check mark */
+        x.strokeStyle = DEEP;
+        x.lineWidth = 38;
+        x.lineCap = "round";
+        x.lineJoin = "round";
+        x.beginPath();
+        x.moveTo(cx - 150, cy - 10);
+        x.lineTo(cx - 30, cy + 120);
+        x.lineTo(cx + 170, cy - 130);
+        x.stroke();
+
+        /* title block */
+        x.fillStyle = INK;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "RULE #1: DON'T LOSE MONEY", w / 2, 130, 4);
+        x.fillStyle = GREEN;
+        x.font = "700 120px Georgia";
+        x.textAlign = "center";
+        x.fillText("Risk", w / 2, 300);
+        x.fillStyle = INK;
+        x.font = "700 120px Georgia";
+        x.fillText("Management", w / 2, 420);
+        x.textAlign = "left";
+
+        /* 1% roundel */
+        x.fillStyle = GREEN;
+        x.beginPath();
+        x.arc(w - 180, 150, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#ffffff";
+        x.font = "700 62px Arial";
+        x.fillText("1%", w - 180, 122);
+        x.font = "600 22px Arial";
+        x.fillText("RULE", w - 180, 162);
+        x.fillStyle = "#e8f5ec";
+        x.font = "700 20px Arial";
+        x.fillText("Position Sizing", w - 180, 200);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = INK;
+        x.font = "700 32px Arial";
+        drawSpaced(x, "POSITION SIZING, STOP PLACEMENT,", w / 2, 1270, 3);
+        drawSpaced(x, "AND DRAWDOWN CONTROL", w / 2, 1322, 3);
+        x.fillStyle = "rgba(28,36,51,.6)";
+        x.font = "italic 29px Georgia";
+        x.textAlign = "center";
+        x.fillText("Losing trades are part of the game. Losing your account is not.", w / 2, 1488);
+        x.textAlign = "left";
+      }
+
+      function paintIntraday(x, w, h) {
+        const NAVY = "#141a2e",
+          CREAM = "#fdf6e8",
+          GREEN = "#37d67a";
+        /* warm opening-bell gradient */
+        const g = x.createLinearGradient(0, 0, w, 0);
+        g.addColorStop(0, "#ff7a3c");
+        g.addColorStop(0.55, "#ff9a52");
+        g.addColorStop(1, "#ffc47a");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+
+        /* top blurb */
+        x.fillStyle = NAVY;
+        x.font = "600 27px Arial";
+        drawSpaced(x, "TRADE THE OPEN — 9:15 TO 10:15", w / 2, 112, 4);
+
+        /* title block */
+        x.fillStyle = "#ffffff";
+        x.font = "700 118px Georgia";
+        x.textAlign = "center";
+        x.fillText("Intraday", w / 2, 300);
+        x.fillStyle = NAVY;
+        x.fillText("Mastery", w / 2, 418);
+        x.textAlign = "left";
+
+        /* chart panel */
+        rr(x, 90, 560, w - 180, 540, 26);
+        x.fillStyle = CREAM;
+        x.fill();
+        x.strokeStyle = "rgba(20,26,46,.25)";
+        x.lineWidth = 3;
+        rr(x, 90, 560, w - 180, 540, 26);
+        x.stroke();
+
+        /* grid inside the panel */
+        x.strokeStyle = "rgba(20,26,46,.08)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 8; i++) {
+          const yy = 600 + (i / 8) * 460;
+          x.beginPath();
+          x.moveTo(150, yy);
+          x.lineTo(w - 150, yy);
+          x.stroke();
+        }
+
+        /* volume bars */
+        const VN = 20;
+        for (let i = 0; i < VN; i++) {
+          const bx = 150 + (i / VN) * (w - 300);
+          const vh = 20 + ((i * 47) % 80);
+          x.fillStyle = "rgba(20,26,46,.18)";
+          x.fillRect(bx, 1040 - vh, (w - 300) / VN - 4, vh);
+        }
+
+        /* price path with area fill */
+        const pts = [
+          [150, 1010], [215, 985], [280, 1000], [345, 950], [410, 920],
+          [475, 935], [540, 875], [605, 850], [670, 805], [735, 690],
+          [800, 630], [865, 595],
+        ];
+        x.beginPath();
+        x.moveTo(pts[0][0], pts[0][1]);
+        for (let i = 1; i < pts.length; i++) x.lineTo(pts[i][0], pts[i][1]);
+        x.lineTo(pts[pts.length - 1][0], 1035);
+        x.lineTo(pts[0][0], 1035);
+        x.closePath();
+        x.fillStyle = "rgba(255,122,60,.18)";
+        x.fill();
+        x.beginPath();
+        x.moveTo(pts[0][0], pts[0][1]);
+        for (let i = 1; i < pts.length; i++) x.lineTo(pts[i][0], pts[i][1]);
+        x.strokeStyle = NAVY;
+        x.lineWidth = 7;
+        x.lineJoin = "round";
+        x.stroke();
+
+        /* entry line */
+        x.strokeStyle = GREEN;
+        x.lineWidth = 4;
+        x.setLineDash([10, 8]);
+        x.beginPath();
+        x.moveTo(150, 960);
+        x.lineTo(w - 150, 960);
+        x.stroke();
+        x.setLineDash([]);
+        x.fillStyle = GREEN;
+        x.font = "700 24px Arial";
+        x.fillText("ENTRY", 168, 952);
+
+        /* time labels */
+        x.fillStyle = "rgba(20,26,46,.6)";
+        x.font = "600 22px Arial";
+        x.fillText("9:15", 150, 1095);
+        x.textAlign = "center";
+        x.fillText("10:30", w / 2, 1095);
+        x.textAlign = "right";
+        x.fillText("15:30", w - 150, 1095);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = NAVY;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "VOLUME, MOMENTUM, AND THE FIRST HOUR", w / 2, 1220, 3);
+        drawSpaced(x, "BUILT FOR THE INDIAN MARKET", w / 2, 1272, 3);
+        x.fillStyle = "rgba(20,26,46,.7)";
+        x.font = "italic 30px Georgia";
+        x.textAlign = "center";
+        x.fillText("Start the day with a plan, not a guess.", w / 2, 1470);
+        x.textAlign = "left";
+      }
+
+      function paintOptions(x, w, h) {
+        const DARK = "#0e1a12",
+          GREEN = "#2fd97c",
+          PALE = "#e8f5ec",
+          GOLD = "#ffd166";
+        /* deep green canvas with a faint grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#12301f");
+        g.addColorStop(0.55, "#0c1d14");
+        g.addColorStop(1, "#070f0a");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(140,230,180,.08)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* payoff diagram: a long call's hockey-stick curve */
+        const ax = 200,
+          ay = 950,
+          aw = 640,
+          ah = 300;
+        x.strokeStyle = "rgba(232,245,236,.35)";
+        x.lineWidth = 3;
+        x.beginPath();
+        x.moveTo(ax, ay);
+        x.lineTo(ax + aw, ay); /* price axis */
+        x.moveTo(ax, ay);
+        x.lineTo(ax, ay - ah); /* P&L axis */
+        x.stroke();
+        x.fillStyle = "rgba(232,245,236,.5)";
+        x.font = "600 20px Arial";
+        x.fillText("0", ax - 34, ay + 10);
+        x.fillText("Strike", ax + aw / 2 - 24, ay + 36);
+        x.fillText("P&L", ax - 70, ay - ah + 12);
+        x.strokeStyle = GREEN;
+        x.lineWidth = 9;
+        x.lineCap = "round";
+        x.lineJoin = "round";
+        x.beginPath();
+        x.moveTo(ax, ay + 40);
+        x.lineTo(ax + aw * 0.42, ay + 40); /* flat until the strike */
+        x.lineTo(ax + aw * 0.5, ay - 60); /* premium lost at the strike */
+        x.lineTo(ax + aw, ay - ah + 30); /* rise past breakeven */
+        x.stroke();
+        /* dashed breakeven line + in-the-money zone */
+        x.strokeStyle = "rgba(255,209,102,.7)";
+        x.lineWidth = 3;
+        x.setLineDash([8, 8]);
+        x.beginPath();
+        x.moveTo(ax + aw * 0.62, ay - ah + 20);
+        x.lineTo(ax + aw * 0.62, ay + 20);
+        x.stroke();
+        x.setLineDash([]);
+        x.fillStyle = GOLD;
+        x.font = "700 22px Arial";
+        x.fillText("BREAKEVEN", ax + aw * 0.62 - 50, ay - ah + 44);
+        x.fillStyle = "rgba(47,217,124,.25)";
+        x.fillRect(ax + aw * 0.62, ay - 6, aw * 0.38, 6);
+
+        /* title block */
+        x.fillStyle = GREEN;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "DEFINED RISK. DEFINED REWARD.", w / 2, 118, 4);
+        x.fillStyle = PALE;
+        x.font = "700 120px Georgia";
+        x.textAlign = "center";
+        x.fillText("Options", w / 2, 330);
+        x.fillStyle = GREEN;
+        x.font = "700 120px Georgia";
+        x.fillText("Trading", w / 2, 470);
+        x.textAlign = "left";
+        x.fillStyle = "rgba(232,245,236,.7)";
+        x.font = "italic 40px Georgia";
+        x.textAlign = "center";
+        x.fillText("calls, puts, and the Greeks", w / 2, 566);
+        x.textAlign = "left";
+
+        /* Greeks roundel */
+        x.fillStyle = PALE;
+        x.beginPath();
+        x.arc(w - 180, 150, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#12301f";
+        x.font = "700 42px Georgia";
+        x.fillText("ΔΘΓ", w - 180, 122);
+        x.font = "600 20px Arial";
+        x.fillText("The Greeks", w - 180, 162);
+        x.fillStyle = GREEN;
+        x.font = "700 20px Arial";
+        x.fillText("Delta · Theta · Gamma", w - 180, 198);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = PALE;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "STRATEGIES FOR THE INDIAN", w / 2, 1300, 4);
+        drawSpaced(x, "OPTIONS MARKET", w / 2, 1352, 4);
+        x.fillStyle = "rgba(232,245,236,.55)";
+        x.font = "italic 30px Georgia";
+        x.textAlign = "center";
+        x.fillText("Know your max loss before you enter.", w / 2, 1506);
+        x.textAlign = "left";
+      }
+
+      function paintPsychology(x, w, h) {
+        const PLUM = "#1c1638",
+          GOLD = "#f2c14e",
+          CREAM = "#f6f0e2";
+        /* deep plum canvas with a faint grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#241c4a");
+        g.addColorStop(0.55, "#171030");
+        g.addColorStop(1, "#0d0920");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(200,180,255,.07)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* mind motif: two hemispheres with a rising line, gold line art */
+        const cx = w / 2,
+          cy = 930,
+          R = 270;
+        x.strokeStyle = GOLD;
+        x.lineWidth = 7;
+        x.beginPath();
+        x.arc(cx, cy, R, 0, 6.2832);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(cx, cy - R);
+        x.lineTo(cx, cy + R);
+        x.stroke();
+        x.lineWidth = 4;
+        x.globalAlpha = 0.55;
+        for (let i = 0; i < 4; i++) {
+          const yy = cy - 130 + i * 90;
+          x.beginPath();
+          x.moveTo(cx - R + 30, yy);
+          x.bezierCurveTo(cx - R * 0.3, yy - 40, cx + R * 0.3, yy + 40, cx + R - 30, yy);
+          x.stroke();
+        }
+        x.globalAlpha = 1;
+        /* rising arrow in the right hemisphere */
+        x.strokeStyle = GOLD;
+        x.lineWidth = 7;
+        x.lineCap = "round";
+        x.beginPath();
+        x.moveTo(cx + 20, cy + 130);
+        x.lineTo(cx + 80, cy + 60);
+        x.lineTo(cx + 120, cy + 90);
+        x.lineTo(cx + 180, cy - 40);
+        x.stroke();
+        x.fillStyle = GOLD;
+        x.beginPath();
+        x.moveTo(cx + 172, cy - 78);
+        x.lineTo(cx + 214, cy - 52);
+        x.lineTo(cx + 152, cy - 16);
+        x.closePath();
+        x.fill();
+
+        /* title block, in the reference's stacked style */
+        x.fillStyle = GOLD;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "THE MIND BEHIND THE MONEY", w / 2, 118, 4);
+        x.fillStyle = CREAM;
+        x.textAlign = "center";
+        x.font = "400 64px Georgia";
+        x.fillText("The", w / 2, 280);
+        x.fillStyle = GOLD;
+        x.font = "700 110px Georgia";
+        x.fillText("Psychology", w / 2, 400);
+        x.fillStyle = CREAM;
+        x.font = "400 64px Georgia";
+        x.fillText("of", w / 2, 500);
+        x.fillStyle = GOLD;
+        x.font = "700 110px Georgia";
+        x.fillText("Trading", w / 2, 618);
+        x.textAlign = "left";
+
+        /* 1% roundel */
+        x.fillStyle = GOLD;
+        x.beginPath();
+        x.arc(180, 150, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#241c4a";
+        x.font = "700 40px Arial";
+        x.fillText("1%", 180, 122);
+        x.font = "600 22px Arial";
+        x.fillText("BETTER", 180, 162);
+        x.fillStyle = "#fff7e6";
+        x.font = "700 19px Arial";
+        x.fillText("Daily Process", 180, 200);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = CREAM;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "FOMO, GREED, REVENGE, AND HOPE —", w / 2, 1290, 3);
+        drawSpaced(x, "THE ENEMIES OF EVERY PORTFOLIO", w / 2, 1342, 3);
+        x.fillStyle = "rgba(246,240,226,.55)";
+        x.font = "italic 30px Georgia";
+        x.textAlign = "center";
+        x.fillText("Trade the plan, not the feeling.", w / 2, 1502);
+        x.textAlign = "left";
+      }
+
+      function paintFramework(x, w, h) {
+        const CREAM = "#f6efe0",
+          GOLD = "#f2c14e";
+        /* deep maroon canvas with a faint gold grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#3a1320");
+        g.addColorStop(0.55, "#200b11");
+        g.addColorStop(1, "#120609");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(242,193,78,.07)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* part label */
+        x.fillStyle = GOLD;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "PART SIX · THE COMPLETE SYSTEM", w / 2, 122, 4);
+
+        /* huge number */
+        x.fillStyle = CREAM;
+        x.font = "700 260px Georgia";
+        x.textAlign = "center";
+        x.fillText("201", w / 2, 380);
+        x.textAlign = "left";
+
+        /* title */
+        x.fillStyle = CREAM;
+        x.font = "700 88px Georgia";
+        drawSpaced(x, "INVESTMENT", w / 2, 528, 5);
+        x.fillStyle = GOLD;
+        x.font = "700 88px Georgia";
+        drawSpaced(x, "FRAMEWORK", w / 2, 636, 5);
+
+        /* layered framework pyramid: one block per rule */
+        const BW = 116,
+          BH = 78,
+          GAP = 10,
+          cx = w / 2;
+        const counts = [5, 4, 3, 2, 1];
+        const rowBottom = [1100, 1012, 924, 836, 748];
+        counts.forEach((count, ri) => {
+          const total = count * BW + (count - 1) * GAP;
+          let bx = cx - total / 2;
+          const yTop = rowBottom[ri] - BH;
+          for (let i = 0; i < count; i++) {
+            x.fillStyle =
+              ri % 2 === 0
+                ? i % 2
+                  ? "rgba(246,239,224,.92)"
+                  : "rgba(242,193,78,.95)"
+                : i % 2
+                  ? "rgba(242,193,78,.9)"
+                  : "rgba(246,239,224,.88)";
+            rr(x, bx, yTop, BW, BH, 10);
+            x.fill();
+            bx += BW + GAP;
+          }
+        });
+
+        /* compounding roundel */
+        x.fillStyle = CREAM;
+        x.beginPath();
+        x.arc(w - 180, 150, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#7a2b3c";
+        x.font = "700 64px Georgia";
+        x.fillText("₹", w - 180, 122);
+        x.font = "600 20px Arial";
+        x.fillText("Compounding", w - 180, 162);
+        x.fillStyle = GOLD;
+        x.font = "700 19px Arial";
+        x.fillText("Long Term", w - 180, 198);
+        x.textAlign = "left";
+
+        /* caption */
+        x.fillStyle = "rgba(246,239,224,.75)";
+        x.font = "600 25px Arial";
+        drawSpaced(x, "ONE RULE PER LAYER — COMPOUND THE REST", w / 2, 1180, 4);
+
+        /* closing tagline */
+        x.fillStyle = CREAM;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "A STEP-BY-STEP SYSTEM TO", w / 2, 1280, 4);
+        drawSpaced(x, "BUILD AND PROTECT WEALTH", w / 2, 1332, 4);
+        x.fillStyle = "rgba(246,239,224,.55)";
+        x.font = "italic 34px Georgia";
+        x.textAlign = "center";
+        x.fillText("One system. One plan. Compound for life.", w / 2, 1446);
+        x.textAlign = "left";
+      }
+
+      function paintEdge21(x, w, h) {
+        const PALE = "#eafaf5",
+          GOLD = "#f2c14e",
+          ORANGE = "#ff8a4c",
+          UP = "#4cd9a8",
+          DOWN = "#ff7a6b";
+        /* deep teal canvas with a faint grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#124a44");
+        g.addColorStop(0.55, "#0a2c29");
+        g.addColorStop(1, "#061b19");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(234,250,245,.06)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* part label */
+        x.fillStyle = GOLD;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "PART FOURTEEN · THE EDGE SERIES", w / 2, 122, 4);
+
+        /* huge number */
+        x.fillStyle = PALE;
+        x.font = "700 250px Georgia";
+        x.textAlign = "center";
+        x.fillText("21", w / 2, 360);
+        x.textAlign = "left";
+        x.fillStyle = GOLD;
+        x.font = "700 30px Arial";
+        drawSpaced(x, "THE EDGE", w / 2, 452, 8);
+
+        /* title */
+        x.fillStyle = PALE;
+        x.font = "700 84px Georgia";
+        drawSpaced(x, "FRAMEWORK", w / 2, 556, 5);
+
+        /* pullback-flag continuation chart */
+        const cw = 26,
+          gap = 8,
+          x0 = 150,
+          yBase = 1030,
+          maxH = 232;
+        const candles = [
+          [0.25, 0.32, 0.38, 0.2],
+          [0.32, 0.28, 0.36, 0.18],
+          [0.28, 0.45, 0.5, 0.24],
+          [0.45, 0.42, 0.52, 0.32],
+          [0.42, 0.6, 0.66, 0.38],
+          [0.6, 0.56, 0.68, 0.48],
+          [0.56, 0.78, 0.84, 0.52],
+          [0.78, 0.73, 0.86, 0.62],
+          [0.73, 0.95, 1.0, 0.68],
+          [0.95, 0.9, 1.02, 0.84], /* pole top */
+          [0.9, 0.86, 0.98, 0.83], /* flag: tight range */
+          [0.86, 0.9, 0.94, 0.81],
+          [0.9, 0.85, 0.95, 0.8],
+          [0.85, 0.88, 0.93, 0.79],
+          [0.88, 0.84, 0.94, 0.78],
+          [0.84, 1.05, 1.12, 0.8], /* breakout */
+          [1.05, 1.22, 1.3, 1.0],
+        ];
+        const yPx = (f) => yBase - f * maxH;
+        candles.forEach((c, i) => {
+          const cx = x0 + i * (cw + gap);
+          const o = yPx(c[0]),
+            cl = yPx(c[1]),
+            hi = yPx(c[2]),
+            lo = yPx(c[3]);
+          x.strokeStyle = i >= 15 ? ORANGE : c[1] >= c[0] ? UP : DOWN;
+          x.lineWidth = 3;
+          x.beginPath();
+          x.moveTo(cx + cw / 2, hi);
+          x.lineTo(cx + cw / 2, lo);
+          x.stroke();
+          x.fillStyle = i >= 15 ? ORANGE : c[1] >= c[0] ? UP : DOWN;
+          rr(x, cx, Math.min(o, cl), cw, Math.abs(cl - o) || 3, 3);
+          x.fill();
+        });
+
+        /* flag pole trend line: candle 0 body to candle 9 body */
+        x.strokeStyle = "rgba(234,250,245,.5)";
+        x.lineWidth = 3;
+        x.beginPath();
+        x.moveTo(x0 + cw / 2, yPx(0.32));
+        x.lineTo(x0 + 9 * (cw + gap) + cw / 2, yPx(0.95));
+        x.stroke();
+
+        /* flag box + label */
+        const fx0 = x0 + 10 * (cw + gap),
+          fx1 = x0 + 14 * (cw + gap) + cw;
+        x.setLineDash([8, 6]);
+        x.strokeStyle = GOLD;
+        x.lineWidth = 3;
+        rr(x, fx0, yPx(0.98), fx1 - fx0, yPx(0.78) - yPx(0.98), 8);
+        x.stroke();
+        x.setLineDash([]);
+        x.fillStyle = GOLD;
+        x.font = "700 22px Arial";
+        x.textAlign = "left";
+        x.fillText("FLAG", fx1 + 16, yPx(0.9));
+        x.textAlign = "left";
+
+        /* breakout arrow */
+        const ax = x0 + 15 * (cw + gap) + cw / 2,
+          ay = yPx(1.12);
+        x.strokeStyle = ORANGE;
+        x.lineWidth = 6;
+        x.lineCap = "round";
+        x.beginPath();
+        x.moveTo(ax, ay);
+        x.lineTo(ax + 130, ay - 46);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(ax + 130, ay - 46);
+        x.lineTo(ax + 96, ay - 52);
+        x.lineTo(ax + 128, ay - 16);
+        x.closePath();
+        x.fillStyle = ORANGE;
+        x.fill();
+        x.font = "700 24px Arial";
+        x.fillText("BREAKOUT", ax + 8, ay - 70);
+        x.lineCap = "butt";
+
+        /* caption */
+        x.fillStyle = "rgba(234,250,245,.75)";
+        x.font = "600 25px Arial";
+        drawSpaced(x, "PULLBACK-FLAG CONTINUATION — TRENDING MARKETS", w / 2, 1132, 4);
+
+        /* 21 EDGE roundel */
+        x.fillStyle = PALE;
+        x.beginPath();
+        x.arc(w - 180, 170, 96, 0, 6.2832);
+        x.fill();
+        x.textAlign = "center";
+        x.fillStyle = "#0f403c";
+        x.font = "700 64px Georgia";
+        x.fillText("21", w - 180, 140);
+        x.font = "600 20px Arial";
+        x.fillText("Edge", w - 180, 182);
+        x.fillStyle = GOLD;
+        x.font = "700 17px Arial";
+        x.fillText("Continuation", w - 180, 216);
+        x.textAlign = "left";
+
+        /* closing tagline */
+        x.fillStyle = PALE;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "MASTER THE PULLBACK-FLAG", w / 2, 1300, 4);
+        drawSpaced(x, "CONTINUATION IN TRENDS", w / 2, 1352, 4);
+        x.fillStyle = "rgba(234,250,245,.55)";
+        x.font = "italic 34px Georgia";
+        x.textAlign = "center";
+        x.fillText("Buy the flag. Ride the trend.", w / 2, 1462);
+        x.textAlign = "left";
+      }
+
+      function paintIntradayEdge(x, w, h) {
+        const CREAM = "#f2f5fb",
+          GOLD = "#f2c14e",
+          BLUE = "#5aa2ff",
+          UP = "#4cd9a8",
+          DOWN = "#ff7a6b";
+        /* deep indigo canvas with a faint grid */
+        const g = x.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, "#1e2f54");
+        g.addColorStop(0.55, "#131f3a");
+        g.addColorStop(1, "#0a1120");
+        x.fillStyle = g;
+        x.fillRect(0, 0, w, h);
+        x.strokeStyle = "rgba(242,245,251,.06)";
+        x.lineWidth = 1;
+        for (let i = 0; i <= 12; i++) {
+          x.beginPath();
+          x.moveTo(0, (i / 12) * h);
+          x.lineTo(w, (i / 12) * h);
+          x.stroke();
+        }
+        for (let i = 0; i <= 8; i++) {
+          x.beginPath();
+          x.moveTo((i / 8) * w, 0);
+          x.lineTo((i / 8) * w, h);
+          x.stroke();
+        }
+
+        /* part label */
+        x.fillStyle = GOLD;
+        x.font = "600 26px Arial";
+        drawSpaced(x, "INTRADAY SERIES · EDGE SYSTEM", w / 2, 122, 4);
+
+        /* huge number */
+        x.fillStyle = CREAM;
+        x.font = "700 196px Georgia";
+        x.textAlign = "center";
+        x.fillText("11+21", w / 2, 338);
+        x.textAlign = "left";
+        x.fillStyle = GOLD;
+        x.font = "700 30px Arial";
+        drawSpaced(x, "THE EDGE SYSTEM", w / 2, 424, 8);
+
+        /* title */
+        x.fillStyle = CREAM;
+        x.font = "700 84px Georgia";
+        drawSpaced(x, "INTRADAY", w / 2, 534, 5);
+
+        /* BATTLE-TESTED stamp */
+        x.save();
+        x.translate(w - 186, 160);
+        x.rotate(-0.14);
+        x.strokeStyle = "#e5484d";
+        x.lineWidth = 6;
+        rr(x, -152, -46, 304, 92, 14);
+        x.stroke();
+        x.strokeStyle = "#e5484d";
+        x.lineWidth = 2;
+        rr(x, -141, -35, 282, 70, 10);
+        x.stroke();
+        x.fillStyle = "#e5484d";
+        x.font = "800 33px Arial";
+        drawSpaced(x, "BATTLE-TESTED", 0, 12, 4);
+        x.restore();
+
+        /* intraday session chart: 9:15 open → 15:30 close */
+        const cw = 24,
+          gap = 9,
+          x0 = 150,
+          yBase = 1010,
+          maxH = 232;
+        const yPx = (f) => yBase - f * maxH;
+        const candles = [
+          [0.3, 0.42, 0.5, 0.24], /* opening surge */
+          [0.42, 0.38, 0.5, 0.3],
+          [0.38, 0.52, 0.58, 0.34],
+          [0.52, 0.48, 0.6, 0.4],
+          [0.48, 0.62, 0.68, 0.44], /* entry zone */
+          [0.62, 0.58, 0.7, 0.5],
+          [0.58, 0.72, 0.78, 0.54],
+          [0.72, 0.68, 0.8, 0.6],
+          [0.68, 0.8, 0.86, 0.64], /* steady grind */
+          [0.8, 0.76, 0.88, 0.68],
+          [0.76, 0.88, 0.94, 0.72],
+          [0.88, 0.84, 0.96, 0.76],
+          [0.84, 0.94, 1.0, 0.8],
+          [0.94, 0.9, 1.02, 0.82],
+          [0.9, 1.06, 1.12, 0.86], /* closing push */
+          [1.06, 1.02, 1.14, 0.94],
+          [1.02, 1.16, 1.22, 0.98],
+        ];
+        candles.forEach((c, i) => {
+          const cx = x0 + i * (cw + gap);
+          const o = yPx(c[0]),
+            cl = yPx(c[1]),
+            hi = yPx(c[2]),
+            lo = yPx(c[3]);
+          x.strokeStyle = c[1] >= c[0] ? UP : DOWN;
+          x.lineWidth = 3;
+          x.beginPath();
+          x.moveTo(cx + cw / 2, hi);
+          x.lineTo(cx + cw / 2, lo);
+          x.stroke();
+          x.fillStyle = c[1] >= c[0] ? UP : DOWN;
+          rr(x, cx, Math.min(o, cl), cw, Math.abs(cl - o) || 3, 3);
+          x.fill();
+        });
+
+        /* session boundary lines + labels */
+        x.setLineDash([6, 6]);
+        x.strokeStyle = "rgba(90,162,255,.5)";
+        x.lineWidth = 2;
+        x.beginPath();
+        x.moveTo(x0 - 20, yBase - maxH);
+        x.lineTo(x0 - 20, yBase + 18);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(x0 + 17 * (cw + gap), yBase - maxH);
+        x.lineTo(x0 + 17 * (cw + gap), yBase + 18);
+        x.stroke();
+        x.setLineDash([]);
+        x.fillStyle = "rgba(242,245,251,.6)";
+        x.font = "600 20px Arial";
+        x.textAlign = "left";
+        x.fillText("9:15", x0 - 20, yBase + 40);
+        x.textAlign = "right";
+        x.fillText("15:30", x0 + 17 * (cw + gap) - 12, yBase + 40);
+        x.textAlign = "left";
+
+        /* entry marker */
+        const ex = x0 + 4 * (cw + gap) + cw / 2,
+          ey = yPx(0.62);
+        x.strokeStyle = UP;
+        x.lineWidth = 5;
+        x.lineCap = "round";
+        x.beginPath();
+        x.moveTo(ex, ey);
+        x.lineTo(ex - 52, ey + 46);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(ex - 52, ey + 46);
+        x.lineTo(ex - 24, ey + 50);
+        x.lineTo(ex - 50, ey + 20);
+        x.closePath();
+        x.fillStyle = UP;
+        x.fill();
+        x.font = "700 22px Arial";
+        x.fillText("ENTRY", ex - 64, ey - 10);
+        x.lineCap = "butt";
+
+        /* exit marker */
+        const xx = x0 + 16 * (cw + gap) + cw / 2,
+          xy = yPx(1.16);
+        x.strokeStyle = DOWN;
+        x.lineWidth = 5;
+        x.lineCap = "round";
+        x.beginPath();
+        x.moveTo(xx, xy);
+        x.lineTo(xx + 52, xy + 46);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(xx + 52, xy + 46);
+        x.lineTo(xx + 24, xy + 50);
+        x.lineTo(xx + 50, xy + 20);
+        x.closePath();
+        x.fillStyle = DOWN;
+        x.fill();
+        x.font = "700 22px Arial";
+        x.fillText("EXIT", xx + 60, xy - 10);
+        x.lineCap = "butt";
+
+        /* caption */
+        x.fillStyle = "rgba(242,245,251,.75)";
+        x.font = "600 25px Arial";
+        drawSpaced(x, "9:15 — 15:30 SESSION · ONE SYSTEM", w / 2, 1118, 4);
+
+        /* closing tagline */
+        x.fillStyle = CREAM;
+        x.font = "700 34px Arial";
+        drawSpaced(x, "BATTLE-TESTED STRATEGY FOR", w / 2, 1300, 4);
+        drawSpaced(x, "INTRADAY TRADING", w / 2, 1352, 4);
+        x.fillStyle = "rgba(242,245,251,.55)";
+        x.font = "italic 34px Georgia";
+        x.textAlign = "center";
+        x.fillText("Trade the open. Ride the range.", w / 2, 1462);
+        x.textAlign = "left";
+      }
+
+      function paintBack(x, w, h, cfg) {
+        x.fillStyle = cfg.backBg;
+        x.fillRect(0, 0, w, h);
+        const ink = cfg.backInk;
+        x.fillStyle = "rgba(" + ink + ",.5)";
+        rr(x, 150, 190, w - 460, 28, 14);
+        x.fill();
+        for (let i = 0; i < 9; i++) {
+          const lw = i === 8 ? w - 560 : w - 300 - Math.random() * 180;
+          x.fillStyle = "rgba(" + ink + ",.2)";
+          rr(x, 150, 300 + i * 56, lw, 15, 7);
+          x.fill();
+        }
+        x.fillStyle = "rgba(" + ink + ",.45)";
+        x.beginPath();
+        x.arc(178, h - 186, 26, 0, 6.2832);
+        x.fill();
+        x.fillStyle = "#fff";
+        rr(x, w - 330, h - 262, 236, 152, 8);
+        x.fill();
+        x.fillStyle = "#111";
+        let bx = w - 310;
+        while (bx < w - 118) {
+          const bw = 2 + Math.random() * 6;
+          if (Math.random() > 0.42) x.fillRect(bx, h - 242, bw, 96);
+          bx += bw + 2 + Math.random() * 4;
+        }
+        x.font = "500 21px Arial";
+        x.textAlign = "center";
+        x.fillText("9 781234 567890", w - 212, h - 124);
+        x.textAlign = "left";
+      }
+
+      function paintSpine(x, w, h, cfg) {
+        x.fillStyle = cfg.spineBg;
+        x.fillRect(0, 0, w, h);
+        x.save();
+        x.translate(w / 2, h / 2);
+        x.rotate(Math.PI / 2);
+        x.fillStyle = cfg.spineInk;
+        x.font = cfg.spineFont;
+        drawSpaced(x, cfg.title.toUpperCase(), -h * 0.1, 15, 6);
+        x.restore();
+        x.fillStyle = cfg.spineInk;
+        x.globalAlpha = 0.6;
+        x.fillRect(w / 2 - 26, 92, 52, 3);
+        x.fillRect(w / 2 - 26, h - 95, 52, 3);
+        x.globalAlpha = 1;
+      }
+
+      const BOOKS = [
+        {
+          id: "framework",
+          title: "The 201 Investment Framework",
+          year: "2026",
+          stars: 5,
+          desc: "A step-by-step system for building and managing a long-term portfolio. Part 6 of the Force Trading series.",
+          front: paintFramework,
+          edge: "#3a1320",
+          backBg: "#200b11",
+          backInk: "240,214,190",
+          spineBg: "#200b11",
+          spineInk: "#f2c14e",
+          spineFont: "700 26px Arial",
+          coverURL: "/covers/framework.png",
+          buy: "https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f",
+        },
+        {
+          id: "edge21",
+          title: "The 21 Edge Framework",
+          year: "2026",
+          stars: 5,
+          desc: "A powerful ebook for traders who want to master one of the most profitable continuation setups used in trending markets.",
+          front: paintEdge21,
+          edge: "#0a2c29",
+          backBg: "#082522",
+          backInk: "224,246,238",
+          spineBg: "#082522",
+          spineInk: "#f2c14e",
+          spineFont: "700 26px Arial",
+          coverURL: "/covers/edge21.png",
+          buy: "https://superprofile.bio/vp/pullback-flag-pattern-strategies---scanner",
+        },
+        {
+          id: "intradayedge",
+          title: "11+21 Intraday Edge System",
+          year: "2026",
+          stars: 5,
+          desc: "Battle-Tested Strategy for Intraday Trading",
+          front: paintIntradayEdge,
+          edge: "#131f3a",
+          backBg: "#0d1626",
+          backInk: "222,230,248",
+          spineBg: "#0d1626",
+          spineInk: "#f2c14e",
+          spineFont: "700 24px Arial",
+          coverURL: "/covers/intradayedge.png",
+          buy: "https://superprofile.bio/vp/11-21-intraday-edge-system",
+        },
+      ];
+
+      /* =========================================================================
+   4. Book construction
+   ========================================================================= */
+      const W = 1.42,
+        H = 2.14,
+        T = 0.34,
+        CT = 0.032,
+        OV = 0.05;
+      const PAGE_N = 12,
+        PW = W - 0.02,
+        PH = H - 0.02;
+      const BLOCK_D = 0.245,
+        BLOCK_Z = -0.0205,
+        PIVOT_Z = T / 2 + CT / 2,
+        BPIVOT_Z = -(T / 2 + CT / 2);
+
+      const coverGeo = new THREE.BoxGeometry(W + OV, H + OV * 2, CT);
+      const blockGeo = new THREE.BoxGeometry(W - 0.015, H, BLOCK_D);
+      const pageGeo = new THREE.PlaneGeometry(PW, PH);
+      const spineGeo = new THREE.BoxGeometry(
+        0.028,
+        H + OV * 2,
+        T + CT * 2 + 0.006,
+      );
+      const hitGeo = new THREE.BoxGeometry(1.8, 2.5, 1.15);
+      const blobGeo = new THREE.PlaneGeometry(1, 1);
+      const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+
+      function std(o) {
+        return new THREE.MeshStandardMaterial(
+          Object.assign({ metalness: 0.02 }, o),
+        );
+      }
+
+      const paperFlat = std({
+        color: 0xf2ecdd,
+        roughness: 0.95,
+        envMapIntensity: 0.2,
+      });
+      const striMatV = std({
+        map: striV,
+        bumpMap: striV,
+        bumpScale: 0.0025,
+        roughness: 0.95,
+        envMapIntensity: 0.2,
+      });
+      const striMatH = std({
+        map: striH,
+        bumpMap: striH,
+        bumpScale: 0.0025,
+        roughness: 0.95,
+        envMapIntensity: 0.2,
+      });
+      const endpaperMat = std({
+        map: endpaperTex,
+        roughness: 0.9,
+        envMapIntensity: 0.25,
+      });
+      const pageMats = [0xf4eee0, 0xf1ebdb, 0xf6f0e3].map((c) =>
+        std({
+          color: c,
+          roughness: 0.92,
+          envMapIntensity: 0.22,
+          side: THREE.DoubleSide,
+        }),
+      );
+
+      const books = [];
+      const hitMeshes = [];
+
+      function buildBook(cfg, index) {
+        const root = new THREE.Group();
+        const float = new THREE.Group();
+        root.add(float);
+        bookRoot.add(root);
+
+        /* painted textures */
+        const fc = mkCanvas(1024, 1536);
+        cfg.front(fc.getContext("2d"), 1024, 1536);
+        const bc = mkCanvas(1024, 1536);
+        paintBack(bc.getContext("2d"), 1024, 1536, cfg);
+        const sc = mkCanvas(220, 1536);
+        paintSpine(sc.getContext("2d"), 220, 1536, cfg);
+        const frontTex = tex(fc),
+          backTex = tex(bc),
+          spineTex = tex(sc);
+
+        /* printed boards: matte enough that the environment reads as a soft sheen
+           rather than a wash over the artwork */
+        const mEdge = std({
+          color: cfg.edge,
+          bumpMap: laminateBump,
+          bumpScale: 0.0035,
+          roughness: 0.68,
+          envMapIntensity: 0.3,
+        });
+        const mFront = std({
+          map: frontTex,
+          bumpMap: laminateBump,
+          bumpScale: 0.0035,
+          roughness: 0.54,
+          envMapIntensity: 0.28,
+        });
+        const mBack = std({
+          map: backTex,
+          bumpMap: laminateBump,
+          bumpScale: 0.0035,
+          roughness: 0.58,
+          envMapIntensity: 0.26,
+        });
+        const mSpine = std({
+          map: spineTex,
+          bumpMap: clothBump,
+          bumpScale: 0.006,
+          roughness: 0.78,
+          envMapIntensity: 0.22,
+        });
+
+        /* optional real cover art, CORS permitting */
+        if (cfg.coverURL) {
+          new THREE.TextureLoader().setCrossOrigin("anonymous").load(
+            cfg.coverURL,
+            (t) => {
+              t.encoding = THREE.sRGBEncoding;
+              t.anisotropy = ANISO;
+              mFront.map = t;
+              mFront.needsUpdate = true;
+            },
+            undefined,
+            () =>
+              console.warn(
+                "Cover blocked by CORS, procedural kept:",
+                cfg.title,
+              ),
+          );
+        }
+
+        /* back cover, hinged at the spine, opens away from the block */
+        const backPivot = new THREE.Group();
+        backPivot.position.set(-W / 2, 0, BPIVOT_Z);
+        const backMats = [mEdge, mEdge, mEdge, mEdge, endpaperMat, mBack];
+        const backMesh = new THREE.Mesh(coverGeo, backMats);
+        backMesh.position.x = (W + OV) / 2;
+        backMesh.castShadow = backMesh.receiveShadow = true;
+        backPivot.add(backMesh);
+        float.add(backPivot);
+
+        /* front cover, hinged at the spine */
+        const pivot = new THREE.Group();
+        pivot.position.set(-W / 2, 0, PIVOT_Z);
+        const frontMats = [mEdge, mEdge, mEdge, mEdge, mFront, endpaperMat];
+        const frontMesh = new THREE.Mesh(coverGeo, frontMats);
+        frontMesh.position.x = (W + OV) / 2;
+        frontMesh.castShadow = frontMesh.receiveShadow = true;
+        pivot.add(frontMesh);
+        float.add(pivot);
+
+        /* cloth spine */
+        const spine = new THREE.Mesh(spineGeo, mSpine);
+        spine.position.set(-W / 2 - 0.013, 0, 0);
+        spine.castShadow = true;
+        float.add(spine);
+
+        /* page block with striated edges */
+        const block = new THREE.Mesh(blockGeo, [
+          striMatV,
+          paperFlat,
+          striMatH,
+          striMatH,
+          paperFlat,
+          paperFlat,
+        ]);
+        block.position.set(-0.0075, 0, BLOCK_Z);
+        block.castShadow = block.receiveShadow = true;
+        float.add(block);
+
+        /* individually hinged top sheets */
+        const pages = [],
+          pageF = [];
+        for (let i = 0; i < PAGE_N; i++) {
+          const pp = new THREE.Group();
+          pp.position.set(
+            -W / 2 + 0.01,
+            (Math.random() - 0.5) * 0.006,
+            0.166 - i * 0.0042,
+          );
+          const pm = new THREE.Mesh(pageGeo, pageMats[i % 3]);
+          pm.position.x = PW / 2;
+          pm.rotation.z = (Math.random() - 0.5) * 0.006;
+          pp.add(pm);
+          float.add(pp);
+          pages.push(pp);
+          pageF.push(0.3 * Math.pow(1 - i / PAGE_N, 2.6));
+        }
+
+        /* hinged rear sheets, revealed when the back cover fans */
+        const pagesB = [],
+          pageFB = [];
+        for (let i = 0; i < 6; i++) {
+          const pp = new THREE.Group();
+          pp.position.set(
+            -W / 2 + 0.01,
+            (Math.random() - 0.5) * 0.006,
+            -0.166 + i * 0.0042,
+          );
+          const pm = new THREE.Mesh(pageGeo, pageMats[i % 3]);
+          pm.position.x = PW / 2;
+          pm.rotation.z = (Math.random() - 0.5) * 0.006;
+          pp.add(pm);
+          float.add(pp);
+          pagesB.push(pp);
+          pageFB.push(0.3 * Math.pow(1 - i / 6, 2.6));
+        }
+
+        /* soft blob shadow against the background */
+        const blob = new THREE.Mesh(
+          blobGeo,
+          new THREE.MeshBasicMaterial({
+            map: blobTex,
+            transparent: true,
+            opacity: 0.45,
+            depthWrite: false,
+          }),
+        );
+        blob.scale.set(3.1, 3.9, 1);
+        blob.position.set(0.1, -0.3, -0.85);
+        blob.renderOrder = -5;
+        root.add(blob);
+
+        /* invisible raycast target */
+        const hit = new THREE.Mesh(hitGeo, hitMat);
+        float.add(hit);
+        hitMeshes.push(hit);
+
+        const springs = {
+          px: new Spring(0, 17, 6.8),
+          py: new Spring(0, 17, 6.8),
+          pz: new Spring(0, 17, 6.8),
+          rx: new Spring(0, 17, 6.8),
+          ry: new Spring(0, 17, 6.8),
+          rz: new Spring(0, 17, 6.8),
+          sc: new Spring(1, 17, 6.8),
+          tiltX: new Spring(0, 120, 13),
+          tiltY: new Spring(0, 120, 13),
+          lift: new Spring(0, 120, 13),
+          cover: new Spring(0, 90, 12),
+          coverB: new Spring(0, 90, 12),
+          drag: new Spring(0, 160, 16),
+        };
+
+        const b = {
+          cfg,
+          index,
+          coverCanvas: fc,
+          root,
+          float,
+          pivot,
+          backPivot,
+          frontMesh,
+          backMesh,
+          frontMats,
+          backMats,
+          mSpine,
+          spine,
+          block,
+          pages,
+          pageF,
+          pagesB,
+          pageFB,
+          hit,
+          springs,
+          phase: Math.random() * 6.28,
+          slotScale: 1,
+          hitEdge: null,
+          scr: { x: 0, y: 0 },
+          orbY: 0,
+          orbYv: 0,
+          orbPhase: "idle",
+          orbTarget: 0,
+          orbXs: new Spring(0, 60, 12),
+          exit: null,
+        };
+        books.push(b);
+        return b;
+      }
+      BOOKS.forEach(buildBook);
+      const bookByHit = (m) => books.find((b) => b.hit === m);
+
+      /* =========================================================================
+   5. Floating leaves (detail view)
+   ========================================================================= */
+      const leaves = { items: [], anchor: null };
+      (function buildLeaves() {
+        const shape = new THREE.Shape();
+        shape.moveTo(0, -0.5);
+        shape.bezierCurveTo(0.3, -0.28, 0.3, 0.22, 0, 0.55);
+        shape.bezierCurveTo(-0.3, 0.22, -0.3, -0.28, 0, -0.5);
+        const geo = new THREE.ShapeGeometry(shape, 10);
+        const cols = [0x3e7c3f, 0x57944a, 0x2f6136, 0x6aa557];
+        for (let i = 0; i < 16; i++) {
+          const mat = std({
+            color: cols[i % 4],
+            roughness: 0.55,
+            envMapIntensity: 0.3,
+            side: THREE.DoubleSide,
+          });
+          const mesh = new THREE.Mesh(geo, mat);
+          mesh.visible = false;
+          bookRoot.add(mesh);
+          let hx = (Math.random() - 0.5) * 4.6;
+          if (i % 5 === 0) hx += 2.8 * Math.sign(hx || 1);
+          leaves.items.push({
+            mesh,
+            hx,
+            hy: (Math.random() - 0.5) * 3.2,
+            hz: -0.5 + Math.random() * 1.5,
+            sp: 0.25 + Math.random() * 0.5,
+            ph: Math.random() * 6.28,
+            rv: new THREE.Vector3(
+              (Math.random() - 0.5) * 0.8,
+              (Math.random() - 0.5) * 0.8,
+              (Math.random() - 0.5) * 0.8,
+            ),
+            kick: new THREE.Vector3(),
+            size: 0.14 + Math.random() * 0.16,
+            s: new Spring(0, 60, 10),
+          });
+        }
+      })();
+      leaves.activate = function (book) {
+        this.anchor = book;
+        this.items.forEach((l) => {
+          l.kick.set(
+            -l.hx + (Math.random() - 0.5) * 0.6,
+            -l.hy + (Math.random() - 0.5) * 0.6,
+            (Math.random() - 0.5) * 0.5,
+          );
+          l.s.t = l.size;
+          l.mesh.visible = true;
+        });
+      };
+      leaves.deactivate = function () {
+        this.items.forEach((l) => {
+          l.s.t = 0;
+        });
+      };
+      leaves.push = function (dx, dy) {
+        if (!this.anchor) return;
+        this.items.forEach((l) => {
+          l.kick.x += dx * 2.4 * Math.random();
+          l.kick.y += -dy * 2.4 * Math.random();
+        });
+      };
+      leaves.update = function (dt, t) {
+        if (!this.anchor) return;
+        const ap = this.anchor.root.position;
+        const w = RM ? 0.15 : 1;
+        this.items.forEach((l) => {
+          l.kick.multiplyScalar(Math.exp(-1.15 * dt));
+          l.mesh.position.set(
+            ap.x + l.hx + Math.sin(t * l.sp + l.ph) * 0.4 * w + l.kick.x,
+            ap.y +
+              l.hy +
+              Math.cos(t * l.sp * 0.83 + l.ph * 1.3) * 0.3 * w +
+              l.kick.y,
+            ap.z * 0.4 + l.hz + l.kick.z,
+          );
+          l.mesh.rotation.x += l.rv.x * dt * (0.3 + w);
+          l.mesh.rotation.y += l.rv.y * dt * (0.3 + w);
+          l.mesh.rotation.z += l.rv.z * dt * (0.3 + w);
+          const s = l.s.update(dt);
+          l.mesh.scale.setScalar(Math.max(s, 0.0001));
+          if (l.s.t === 0 && s < 0.01) l.mesh.visible = false;
+        });
+      };
+
+      /* =========================================================================
+   6. Layout slots + state machine
+   ========================================================================= */
+      const state = {
+        mode: "hero",
+        selected: null,
+        hovered: null,
+        pillLock: null,
+        kbIndex: -1,
+      };
+      const SLOTS = { hero: [], detail: null, portrait: false };
+
+      function computeSlots() {
+        const a = window.innerWidth / Math.max(1, window.innerHeight);
+        const fit = clamp(a / 1.75, 0.56, 1);
+        bookRoot.scale.setScalar(fit);
+        bookRoot.position.y = -(1 - fit) * 0.55;
+        SLOTS.portrait = a < 0.85;
+
+        /* hero: three books — the 201 framework leads center, flanked by the
+           21 Edge and the intraday system */
+        SLOTS.hero = SLOTS.portrait
+          ? [
+              { p: [0, -0.5, 0.6], r: [-0.04, 0, -0.01], s: 1.0 },
+              { p: [-1.15, -0.5, 0.45], r: [-0.04, 0.24, -0.01], s: 0.92 },
+              { p: [1.15, -0.5, 0.45], r: [-0.04, -0.24, -0.01], s: 0.92 },
+            ]
+          : [
+              { p: [0, -0.7, 0.85], r: [-0.05, 0, -0.02], s: 1.22 },
+              { p: [-1.3, -0.7, 0.7], r: [-0.05, 0.26, -0.02], s: 1.08 },
+              { p: [1.3, -0.7, 0.6], r: [-0.05, -0.24, -0.02], s: 1.05 },
+            ];
+
+        if (SLOTS.portrait) {
+          /* center the book in the region between the nav and the info sheet */
+          const el = document.getElementById("dp");
+          const panelH =
+            el && el.offsetHeight > 40 ? el.offsetHeight : innerHeight * 0.44;
+          const gap = innerHeight * 0.035,
+            navB = innerHeight * 0.1;
+          const freeTop = navB;
+          const freeBot = Math.max(innerHeight - panelH - gap, freeTop + 140);
+          const midPx = (freeTop + freeBot) / 2;
+          const T13 = 0.23087,
+            camZp = 9.9,
+            zw = 0.8 * fit,
+            rootY = -(1 - fit) * 0.55;
+          const yw = 0.1 + (1 - (2 * midPx) / innerHeight) * T13 * (camZp - zw);
+          const availW =
+            (((freeBot - freeTop) * 0.92) / innerHeight) *
+            2 *
+            T13 *
+            (camZp - zw);
+          const s = clamp(availW / fit / 2.3, 0.5, 1.15);
+          SLOTS.detail = {
+            p: [0, (yw - rootY) / fit, 0.8],
+            r: [-0.02, -0.4, 0.06],
+            s: s,
+          };
+        } else {
+          SLOTS.detail = {
+            p: [-1.95, 0.0, 1.1],
+            r: [0.02, -0.52, 0.1],
+            s: 1.26,
+          };
+        }
+      }
+
+      function setTargets(b, slot) {
+        const s = b.springs;
+        s.px.t = slot.p[0];
+        s.py.t = slot.p[1];
+        s.pz.t = slot.p[2];
+        s.rx.t = slot.r[0];
+        s.ry.t = slot.r[1];
+        s.rz.t = slot.r[2];
+        b.slotScale = slot.s;
+      }
+
+      /* ---------------------------------------------------------------------
+         Exit / return motion.
+
+         A spring aimed far below the frame accelerates the whole way, which
+         reads as a fast drop. Instead the vertical axis is handed to a small
+         keyframed tween for the duration of the move, so the curve is designed:
+         a soft decelerating lift, a beat of hang time, then a long glide down
+         that eases in and out. Closing plays the same idea in reverse.
+         --------------------------------------------------------------------- */
+      const EASE = {
+        hold: () => 1,
+        /* short tail: reaches the apex without loitering there */
+        outQuad: (t) => 1 - (1 - t) * (1 - t),
+        outQuint: (t) => 1 - Math.pow(1 - t, 5),
+        /* leaves rest promptly, still zero velocity at both ends */
+        inOutSine: (t) => -(Math.cos(Math.PI * t) - 1) / 2,
+      };
+
+      const LIFT = 0.38, /* how far the book floats up before letting go */
+        CLEAR = 4.2; /* far enough below its slot to be out of frame */
+
+      function playY(b, segs) {
+        b.exit = { segs, i: 0, t: 0 };
+      }
+
+      /* advances the tween and writes straight into the y spring, keeping the
+         spring inert so it neither fights the curve nor snaps at handover */
+      function stepY(b, dt) {
+        const ex = b.exit,
+          s = b.springs;
+        ex.t += dt;
+        let seg = ex.segs[ex.i];
+        while (seg && ex.t >= seg.d) {
+          ex.t -= seg.d;
+          s.py.v = seg.to;
+          if (seg.end) seg.end();
+          seg = ex.segs[++ex.i];
+        }
+        if (seg) s.py.v = seg.from + (seg.to - seg.from) * seg.ease(ex.t / seg.d);
+        else b.exit = null;
+        s.py.t = s.py.v;
+        s.py.vel = 0;
+      }
+
+      /* x, z and rotation are pinned to wherever the book already stands, so the
+         whole move happens on the y axis and nothing slides sideways */
+      function pinInPlace(b) {
+        const s = b.springs;
+        s.px.t = s.px.v;
+        s.pz.t = s.pz.v;
+        s.rx.t = s.rx.v;
+        s.ry.t = s.ry.v;
+        s.rz.t = s.rz.v;
+      }
+
+      function sendOut(b, i, delay) {
+        const y0 = SLOTS.hero[i].p[1],
+          here = b.springs.py.v,
+          apex = y0 + LIFT;
+        b.root.visible = true;
+        pinInPlace(b);
+        playY(b, [
+          { d: delay, from: here, to: here, ease: EASE.hold },
+          { d: 0.28, from: here, to: apex, ease: EASE.outQuad },
+          {
+            d: 0.9,
+            from: apex,
+            to: y0 - CLEAR,
+            ease: EASE.inOutSine,
+            end: () => {
+              b.root.visible = false;
+            },
+          },
+        ]);
+      }
+
+      function bringBack(b, i, delay) {
+        const here = b.springs.py.v;
+        b.root.visible = true;
+        pinInPlace(b);
+        playY(b, [
+          { d: delay, from: here, to: here, ease: EASE.hold },
+          { d: 1.0, from: here, to: SLOTS.hero[i].p[1], ease: EASE.outQuint },
+        ]);
+      }
+
+      function applyMode() {
+        if (state.mode === "hero" || state.mode === "closing") {
+          books.forEach((b, i) => setTargets(b, SLOTS.hero[i]));
+        } else if (state.selected) {
+          /* only the open book is retargeted; the other two keep the x, z and
+             rotation they stood at while their y is tween-driven */
+          setTargets(state.selected, SLOTS.detail);
+        }
+      }
+
+      /* camera springs */
+      const camX = new Spring(0, 13, 6.5),
+        camY = new Spring(0.1, 13, 6.5),
+        camZ = new Spring(9.6, 13, 6.5);
+      const lookX = new Spring(0, 13, 6.5),
+        lookY = new Spring(0, 13, 6.5);
+      const parX = new Spring(0, 60, 10),
+        parY = new Spring(0, 60, 10);
+
+      function camTo(mode) {
+        if (mode === "detail") {
+          camX.t = SLOTS.portrait ? 0 : -0.4;
+          camZ.t = SLOTS.portrait ? 9.9 : 8.9;
+          lookX.t = SLOTS.portrait ? 0 : -0.5;
+          lookY.t = SLOTS.portrait ? 0 : 0.15;
+        } else {
+          camX.t = 0;
+          camZ.t = 9.6;
+          lookX.t = 0;
+          lookY.t = 0;
+        }
+      }
+
+      /* detail panel */
+      const dpTitle = document.getElementById("dpTitle");
+      const dpDesc = document.getElementById("dpDesc");
+      const dpStars = document.getElementById("dpStars");
+      const dpYear = document.getElementById("dpYear");
+      const dpCover = document.getElementById("dpCover");
+      const buyBtn = document.getElementById("buyBtn");
+      const DEFAULT_SUPERPROFILE =
+        "https://superprofile.bio/vp/69fdd2f9e6c8340013b63b2f";
+      const STAR =
+        '<svg viewBox="0 0 24 24" class="CLS"><path d="M12 2.6l2.8 6 6.6.6-5 4.4 1.5 6.5L12 16.7 6.1 20.1l1.5-6.5-5-4.4 6.6-.6z"/></svg>';
+      let panelBook = null;
+      let coverFallbackUsed = false;
+      function populatePanel(book) {
+        panelBook = book;
+        coverFallbackUsed = false;
+        const cfg = book.cfg;
+        dpTitle.textContent = cfg.title;
+        dpDesc.textContent = cfg.desc;
+        dpYear.textContent = cfg.year;
+        dpCover.alt = cfg.title + " cover";
+        /* each book can carry its own buy link; default to the channel page */
+        buyBtn.href = cfg.buy || DEFAULT_SUPERPROFILE;
+        /* the panel shows the same real cover as the 3D book; if the URL
+           is missing or broken, fall back to the painted cover canvas */
+        if (cfg.coverURL) dpCover.src = cfg.coverURL;
+        else if (book.coverCanvas)
+          dpCover.src = book.coverCanvas.toDataURL("image/jpeg", 0.85);
+        else dpCover.src = "";
+        let s = "";
+        for (let i = 0; i < 5; i++)
+          s += STAR.replace("CLS", i < cfg.stars ? "" : "dim");
+        dpStars.innerHTML = s;
+        buildRecs();
+      }
+
+      /* ---------- book recommendations ---------- */
+      const recsList = document.getElementById("recsList");
+      function buildRecs() {
+        if (!recsList || !state.selected) return;
+        const recs = books.filter((b) => b !== state.selected).slice(0, 3);
+        recsList.innerHTML = "";
+        recs.forEach((b) => {
+          const row = document.createElement("button");
+          row.type = "button";
+          row.className = "rec";
+          const img = document.createElement("img");
+          img.className = "rec-cover";
+          img.alt = "";
+          /* eager: the covers are already preloaded at init, so show them
+             immediately — no lazy loading */
+          img.src =
+            b.cfg.coverURL ||
+            (b.coverCanvas ? b.coverCanvas.toDataURL("image/jpeg", 0.7) : "");
+          /* if a cover path breaks, fall back to the painted cover, then to a
+             styled placeholder — the preview never stays blank */
+          img.onerror = () => {
+            if (img.dataset.fb !== "canvas" && b.coverCanvas) {
+              img.dataset.fb = "canvas";
+              img.src = b.coverCanvas.toDataURL("image/jpeg", 0.7);
+            } else {
+              img.classList.add("rec-cover-fb");
+              img.removeAttribute("src");
+            }
+          };
+          const title = document.createElement("span");
+          title.className = "rec-title";
+          title.textContent = b.cfg.title;
+          row.appendChild(img);
+          row.appendChild(title);
+          row.addEventListener("click", () => showRec(b));
+          recsList.appendChild(row);
+        });
+      }
+
+      /* the 3D book standing in the detail slot is the book that was opened
+         from the hero; recommendations swap the covers it wears, so the same
+         book turns into the recommended one in place — no camera move */
+      let displayBook = null;
+      function applyBookLook(to) {
+        const cur = displayBook;
+        if (!cur || cur === to) return;
+        cur.frontMesh.material = to.frontMats;
+        cur.backMesh.material = to.backMats;
+        cur.spine.material = to.mSpine;
+      }
+      /* put a book's own covers back on when it leaves the detail slot */
+      function restoreLook(b) {
+        b.frontMesh.material = b.frontMats;
+        b.backMesh.material = b.backMats;
+        b.spine.material = b.mSpine;
+      }
+      function showRec(b) {
+        if (state.mode !== "detail" || !state.selected || b === state.selected)
+          return;
+        /* a full revolution on the way in, so the switch feels like opening */
+        if (!RM) {
+          displayBook.orbY = displayBook.orbY - 6.2832;
+          displayBook.orbYv = 3;
+          displayBook.orbPhase = "return";
+          displayBook.orbTarget = 0;
+          displayBook.orbXs.set(0);
+        }
+        applyBookLook(b);
+        state.selected = b;
+        populatePanel(b);
+      }
+      dpCover.addEventListener("error", () => {
+        if (panelBook && panelBook.coverCanvas && !coverFallbackUsed) {
+          coverFallbackUsed = true;
+          dpCover.src = panelBook.coverCanvas.toDataURL("image/jpeg", 0.85);
+        }
+      });
+
+      const pill = document.getElementById("openBtn");
+      /* the slip trails the cursor with a touch of lag */
+      const pillX = new Spring(0, 190, 23),
+        pillY = new Spring(0, 190, 23);
+      let pillOn = false;
+      function hidePill() {
+        pill.classList.remove("on");
+        pillOn = false;
+      }
+
+      function open(book) {
+        if (state.mode !== "hero" || !book) return;
+        state.mode = "opening";
+        state.selected = book;
+        displayBook = book;
+        state.pillLock = null;
+        state.kbIndex = -1;
+        restoreLook(book);
+        hidePill();
+        book.exit = null; /* hand y back to the spring if it was still tweening */
+        document.body.classList.add("transit");
+        populatePanel(book);
+        computeSlots();
+
+        /* beat one: the other two lift and drop away. the chosen book holds its
+           ground here, so nothing crosses paths with them. */
+        let out = 0;
+        books.forEach((b, i) => {
+          if (b !== book) sendOut(b, i, out++ * 0.08); /* slight stagger */
+        });
+
+        /* beat two, the moment they are clear: the chosen book turns and crosses
+           to the detail slot, and the frame pans with it */
+        setTimeout(() => {
+          if (state.mode !== "opening" && state.mode !== "detail") return;
+          book.orbY = RM ? 0 : -6.2832;
+          book.orbYv = RM ? 0 : 3;
+          book.orbPhase = "return";
+          book.orbTarget = 0;
+          book.orbXs.set(0);
+          applyMode();
+          camTo("detail");
+        }, 760);
+        setTimeout(() => leaves.activate(book), 1000);
+        setTimeout(() => {
+          if (state.mode === "opening") {
+            document.body.classList.add("detail-open");
+            state.mode = "detail";
+          }
+        }, 1400);
+      }
+
+      function close() {
+        if (state.mode !== "detail") return;
+        state.mode = "closing";
+        document.body.classList.remove("detail-open");
+        leaves.deactivate();
+        orbit.drag = false;
+        const b = state.selected;
+        if (b) {
+          /* the displayed book gets its own covers back before heading home */
+          if (displayBook) {
+            restoreLook(displayBook);
+            displayBook = null;
+          }
+          /* the recommended book (possibly different from the displayed one)
+             was never shown — make sure it is visible for the hero fan */
+          b.root.visible = true;
+          /* one clean turn on the way home, landing front-on */
+          b.orbTarget = Math.round(b.orbY / 6.2832) * 6.2832 + 6.2832;
+          b.orbYv = Math.max(b.orbYv, 3);
+          b.orbPhase = "return";
+          b.orbXs.t = 0;
+        }
+        setTimeout(() => {
+          document.body.classList.remove("transit");
+          applyMode();
+          camTo("hero");
+          /* and they only climb back once the frame has finished returning */
+          let back = 0;
+          books.forEach((bk, i) => {
+            if (bk !== b) bringBack(bk, i, 0.85 + back++ * 0.1);
+          });
+        }, 250);
+        setTimeout(() => {
+          if (state.mode === "closing") {
+            state.mode = "hero";
+            state.selected = null;
+          }
+        }, 1600);
+      }
+
+      document.getElementById("closeBtn").addEventListener("click", close);
+      /* the slip is never a hit target — clicking the book under it opens it,
+         which is also what keeps it able to follow the cursor */
+
+      /* =========================================================================
+   7. Input: pointer as hand, drag to peel, keyboard
+   ========================================================================= */
+      const ptr = {
+        ndcX: 0,
+        ndcY: 0,
+        cx: innerWidth / 2,
+        cy: innerHeight / 2,
+        lastX: 0,
+        lastY: 0,
+        down: false,
+        downX: 0,
+        downY: 0,
+        moved: 0,
+        t0: 0,
+        type: "mouse",
+        seen: false,
+        id: null, /* only the first finger down drives the scene */
+      };
+      const isTouch = () => ptr.type === "touch" || ptr.type === "pen";
+      let dragBook = null,
+        rayBook = null;
+      const orbit = { drag: false, dxAcc: 0, dyAcc: 0 };
+      const ray = new THREE.Raycaster();
+      const tmpV = new THREE.Vector3();
+
+      const canvas = renderer.domElement;
+      canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+      /* pointer off the canvas: nothing is hovered, so the slip goes away */
+      canvas.addEventListener("pointerleave", () => {
+        rayBook = null;
+        state.pillLock = null;
+        state.kbIndex = -1;
+      });
+
+      canvas.addEventListener("pointermove", (e) => {
+        if (ptr.id !== null && e.pointerId !== ptr.id) return;
+        const dxN = (e.clientX - ptr.lastX) / innerWidth;
+        const dyN = (e.clientY - ptr.lastY) / innerHeight;
+        ptr.lastX = e.clientX;
+        ptr.lastY = e.clientY;
+        ptr.cx = e.clientX;
+        ptr.cy = e.clientY;
+        ptr.ndcX = (e.clientX / innerWidth) * 2 - 1;
+        ptr.ndcY = -(e.clientY / innerHeight) * 2 + 1;
+        ptr.type = e.pointerType || "mouse";
+        ptr.seen = true;
+        if (state.mode === "detail") leaves.push(dxN, dyN);
+        if (ptr.down && dragBook) {
+          ptr.moved += Math.abs(dxN * innerWidth) + Math.abs(dyN * innerHeight);
+          dragBook.springs.drag.t = clamp(
+            ((ptr.downX - e.clientX) / innerWidth) * 3.4,
+            0,
+            1.0,
+          );
+        }
+        if (ptr.down && orbit.drag) {
+          orbit.dxAcc += dxN;
+          orbit.dyAcc += dyN;
+          ptr.moved += Math.abs(dxN * innerWidth) + Math.abs(dyN * innerHeight);
+        }
+      });
+
+      canvas.addEventListener("pointerdown", (e) => {
+        if (ptr.id !== null) return; /* a second finger must not hijack the drag */
+        ptr.id = e.pointerId;
+        ptr.cx = e.clientX;
+        ptr.cy = e.clientY;
+        /* seed the move baseline: without this, a touch's first pointermove
+           measures from wherever the pointer was last seen and the resulting
+           jump is mistaken for a drag, so taps never open a book */
+        ptr.lastX = e.clientX;
+        ptr.lastY = e.clientY;
+        ptr.ndcX = (e.clientX / innerWidth) * 2 - 1;
+        ptr.ndcY = -(e.clientY / innerHeight) * 2 + 1;
+        ptr.type = e.pointerType || "mouse";
+        ptr.seen = true;
+        castRay();
+        if (state.mode === "hero" && rayBook) {
+          ptr.down = true;
+          dragBook = rayBook;
+          ptr.downX = e.clientX;
+          ptr.downY = e.clientY;
+          ptr.moved = 0;
+          ptr.t0 = performance.now();
+          canvas.setPointerCapture(e.pointerId);
+        } else if (state.mode === "detail" && rayBook === state.selected) {
+          ptr.down = true;
+          orbit.drag = true;
+          orbit.dxAcc = 0;
+          orbit.dyAcc = 0;
+          ptr.moved = 0;
+          ptr.t0 = performance.now();
+          canvas.setPointerCapture(e.pointerId);
+        } else {
+          state.pillLock = null;
+          state.kbIndex = -1;
+        }
+      });
+
+      window.addEventListener("pointerup", (e) => {
+        if (ptr.id !== null && e.pointerId !== ptr.id) return;
+        ptr.id = null;
+        orbit.drag = false;
+        if (dragBook) {
+          /* fingers wobble and press longer than a mouse click, so a tap gets a
+             wider slop radius and a longer window before it counts as a drag */
+          const slop = isTouch() ? 26 : 14;
+          const limit = isTouch() ? 650 : 450;
+          const wasDrag = ptr.moved > slop;
+          dragBook.springs.drag.t = 0;
+          if (
+            !wasDrag &&
+            state.mode === "hero" &&
+            performance.now() - ptr.t0 < limit
+          )
+            open(dragBook); /* one tap opens, on touch as well as mouse */
+          dragBook = null;
+        }
+        ptr.down = false;
+        /* touch has no hover: drop the hit so the book does not stay lifted */
+        if (isTouch()) rayBook = null;
+      });
+
+      /* the OS can take a gesture away (scroll, palm, call). without this the
+         book would stay peeled open and the drag state would never clear */
+      function cancelPointer(e) {
+        if (e && ptr.id !== null && e.pointerId !== ptr.id) return;
+        ptr.id = null;
+        ptr.down = false;
+        orbit.drag = false;
+        if (dragBook) {
+          dragBook.springs.drag.t = 0;
+          dragBook = null;
+        }
+        if (isTouch()) rayBook = null;
+      }
+      window.addEventListener("pointercancel", cancelPointer);
+      canvas.addEventListener("lostpointercapture", cancelPointer);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") close();
+        if (state.mode !== "hero") return;
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          const d = e.key === "ArrowRight" ? 1 : -1;
+          state.kbIndex =
+            ((state.kbIndex < 0 ? (d > 0 ? -1 : 1) : state.kbIndex) +
+              d +
+              books.length) %
+            books.length;
+          state.pillLock = null;
+          e.preventDefault();
+        }
+        if (e.key === "Enter" && state.hovered) open(state.hovered);
+      });
+
+      function castRay() {
+        ray.setFromCamera({ x: ptr.ndcX, y: ptr.ndcY }, camera);
+        const hits = ray.intersectObjects(hitMeshes, false);
+        if (hits.length) {
+          rayBook = bookByHit(hits[0].object);
+          const lp = rayBook.hit.worldToLocal(hits[0].point.clone());
+          rayBook.hitEdge = clamp((lp.x / 0.9) * 0.5 + 0.5, 0, 1);
+        } else {
+          rayBook = null;
+        }
+      }
+
+      /* =========================================================================
+   8. Frame loop
+   ========================================================================= */
+      const clock = new THREE.Clock();
+      const idle = RM ? 0 : 1;
+
+      function screenPos(b) {
+        b.root.getWorldPosition(tmpV).project(camera);
+        b.scr.x = (tmpV.x * 0.5 + 0.5) * innerWidth;
+        b.scr.y = (-tmpV.y * 0.5 + 0.5) * innerHeight;
+      }
+
+      function tickBook(b, dt, t) {
+        const s = b.springs;
+        const isHov = state.hovered === b;
+        const inDetail = state.mode === "detail" && state.selected === b;
+        const orbitActive = state.selected === b && state.mode !== "hero";
+
+        /* --- orbit: drag to tumble, flick to spin, settle facing front --- */
+        let activity = 0;
+        if (orbitActive) {
+          if (orbit.drag && inDetail) {
+            const step = orbit.dxAcc * 6.5;
+            orbit.dxAcc = 0;
+            b.orbY += step;
+            b.orbYv = clamp(
+              b.orbYv * 0.5 + (step / Math.max(dt, 0.001)) * 0.5,
+              -14,
+              14,
+            );
+            b.orbXs.t = clamp(b.orbXs.t + orbit.dyAcc * 3.2, -0.55, 0.55);
+            orbit.dyAcc = 0;
+            b.orbPhase = "drag";
+          } else {
+            b.orbXs.t = 0;
+            if (b.orbPhase === "drag") {
+              if (Math.abs(b.orbYv) > 0.6) {
+                b.orbPhase = "spin";
+              } else {
+                b.orbPhase = "return";
+                b.orbTarget =
+                  Math.round((b.orbY + b.orbYv * 1.2) / Math.PI) * Math.PI;
+              }
+            }
+            if (b.orbPhase === "spin") {
+              b.orbYv *= Math.exp(-0.9 * dt);
+              b.orbY += b.orbYv * dt;
+              if (Math.abs(b.orbYv) < 0.5) {
+                b.orbPhase = "return";
+                b.orbTarget =
+                  Math.round((b.orbY + b.orbYv * 1.2) / Math.PI) * Math.PI;
+              }
+            } else if (b.orbPhase === "return") {
+              const acc = 16 * (b.orbTarget - b.orbY) - 8 * b.orbYv;
+              b.orbYv += acc * dt;
+              b.orbY += b.orbYv * dt;
+              if (
+                Math.abs(b.orbTarget - b.orbY) < 0.002 &&
+                Math.abs(b.orbYv) < 0.01
+              ) {
+                b.orbY = b.orbTarget;
+                b.orbYv = 0;
+                b.orbPhase = "idle";
+              }
+            }
+          }
+          const distRest = Math.abs(
+            b.orbY - Math.round(b.orbY / 6.2832) * 6.2832,
+          );
+          activity = clamp(
+            Math.abs(b.orbYv) * 1.5 + (orbit.drag ? 1 : 0) + distRest * 2,
+            0,
+            1,
+          );
+        }
+        b.orbXs.update(dt);
+
+        /* --- targets --- */
+        let coverBase = 0;
+        if (inDetail)
+          coverBase =
+            0.02 +
+            (0.13 + Math.sin(t * 0.8 + b.phase) * 0.015 * idle) *
+              (1 - activity);
+        /* cover inertia: the trailing board gets flung open by the spin.
+     positive spin flings the front cover, negative spin the back cover */
+        const fan = orbitActive ? clamp(b.orbYv * 0.16, 0, 0.75) : 0;
+        const fanB = orbitActive ? clamp(-b.orbYv * 0.16, 0, 0.75) : 0;
+        let coverBBase = 0;
+        if (inDetail) {
+          const nearestBack =
+            Math.round((b.orbY - Math.PI) / 6.2832) * 6.2832 + Math.PI;
+          const activityB = clamp(
+            Math.abs(b.orbYv) * 1.5 +
+              (orbit.drag ? 1 : 0) +
+              Math.abs(b.orbY - nearestBack) * 2,
+            0,
+            1,
+          );
+          coverBBase =
+            (0.1 + Math.sin(t * 0.8 + b.phase + 1.7) * 0.012 * idle) *
+            (1 - activityB);
+        }
+
+        if (isHov && ptr.seen && state.mode === "hero") {
+          const dxN = (ptr.cx - b.scr.x) / (innerWidth * 0.25);
+          const dyN = (b.scr.y - ptr.cy) / (innerHeight * 0.3);
+          s.tiltY.t = clamp(dxN * 0.28, -0.15, 0.15);
+          s.tiltX.t = clamp(-dyN * 0.1, -0.09, 0.1);
+          s.lift.t = 0.3;
+          const edge = b.hitEdge != null ? b.hitEdge : 0.5;
+          coverBase = 0.085 + edge * 0.16 + clamp(dyN, 0, 1) * 0.09;
+        } else {
+          s.tiltY.t = 0;
+          s.tiltX.t = 0;
+          s.lift.t = 0;
+        }
+        s.cover.t = coverBase + fan;
+        s.coverB.t = coverBBase + fanB;
+        s.sc.t = b.slotScale * (isHov && state.mode === "hero" ? 1.09 : 1);
+
+        s.px.update(dt);
+        if (b.exit) stepY(b, dt);
+        else s.py.update(dt);
+        s.pz.update(dt);
+        s.rx.update(dt);
+        s.ry.update(dt);
+        s.rz.update(dt);
+        s.sc.update(dt);
+        s.tiltX.update(dt);
+        s.tiltY.update(dt);
+        s.lift.update(dt);
+        s.cover.update(dt);
+        s.coverB.update(dt);
+        s.drag.update(dt);
+
+        b.float.position.y = Math.sin(t * 0.7 + b.phase) * 0.035 * idle;
+        b.float.rotation.z = Math.sin(t * 0.9 + b.phase * 1.7) * 0.006 * idle;
+
+        b.root.position.set(s.px.v, s.py.v, s.pz.v + s.lift.v);
+        const sway = inDetail
+          ? Math.sin(t * 0.45 + b.phase) * 0.035 * idle * (1 - activity)
+          : 0;
+        const swing = clamp(-s.px.vel * 0.12, -0.5, 0.5);
+        b.root.rotation.set(
+          s.rx.v + s.tiltX.v + b.orbXs.v,
+          s.ry.v + s.tiltY.v + b.orbY + sway + swing,
+          s.rz.v,
+        );
+        b.root.scale.setScalar(Math.max(s.sc.v, 0.001));
+
+        const ang = Math.max(0, s.cover.v + s.drag.v);
+        const angB = Math.max(0, s.coverB.v);
+        b.pivot.rotation.y = -ang;
+        b.pivot.position.z = PIVOT_Z + ang * 0.022;
+        b.backPivot.rotation.y = angB;
+        b.backPivot.position.z = BPIVOT_Z - angB * 0.022;
+        b.spine.rotation.y = -ang * 0.16 + angB * 0.16;
+        b.block.scale.z = 1 - (ang + angB) * 0.05;
+        b.block.position.z = BLOCK_Z - ang * 0.006 + angB * 0.006;
+        for (let i = 0; i < PAGE_N; i++) {
+          const fl =
+            idle *
+            Math.sin(t * 1.15 + b.phase + i * 0.6) *
+            0.006 *
+            (1 - i / PAGE_N);
+          b.pages[i].rotation.y = -(ang * b.pageF[i] + Math.max(0, fl));
+        }
+        for (let i = 0; i < 6; i++) b.pagesB[i].rotation.y = angB * b.pageFB[i];
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const dt = Math.min(clock.getDelta(), 0.05);
+        const t = clock.elapsedTime;
+
+        /* hover resolution */
+        if (ptr.seen && (ptr.type === "mouse" || ptr.down)) castRay();
+        let hov = null;
+        if (state.mode === "hero") {
+          hov =
+            rayBook ||
+            state.pillLock ||
+            (state.kbIndex >= 0 ? books[state.kbIndex] : null);
+        } else if (state.mode === "detail") {
+          hov = rayBook === state.selected ? rayBook : null;
+        }
+        state.hovered = hov;
+        let cur = "default";
+        if (state.mode === "hero" && hov) cur = "pointer";
+        else if (state.mode === "detail" && state.selected) {
+          if (orbit.drag) cur = "grabbing";
+          else if (rayBook === state.selected) cur = "grab";
+        }
+        canvas.style.cursor = cur;
+
+        books.forEach((b) => screenPos(b));
+        books.forEach((b) => tickBook(b, dt, t));
+        leaves.update(dt, t);
+
+        /* scene parallax */
+        parX.t = RM ? 0 : ptr.ndcX * 0.02;
+        parY.t = RM ? 0 : -ptr.ndcY * 0.012;
+        bookRoot.rotation.y = parX.update(dt);
+        bookRoot.rotation.x = parY.update(dt);
+
+        /* camera */
+        camera.position.set(camX.update(dt), camY.update(dt), camZ.update(dt));
+        camera.lookAt(lookX.update(dt), lookY.update(dt), 0);
+
+        /* open slip: rides just under the cursor while it is over a book. it is
+           a cursor affordance, so touch never shows it — there a tap just opens */
+        if (
+          state.mode === "hero" &&
+          state.hovered &&
+          ptr.seen &&
+          !isTouch() &&
+          !(ptr.down && ptr.moved > 14)
+        ) {
+          const tx = ptr.cx,
+            ty = ptr.cy + 34;
+          if (!pillOn) {
+            pillX.set(tx);
+            pillY.set(ty);
+            pillOn = true;
+          }
+          pillX.t = tx;
+          pillY.t = ty;
+          pill.style.left = pillX.update(dt) + "px";
+          pill.style.top = pillY.update(dt) + "px";
+          pill.classList.add("on");
+        } else {
+          hidePill();
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      /* =========================================================================
+   9. Entrance + resize
+   ========================================================================= */
+      computeSlots();
+
+      /* The whole collection is visible from the very first frame: every book is
+         placed in its hero slot instantly (no entrance animation, no staggered
+         delays) and the camera is already at the hero view. */
+      books.forEach((b, i) => {
+        const slot = SLOTS.hero[i];
+        const s = b.springs;
+        s.px.set(slot.p[0]);
+        s.py.set(slot.p[1]);
+        s.pz.set(slot.p[2]);
+        s.rx.set(slot.r[0]);
+        s.ry.set(slot.r[1]);
+        s.rz.set(slot.r[2]);
+        s.sc.set(slot.s);
+        b.slotScale = slot.s;
+        b.root.visible = true;
+      });
+      camTo("hero");
+
+      /* warm the cover cache so the panel image and the 3D textures appear
+         instantly instead of popping in after a network round-trip */
+      books.forEach((b) => {
+        if (b.cfg.coverURL) {
+          const pre = new Image();
+          pre.src = b.cfg.coverURL;
+        }
+      });
+
+      function relayout() {
+        renderer.setSize(innerWidth, innerHeight);
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        computeSlots();
+        applyMode();
+        camTo(
+          state.mode === "detail" || state.mode === "opening"
+            ? "detail"
+            : "hero",
+        );
+      }
+
+      window.addEventListener("resize", relayout);
+      /* phones: rotation reports stale dimensions for a beat, and the address bar
+         collapsing changes the height without always firing a window resize */
+      window.addEventListener("orientationchange", () => {
+        relayout();
+        setTimeout(relayout, 250);
+      });
+      if (window.visualViewport)
+        window.visualViewport.addEventListener("resize", relayout);
+
+      animate();
+    </script>
+  </body>
+</html>
