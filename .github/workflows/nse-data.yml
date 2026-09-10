@@ -1,0 +1,41 @@
+name: Update NSE market data
+
+on:
+  schedule:
+    # Every 5 min, 03:30-10:10 UTC = 09:00-15:40 IST, Mon-Fri (NSE session)
+    - cron: "30 3 * * 1-5"
+    - cron: "*/5 4-9 * * 1-5"
+    - cron: "10 10 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nse-data
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch quotes
+        run: python scripts/fetch_nse.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "nse-data-bot"
+          git config user.email "actions@github.com"
+          git add data/nse.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: refresh NSE market data"
+            git push
+          fi

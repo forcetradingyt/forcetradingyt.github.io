@@ -857,8 +857,9 @@
 <body>
 
   <div class="offer-banner" id="offerBanner" role="button" tabindex="0">
-    <span class="offer-text"><span class="fire">🔥</span>Limited Time Offer – Save ₹3295 | <span class="offer-grab">Grab</span> the Bundle for ₹999 — Ends in</span>
+    <span class="offer-text"><span class="fire">🔥</span>Limited Time Offer – All 3 Clubs · 2-Year Access | <span class="offer-grab">Grab</span> the Bundle for ₹2,500 — Ends in</span>
     <div class="offer-timer" id="offerTimer">
+      <span class="seg" id="offH">00</span><span class="sep">:</span>
       <span class="seg" id="offM">15</span><span class="sep">:</span>
       <span class="seg" id="offS">00</span>
     </div>
@@ -898,13 +899,13 @@
         <span class="best-value">Best Value</span>
         <div>
           <div class="plan-name">Complete Bundle</div>
-          <div class="plan-tag">All strategies + 3 months premium</div>
+          <div class="plan-tag">All 3 Clubs · 2-year validity</div>
         </div>
         <div class="price-row">
-          <span class="price">₹999</span>
-          <span class="price-note">one-time</span>
+          <span class="price">₹2,500</span>
+          <span class="price-note">2-year access</span>
         </div>
-        <div class="save-line">Save ₹3,295 vs buying separately</div>
+        <div class="save-line">Investment + Swing + Intraday · Save ₹4,628 vs monthly</div>
         <button class="buy-btn" type="button">Get the Bundle</button>
       </div>
 
@@ -915,7 +916,7 @@
           <div class="plan-tag">NSE</div>
         </div>
         <div class="price-row">
-          <span class="price">₹149+</span>
+          <span class="price">₹99+</span>
           <span class="price-note">choose a strategy</span>
         </div>
         <button class="buy-btn" type="button">View Strategies</button>
@@ -1002,7 +1003,7 @@
     investment: {
       tag: "201 Framework",
       name: "Investment Strategy",
-      price: "₹149",
+      price: "₹99",
       priceNote: "one-time",
       features: [
         "Full 201 Investment Framework",
@@ -1017,7 +1018,7 @@
     swing: {
       tag: "Multi-day setups",
       name: "Swing Trading Strategy",
-      price: "₹149",
+      price: "₹99",
       priceNote: "one-time",
       features: [
         "Complete swing trading playbook",
@@ -1032,7 +1033,7 @@
     intraday: {
       tag: "Same-day setups",
       name: "Intraday Strategy",
-      price: "₹499",
+      price: "₹99",
       priceNote: "one-time",
       features: [
         "Intraday entry & exit rules",
@@ -1114,20 +1115,20 @@
       buyLabel: "Proceed to Payment"
     },
     bundle: {
-      tag: "All strategies + 3 months premium",
+      tag: "All 3 Clubs · 2-year validity",
       name: "Complete Bundle",
-      price: "₹999",
-      priceNote: "one-time",
-      save: "Save ₹3,295 vs buying separately",
+      price: "₹2,500",
+      priceNote: "2-year access",
+      save: "Investment + Swing + Intraday · Save ₹4,628 vs monthly",
       features: [
-        "Investment Strategy (201 Framework)",
-        "Swing Trading Strategy",
-        "Intraday Strategy",
-        "3 months Premium Channel access",
-        "FTY Premium Indicator + chart template"
+        "Investment Club — 2-year access",
+        "Swing Club — 2-year access",
+        "Intraday Club — 2-year access",
+        "All strategy frameworks & playbooks",
+        "Priority support on WhatsApp"
       ],
-      link: "https://superprofile.bio/vp/access-all-my-products---1-on-1-coaching",
-      buyLabel: "Get the Bundle"
+      link: "https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%202500%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs).",
+      buyLabel: "Buy on WhatsApp"
     }
   };
 
@@ -1308,18 +1309,23 @@
     });
   });
   // ===================== OFFER COUNTDOWN =====================
-  // Evergreen 15-minute countdown — starts fresh each time the page loads.
-  const OFFER_END = new Date(Date.now() + 15 * 60 * 1000);
+  // Evergreen daily countdown — resets at local midnight every day.
+  function msUntilMidnight(){
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0); // next local midnight
+    return midnight - now;
+  }
 
   function updateOfferTimer(){
-    const now = new Date();
-    let diff = OFFER_END - now;
-    if(diff < 0) diff = 0;
+    const diff = Math.max(0, msUntilMidnight());
 
-    const m = Math.floor(diff / (1000*60));
-    const s = Math.floor((diff / 1000) % 60);
+    const h = Math.floor(diff / (1000*60*60));
+    const m = Math.floor(diff / (1000*60)) % 60;
+    const s = Math.floor(diff / 1000) % 60;
 
     const pad = n => String(n).padStart(2, '0');
+    document.getElementById('offH').textContent = pad(h);
     document.getElementById('offM').textContent = pad(m);
     document.getElementById('offS').textContent = pad(s);
   }
