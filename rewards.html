@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Force Trading YT — Unlock Premium Learning</title>
 <meta name="description" content="Open a demat account to unlock premium trading resources with Force Trading YT.">
 
@@ -207,8 +207,9 @@
   .modal p{ font-size:14px; color:var(--text-secondary); margin-bottom:6px; }
   .modal .eta{ font-family:var(--mono); font-size:13px; color:var(--emerald-bright); margin:14px 0 22px; }
 
-  footer{ border-top:1px solid var(--border-soft); padding:28px 0; text-align:center; }
+  footer{ border-top:1px solid var(--border-soft); padding:28px 0 118px; text-align:center; }
   footer p{ font-size:12.5px; color:var(--text-tertiary); }
+  @media (min-width:721px){ footer{ padding-bottom:28px; } }
 
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in{ opacity:1; transform:none; }
@@ -234,6 +235,8 @@
     }
     .broker-grid::-webkit-scrollbar{ display:none; }
     .broker-grid > .broker-card{ flex:0 0 64%; scroll-snap-align:center; }
+    .broker-card{ touch-action:manipulation; }
+    .sticky-cta .sc-btn{ touch-action:manipulation; }
     .swipe-hint{
       display:block; text-align:center;
       font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
