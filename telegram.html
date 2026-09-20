@@ -612,4 +612,345 @@
                 height: 72px;
             }
             .brand-name {
-      
+                font-size: clamp(20px, 5vw, 28px);
+                letter-spacing: 5px;
+            }
+            .tagline {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            .btn-social {
+                padding: 12px 16px;
+                min-height: 58px;
+            }
+            .btn-social .btn-label {
+                font-size: 14px;
+            }
+        }
+
+        /* --- Reduced motion --- */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* --- Mobile swipe cards + sticky CTA (FT pattern) --- */
+        .swipe-hint { display: none; }
+        .sticky-cta { display: none; }
+        @media (max-width: 480px) {
+            .buttons {
+                flex-direction: row;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 12px;
+                padding-bottom: 10px;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -4px;
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            .buttons::-webkit-scrollbar { display: none; }
+            .buttons .btn-social {
+                flex: 0 0 80%;
+                scroll-snap-align: center;
+                margin: 0;
+            }
+            .swipe-hint {
+                display: block;
+                text-align: center;
+                font-family: var(--font-sans);
+                font-size: 10px;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: rgba(200, 196, 188, 0.3);
+                margin-top: 2px;
+            }
+            /* Sticky CTA joins the existing swipe row (display:flex) */
+            .sticky-cta {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                flex: 0 0 80%;
+                scroll-snap-align: center;
+                padding: 14px 18px;
+                background: linear-gradient(135deg, rgba(225, 0, 0, 0.16), rgba(255, 255, 255, 0.03));
+                backdrop-filter: blur(16px) saturate(1.2);
+                -webkit-backdrop-filter: blur(16px) saturate(1.2);
+                border: 1px solid rgba(225, 0, 0, 0.30);
+                border-radius: var(--radius-md);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 40px rgba(225, 0, 0, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+                min-height: 58px;
+                cursor: pointer;
+                transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+            }
+            .sticky-cta:active { transform: scale(0.97); }
+            .sticky-cta .sc-txt {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                min-width: 0;
+            }
+            .sticky-cta .sc-label {
+                font-family: var(--font-sans);
+                font-weight: 500;
+                font-size: 14px;
+                letter-spacing: 0.3px;
+                color: var(--color-offwhite);
+            }
+            .sticky-cta .sc-sub {
+                font-family: var(--font-sans);
+                font-weight: 300;
+                font-size: 10px;
+                letter-spacing: 0.5px;
+                color: rgba(200, 196, 188, 0.5);
+                text-transform: uppercase;
+            }
+            .sticky-cta .sc-arrow {
+                flex-shrink: 0;
+                width: 20px;
+                height: 20px;
+                color: var(--color-silver);
+            }
+            .sticky-cta .sc-arrow svg {
+                width: 100%;
+                height: 100%;
+                stroke: currentColor;
+                stroke-width: 2;
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <div class="bg-layer">
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
+        <div class="fog fog-3"></div>
+        <canvas id="particles"></canvas>
+    </div>
+    <div class="vignette"></div>
+
+    <main class="main-wrapper">
+        <div class="container">
+            <div class="logo-wrapper">
+                <div class="logo-deer" aria-hidden="true">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Force Trading logo">
+                        <path d="M50 10 C58 20 65 35 68 50 C70 58 70 68 65 75 C60 82 52 85 50 85 C48 85 40 82 35 75 C30 68 30 58 32 50 C35 35 42 20 50 10Z" fill="#e10600"/>
+                        <path d="M50 10 L38 2 L42 12 L50 10Z" fill="#e10600"/>
+                        <path d="M50 10 L62 2 L58 12 L50 10Z" fill="#e10600"/>
+                        <path d="M38 2 L30 15 L42 12 L38 2Z" fill="#e10600"/>
+                        <path d="M62 2 L70 15 L58 12 L62 2Z" fill="#e10600"/>
+                        <path d="M30 15 L20 28 L35 20 L30 15Z" fill="#e10600"/>
+                        <path d="M70 15 L80 28 L65 20 L70 15Z" fill="#e10600"/>
+                        <path d="M20 28 L10 40 L25 32 L20 28Z" fill="#e10600"/>
+                        <path d="M80 28 L90 40 L75 32 L80 28Z" fill="#e10600"/>
+                        <path d="M10 40 L15 50 L25 32 L10 40Z" fill="#e10600"/>
+                        <path d="M90 40 L85 50 L75 32 L90 40Z" fill="#e10600"/>
+                        <circle cx="38" cy="68" r="3" fill="#1a1a1a"/>
+                        <circle cx="62" cy="68" r="3" fill="#1a1a1a"/>
+                    </svg>
+                </div>
+                <div class="brand-name">FORCE<span> TRADING</span></div>
+                <div class="tagline">Trading Community · NISM Research Desk</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="buttons" id="btnRow">
+                <a class="btn-social" href="https://t.me/forcetradingyt1" target="_blank" rel="noopener">
+                    <span class="btn-left">
+                        <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M22 2L11 13" style="fill:currentColor;stroke:none"/><path d="M22 2L15 22L11 13L2 9L22 2Z" style="fill:currentColor;stroke:none"/></svg></span>
+                        <span class="btn-text-wrap">
+                            <span class="btn-label">Telegram Channel</span>
+                            <span class="btn-sub">Daily Setups · Free</span>
+                        </span>
+                    </span>
+                    <span class="btn-chevron"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></span>
+                </a>
+                <a class="btn-social" href="https://t.me/+RibGnKQct1JlOGNl" target="_blank" rel="noopener">
+                    <span class="btn-left">
+                        <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <span class="btn-text-wrap">
+                            <span class="btn-label">Telegram Discussion Group</span>
+                            <span class="btn-sub">Members Only</span>
+                        </span>
+                    </span>
+                    <span class="btn-chevron"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></span>
+                </a>
+                <a class="btn-social btn-premium" href="https://forcetradingyt.github.io/premium.html" target="_blank" rel="noopener">
+                    <span class="btn-left">
+                        <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.26L21.5 9.3l-4.75 4.87L17.8 21 12 17.77 6.2 21l1.05-6.83L2.5 9.3l6.6-1.04L12 2z" style="fill:currentColor;stroke:none"/></svg></span>
+                        <span class="btn-text-wrap">
+                            <span class="btn-label">Premium Clubs · ₹169</span>
+                            <span class="btn-sub">All 3 Clubs · 1-Month</span>
+                        </span>
+                    </span>
+                    <span class="btn-chevron"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></span>
+                </a>
+                <a class="btn-social" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20know%20more%20about%20the%20Premium%20Clubs." target="_blank" rel="noopener">
+                    <span class="btn-left">
+                        <span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                        <span class="btn-text-wrap">
+                            <span class="btn-label">WhatsApp</span>
+                            <span class="btn-sub">Talk to us</span>
+                        </span>
+                    </span>
+                    <span class="btn-chevron"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></span>
+                </a>
+                <div class="sticky-cta" id="stickyCta" role="button" tabindex="0" aria-label="Open a demat account to unlock premium free">
+                    <span class="sc-txt">
+                        <span class="sc-label">🎁 Demat + Premium Bundle Free</span>
+                        <span class="sc-sub">Worth ₹9,999 · 6 brokers</span>
+                    </span>
+                    <span class="sc-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></span>
+                </div>
+            </div>
+            <div class="swipe-hint">← swipe for more →</div>
+
+            <div class="share-wrap">
+                <button class="btn-share" id="shareBtn" aria-label="Share this page">
+                    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+                    Share
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="share-popup-overlay" id="shareOverlay">
+        <div class="share-popup">
+            <div class="share-popup-title">Share Force Trading</div>
+            <div class="share-popup-options">
+                <button class="share-popup-opt" data-share="whatsapp">
+                    <span class="opt-icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                    WhatsApp
+                </button>
+                <button class="share-popup-opt" data-share="telegram">
+                    <span class="opt-icon"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+                    Telegram
+                </button>
+                <button class="share-popup-opt" data-share="copy">
+                    <span class="opt-icon"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                    Copy Link
+                </button>
+            </div>
+            <button class="share-popup-close" id="shareClose">Cancel</button>
+        </div>
+    </div>
+
+    <div class="copy-toast" id="copyToast">Link copied ✓</div>
+
+    <script>
+    (function(){
+        'use strict';
+
+        /* ---------- Loader ---------- */
+        window.addEventListener('load', function(){
+            var loader = document.getElementById('loader');
+            if(loader) setTimeout(function(){ loader.classList.add('hidden'); }, 350);
+        });
+        /* safety: even if load hangs (slow fonts), hide after 2.5s */
+        setTimeout(function(){
+            var loader = document.getElementById('loader');
+            if(loader) loader.classList.add('hidden');
+        }, 2500);
+
+        /* ---------- Particles (light, GPU-friendly) ---------- */
+        var canvas = document.getElementById('particles');
+        if(canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+            var ctx = canvas.getContext('2d');
+            var parts = [], W = 0, H = 0;
+            function resize(){
+                W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+                H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            var N = window.innerWidth < 480 ? 26 : 46;
+            for(var i = 0; i < N; i++){
+                parts.push({ x: Math.random()*W, y: Math.random()*H, r: (Math.random()*1.4 + 0.4) * devicePixelRatio,
+                    vx: (Math.random()-0.5)*0.16*devicePixelRatio, vy: (Math.random()-0.5)*0.16*devicePixelRatio,
+                    a: Math.random()*0.35 + 0.08 });
+            }
+            (function tick(){
+                ctx.clearRect(0, 0, W, H);
+                for(var i = 0; i < parts.length; i++){
+                    var p = parts[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+                    if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+                    ctx.fillStyle = 'rgba(225, 235, 225, ' + p.a + ')';
+                    ctx.fill();
+                }
+                requestAnimationFrame(tick);
+            })();
+        }
+
+        /* ---------- Sticky CTA (swipe-row card on mobile): opens rewards page ---------- */
+        var cta = document.getElementById('stickyCta');
+        function openRewards(){ window.location.href = 'rewards.html'; }
+        if(cta){
+            cta.addEventListener('click', openRewards);
+            cta.addEventListener('keydown', function(e){
+                if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openRewards(); }
+            });
+        }
+
+        /* ---------- Share popup ---------- */
+        var shareBtn = document.getElementById('shareBtn');
+        var overlay = document.getElementById('shareOverlay');
+        var toast = document.getElementById('copyToast');
+        var SHARE_URL = 'https://forcetradingyt.github.io/telegram.html';
+        var SHARE_TEXT = 'Force Trading YT — trading community, setups & premium clubs';
+        function openOverlay(){ overlay.classList.add('active'); }
+        function closeOverlay(){ overlay.classList.remove('active'); }
+        shareBtn.addEventListener('click', function(){
+            if(navigator.share){
+                navigator.share({ title: SHARE_TEXT, url: SHARE_URL }).catch(function(){ openOverlay(); });
+            } else {
+                openOverlay();
+            }
+        });
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) closeOverlay(); });
+        document.getElementById('shareClose').addEventListener('click', closeOverlay);
+        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeOverlay(); });
+        overlay.addEventListener('click', function(e){
+            var opt = e.target.closest('[data-share]');
+            if(!opt) return;
+            var kind = opt.dataset.share;
+            if(kind === 'copy'){
+                var done = function(){
+                    toast.classList.add('show');
+                    setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+                };
+                if(navigator.clipboard && navigator.clipboard.writeText){
+                    navigator.clipboard.writeText(SHARE_URL).then(done, done);
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = SHARE_URL; document.body.appendChild(ta); ta.select();
+                    try { document.execCommand('copy'); } catch(err){}
+                    document.body.removeChild(ta); done();
+                }
+            } else if(kind === 'whatsapp'){
+                window.open('https://wa.me/?text=' + encodeURIComponent(SHARE_TEXT + ' ' + SHARE_URL), '_blank');
+            } else if(kind === 'telegram'){
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(SHARE_URL) + '&text=' + encodeURIComponent(SHARE_TEXT), '_blank');
+            }
+            closeOverlay();
+        });
+    })();
+    </script>
+</body>
+</html>
