@@ -349,6 +349,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .club-tab.active{background:var(--primary-dim);border-color:var(--primary-line);color:var(--primary)}
 .club-body{display:none}
 .club-body.active{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:start;animation:fadeIn .35s ease}
+.club-body.active.slide-next{animation:slideNext .32s cubic-bezier(.22,1,.36,1)}
+.club-body.active.slide-prev{animation:slidePrev .32s cubic-bezier(.22,1,.36,1)}
+@keyframes slideNext{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes slidePrev{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+.swipe-hint{display:none}
+@media(max-width:900px){
+  .swipe-hint{display:block;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin:-10px 0 16px}
+}
 @media(max-width:820px){.club-body.active{grid-template-columns:1fr}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .club-desc{color:var(--text-2);font-size:.92rem;margin-bottom:20px}
@@ -790,6 +798,7 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
         <button class="club-tab" type="button" role="tab" aria-selected="false" data-club="swing"><span class="t-ico">🌊</span>Swing Club</button>
         <button class="club-tab" type="button" role="tab" aria-selected="false" data-club="intra"><span class="t-ico">⚡</span>Intraday Club</button>
       </div>
+      <p class="swipe-hint" aria-hidden="true">← swipe to switch clubs →</p>
 
       <!-- INVESTMENT -->
       <div class="club-body active" id="club-invest" role="tabpanel">
@@ -1233,7 +1242,8 @@ if('IntersectionObserver' in window){
 
 /* ---------- Club tabs (event delegation — works even if per-element listeners fail) ---------- */
 var bodies = document.querySelectorAll('.club-body');
-function activateClub(id){
+var CLUB_ORDER = ['invest','swing','intra'];
+function activateClub(id, dir){
   document.querySelectorAll('.club-tab').forEach(function(t){
     var on = t.dataset.club === id;
     t.classList.toggle('active', on);
@@ -1241,6 +1251,8 @@ function activateClub(id){
   });
   bodies.forEach(function(b){
     var on = b.id === 'club-' + id;
+    b.classList.remove('slide-next','slide-prev');
+    if(on && dir) b.classList.add(dir === 'next' ? 'slide-next' : 'slide-prev');
     b.classList.toggle('active', on);
     b.hidden = !on;
   });
@@ -1249,6 +1261,28 @@ document.addEventListener('click', function(e){
   var tab = e.target.closest ? e.target.closest('.club-tab') : null;
   if(tab && tab.dataset.club) activateClub(tab.dataset.club);
 });
+
+/* ---------- Swipe between clubs (mobile, stories-style) ---------- */
+var clubPanel = document.querySelector('.club-panel');
+if(clubPanel){
+  var swX = 0, swY = 0, swOn = false;
+  clubPanel.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    swX = e.touches[0].clientX; swY = e.touches[0].clientY; swOn = true;
+  }, {passive:true});
+  clubPanel.addEventListener('touchend', function(e){
+    if(!swOn) return; swOn = false;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - swX, dy = t.clientY - swY;
+    /* horizontal swipe only — never hijack vertical page scroll */
+    if(Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    var cur = document.querySelector('.club-tab.active');
+    var i = CLUB_ORDER.indexOf(cur ? cur.dataset.club : 'invest');
+    var n = i + (dx < 0 ? 1 : -1);              /* left = next, right = prev */
+    if(n < 0 || n >= CLUB_ORDER.length) return; /* clamp at first/last */
+    activateClub(CLUB_ORDER[n], dx < 0 ? 'next' : 'prev');
+  }, {passive:true});
+}
 
 /* ---------- Bundle banner countdown (fixed end date) ---------- */
 /* Nayi campaign ke liye sirf OFFER_END badlo (IST = +05:30) */
