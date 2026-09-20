@@ -74,6 +74,7 @@
     text-align:center;
   }
   .offer-timer .sep{ color:var(--muted); font-size:12px; }
+  .offer-banner .ends-note{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); white-space:nowrap; }
   @media (max-width:480px){
     .offer-banner{ padding:9px 10px; }
     .offer-banner .offer-text{ font-size:11.5px; width:100%; }
@@ -857,12 +858,13 @@
 <body>
 
   <div class="offer-banner" id="offerBanner" role="button" tabindex="0">
-    <span class="offer-text"><span class="fire">🔥</span>Limited Time Offer – All 3 Clubs · 2-Year Access | <span class="offer-grab">Grab</span> the Bundle for ₹2,500 — Ends in</span>
+    <span class="offer-text"><span class="fire">🔥</span>Limited Time Offer – All 3 Clubs · 1-Month Access | <span class="offer-grab">Grab</span> the Bundle for ₹169<span id="offEndsLbl"> — Ends in</span></span>
     <div class="offer-timer" id="offerTimer">
       <span class="seg" id="offH">00</span><span class="sep">:</span>
       <span class="seg" id="offM">15</span><span class="sep">:</span>
       <span class="seg" id="offS">00</span>
     </div>
+    <span class="ends-note" id="offDateNote">Offer ends 23 Sept</span>
   </div>
 
   <header>
@@ -899,13 +901,13 @@
         <span class="best-value">Best Value</span>
         <div>
           <div class="plan-name">Complete Bundle</div>
-          <div class="plan-tag">All 3 Clubs · 2-year validity</div>
+          <div class="plan-tag">All 3 Clubs · 1-month validity</div>
         </div>
         <div class="price-row">
-          <span class="price">₹2,500</span>
-          <span class="price-note">2-year access</span>
+          <span class="price">₹169</span>
+          <span class="price-note">1-month access</span>
         </div>
-        <div class="save-line">Investment + Swing + Intraday · Save ₹4,628 vs monthly</div>
+        <div class="save-line">Investment + Swing + Intraday · Save ₹128 vs monthly</div>
         <button class="buy-btn" type="button">Get the Bundle</button>
       </div>
 
@@ -1115,19 +1117,19 @@
       buyLabel: "Proceed to Payment"
     },
     bundle: {
-      tag: "All 3 Clubs · 2-year validity",
+      tag: "All 3 Clubs · 1-month validity",
       name: "Complete Bundle",
-      price: "₹2,500",
-      priceNote: "2-year access",
-      save: "Investment + Swing + Intraday · Save ₹4,628 vs monthly",
+      price: "₹169",
+      priceNote: "1-month access",
+      save: "Investment + Swing + Intraday · Save ₹128 vs monthly",
       features: [
-        "Investment Club — 2-year access",
-        "Swing Club — 2-year access",
-        "Intraday Club — 2-year access",
+        "Investment Club — 1-month access",
+        "Swing Club — 1-month access",
+        "Intraday Club — 1-month access",
         "All strategy frameworks & playbooks",
         "Priority support on WhatsApp"
       ],
-      link: "https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%202500%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs).",
+      link: "https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%20169%20-%201%20month%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs).",
       buyLabel: "Buy on WhatsApp"
     }
   };
@@ -1309,16 +1311,12 @@
     });
   });
   // ===================== OFFER COUNTDOWN =====================
-  // Evergreen daily countdown — resets at local midnight every day.
-  function msUntilMidnight(){
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // next local midnight
-    return midnight - now;
-  }
+  // Fixed end date — new campaign ke liye sirf OFFER_END badlo (IST = +05:30).
+  const OFFER_END = '2026-09-23T23:59:59+05:30';
+  const offerEndMs = new Date(OFFER_END).getTime();
 
   function updateOfferTimer(){
-    const diff = Math.max(0, msUntilMidnight());
+    const diff = Math.max(0, offerEndMs - Date.now());
 
     const h = Math.floor(diff / (1000*60*60));
     const m = Math.floor(diff / (1000*60)) % 60;
@@ -1328,10 +1326,20 @@
     document.getElementById('offH').textContent = pad(h);
     document.getElementById('offM').textContent = pad(m);
     document.getElementById('offS').textContent = pad(s);
+
+    if(diff <= 0){
+      clearInterval(offerTimerInt);
+      const t = document.getElementById('offerTimer');
+      if(t) t.style.display = 'none';
+      const lbl = document.getElementById('offEndsLbl');
+      if(lbl) lbl.style.display = 'none';
+      const note = document.getElementById('offDateNote');
+      if(note) note.style.display = 'none';
+    }
   }
 
   updateOfferTimer();
-  setInterval(updateOfferTimer, 1000);
+  const offerTimerInt = setInterval(updateOfferTimer, 1000);
 
   const offerBanner = document.getElementById('offerBanner');
   offerBanner.addEventListener('click', () => {

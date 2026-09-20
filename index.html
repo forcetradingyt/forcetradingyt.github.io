@@ -241,40 +241,25 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   .hero-offer{flex-wrap:wrap;justify-content:center;border-radius:var(--r-md);padding:10px 14px;text-align:center}
 }
 
-/* Floating mini market widgets */
-.hero-widgets{position:absolute;inset:0;pointer-events:none;z-index:2}
-.fw{
-  position:absolute;pointer-events:auto;
-  background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid var(--border-2);border-radius:var(--r-md);padding:14px 16px;
-  box-shadow:0 14px 40px rgba(0,0,0,.5);
-  animation:offerDrop .7s cubic-bezier(.22,1,.36,1) backwards, floaty 7s ease-in-out infinite;
+/* ===================== MOBILE STICKY CTA ===================== */
+.mobile-cta{
+  position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:190;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:rgba(13,16,14,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid var(--primary-line);border-radius:16px;padding:10px 12px 10px 16px;
+  box-shadow:0 14px 44px rgba(0,0,0,.6);
+  transform:translateY(calc(100% + 30px));visibility:hidden;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),visibility 0s linear .45s;
 }
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.fw .fw-name{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;color:var(--text-3);text-transform:uppercase}
-.fw .fw-val{font-family:var(--mono);font-size:1.02rem;font-weight:700;margin-top:3px}
-.fw .fw-chg{font-family:var(--mono);font-size:.7rem;margin-top:1px}
-.fw canvas{margin-top:8px}
-/* delay list = [drop reveal, floaty loop]; floaty starts only after each drop ends */
-.fw-left{left:0;top:96px;animation-delay:.45s,1.2s}
-.fw-right{right:0;top:150px;animation-delay:.6s,2.6s}
-.fw-left2{left:26px;top:290px;animation-delay:.75s,4s}
-@media(max-width:1220px){.fw{display:none}}
-
-/* ===================== TICKER ===================== */
-.ticker{
-  border-block:1px solid var(--border);background:var(--bg-2);
-  overflow:hidden;position:relative;padding:11px 0;
-}
-.ticker::before,.ticker::after{content:"";position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none}
-.ticker::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
-.ticker::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
-.ticker-track{display:flex;gap:44px;width:max-content;animation:ticker 32s linear infinite}
-.ticker:hover .ticker-track{animation-play-state:paused}
-@keyframes ticker{to{transform:translateX(-50%)}}
-.tk{display:inline-flex;align-items:baseline;gap:9px;font-family:var(--mono);font-size:.76rem;white-space:nowrap;color:var(--text-2)}
-.tk b{color:var(--text);font-weight:600}
-.tk .num{font-size:.74rem}
+.mobile-cta.show{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.22,1,.36,1),visibility 0s}
+.mobile-cta .mc-txt{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.mobile-cta .mc-txt b{font-size:.85rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-cta .mc-txt b .hl{color:var(--primary)}
+.mobile-cta .mc-txt span{font-family:var(--mono);font-size:.62rem;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-cta .btn{flex:none;padding:11px 18px;font-size:.82rem}
+@media(max-width:380px){.mobile-cta .btn{padding:10px 14px;font-size:.78rem}}
+@media(min-width:901px){.mobile-cta{display:none!important}}
+@media(max-width:900px){body.cta-shown .fab-wrap{bottom:calc(86px + env(safe-area-inset-bottom,0px))}}
 
 /* ===================== BENTO GRID ===================== */
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;grid-auto-flow:dense}
@@ -302,17 +287,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .w-sm{grid-column:span 4}
 .w-xs{grid-column:span 3}
 .w-wide{grid-column:span 8}
-@media(max-width:1020px){.w-lg,.w-md,.w-wide{grid-column:span 12}.w-sm{grid-column:span 6}.w-xs{grid-column:span 6}}
+.w-half{grid-column:span 6}
+@media(max-width:1020px){.w-lg,.w-md,.w-wide{grid-column:span 12}.w-sm,.w-xs,.w-half{grid-column:span 6}}
 @media(max-width:640px){.bento{grid-template-columns:1fr}.widget{grid-column:span 1!important}}
-
-/* --- Index stats strip --- */
-.idx-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:6px}
-@media(max-width:520px){.idx-row{grid-template-columns:1fr}.idx-row .idx{border-bottom:1px solid var(--border);padding:14px 4px}.idx-row .idx:last-child{border-bottom:none}}
-.idx{padding:16px 14px;border-left:1px solid var(--border)}
-.idx:first-child{border-left:none;padding-left:4px}
-.idx .i-name{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--text-3)}
-.idx .i-val{font-family:var(--mono);font-size:1.28rem;font-weight:700;margin-top:4px}
-.idx .i-chg{font-family:var(--mono);font-size:.72rem;margin-top:2px}
 
 /* --- Sentiment ring --- */
 .senti{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
@@ -340,21 +317,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .s-row.hot .s-fill{background:linear-gradient(90deg,var(--primary),#4de6a0);box-shadow:0 0 12px rgba(0,230,118,.45)}
 .s-row.hot .s-name,.s-row.hot .s-val{color:var(--primary)}
 
-/* --- Movers --- */
-.movers{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:560px){.movers{grid-template-columns:1fr}}
-.mv h5{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:7px}
-.mv h5 .dot{width:6px;height:6px;border-radius:50%}
-.mv.g h5 .dot{background:var(--primary);box-shadow:0 0 8px var(--primary)}
-.mv.l h5 .dot{background:var(--red);box-shadow:0 0 8px var(--red)}
-.mv-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:9px;transition:background var(--tr)}
-.mv-row:hover{background:rgba(255,255,255,.04)}
-.mv-row .sym{font-weight:600;font-size:.8rem}
-.mv-row .px{font-family:var(--mono);font-size:.72rem;color:var(--text-3)}
-.mv-row .chg{font-family:var(--mono);font-size:.74rem;font-weight:600}
-.mv.g .chg{color:var(--primary)}
-.mv.l .chg{color:var(--red)}
-
 /* --- Trade setup terminal --- */
 .setup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
 @media(max-width:560px){.setup-grid{grid-template-columns:1fr 1fr}}
@@ -371,7 +333,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* --- Clubs (single premium component) --- */
 .clubs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-md);padding:7px;margin-bottom:22px}
-@media(max-width:640px){.clubs{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .clubs{grid-template-columns:repeat(3,1fr);gap:6px;padding:6px;margin-bottom:18px}
+  .club-tab{flex-direction:column;gap:5px;padding:11px 4px;font-size:.7rem;border-radius:9px;line-height:1.25}
+  .club-tab .t-ico{font-size:1.25rem}
+}
 .club-tab{
   display:flex;align-items:center;justify-content:center;gap:9px;
   padding:12px 10px;border-radius:11px;font-weight:600;font-size:.88rem;color:var(--text-2);
@@ -397,6 +363,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .cstat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px}
 .cstat .cs-v{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--primary)}
 .cstat .cs-l{font-size:.7rem;color:var(--text-3);margin-top:3px}
+.inc-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin:20px 0 10px;display:flex;align-items:center;gap:10px}
+.inc-label::after{content:"";flex:1;height:1px;background:var(--border)}
+.cta-note{display:flex;align-items:center;gap:7px;font-size:.74rem;color:var(--text-3);margin-top:10px}
+.cta-note b{color:var(--primary);font-weight:700;font-size:.8rem}
 
 /* --- Bundle offer banner --- */
 .bundle-banner{
@@ -411,7 +381,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .bundle-timer{display:flex;align-items:center;gap:5px;font-family:var(--mono)}
 .bundle-timer .seg{background:rgba(0,0,0,.45);border:1px solid var(--primary-line);color:var(--primary);font-weight:700;font-size:.78rem;padding:4px 8px;border-radius:8px;min-width:30px;text-align:center}
 .bundle-timer .sep{color:var(--text-3);font-size:.72rem}
-@media(max-width:720px){.bundle-banner{flex-direction:column;gap:10px;padding:16px}}
+.bundle-banner .ends-note{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;color:var(--text-3);white-space:nowrap}
+@media(max-width:720px){.bundle-banner{flex-direction:column;gap:9px;padding:14px 12px}.bundle-timer{gap:4px}.bundle-timer .seg{padding:3px 7px;font-size:.74rem;min-width:28px}.bundle-banner .bb-msg{font-size:.8rem;line-height:1.5}}
 
 /* Clubs sub-footer links */
 .clubs-foot{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:20px}
@@ -550,15 +521,27 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .hero-offer{animation:none}
-  .fw,.ticker-track,.live-dot,.w-tag.live{animation:none!important}
+  .live-dot,.w-tag.live{animation:none!important}
   .p-line{stroke-dashoffset:0!important;transition:none}
   .s-fill,.conf .c-fill,.mbar{transition:none!important}
   [data-rv]{opacity:1;transform:none;transition:none}
 }
 @media(max-width:640px){
-  .section{padding:64px 0}
-  .hero{padding-top:calc(var(--nav-h) + 46px)}
+  .section{padding:60px 0}
+  .hero{padding-top:calc(var(--nav-h) + 40px)}
   .widget{padding:18px}
+  .wrap{padding:0 16px}
+  .sec-head{margin-bottom:36px}
+  .hero-ctas{flex-direction:column;align-items:stretch;max-width:360px;width:100%;margin:0 auto}
+  .hero-ctas .btn{width:100%}
+  .club-cta .btn,.bundle-banner .btn{width:100%}
+  .final-cta{padding:46px 20px;border-radius:20px}
+  .price-now{font-size:2.1rem}
+  .sig .lv{white-space:normal}
+  .club-panel{padding:20px!important}
+  .fab-main{width:50px;height:50px}
+  .fab-main svg{width:22px;height:22px}
+  .fab-icon{width:42px;height:42px}
 }
 </style>
 </head>
@@ -609,34 +592,13 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
     <div class="glow g2"></div>
   </div>
 
-  <!-- floating mini market widgets -->
-  <div class="hero-widgets" aria-hidden="true">
-    <div class="fw fw-left" data-key="NIFTY 50">
-      <div class="fw-name">Nifty 50</div>
-      <div class="fw-val num">24,832.4</div>
-      <div class="fw-chg up num">▲ +0.84%</div>
-      <canvas class="spark" data-points="38,42,36,44,40,48,45,52,50,58,55,62" data-color="#00E676" width="120" height="30"></canvas>
-    </div>
-    <div class="fw fw-right" data-key="BANKNIFTY">
-      <div class="fw-name">Bank Nifty</div>
-      <div class="fw-val num">51,204.9</div>
-      <div class="fw-chg down num">▼ −0.32%</div>
-      <canvas class="spark" data-points="52,48,50,44,46,42,45,40,43,39,41,38" data-color="#ff5c72" width="120" height="30"></canvas>
-    </div>
-    <div class="fw fw-left2">
-      <div class="fw-name">Signals Today</div>
-      <div class="fw-val num up">27</div>
-      <div class="fw-chg" style="color:var(--text-3)">SETUPS MATCHED</div>
-    </div>
-  </div>
-
   <div class="wrap hero-inner">
-    <a class="hero-offer" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%202500%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
+    <a class="hero-offer" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%20169%20-%201%20month%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
       <span class="ho-fire">🔥</span>
-      <span><b>COMPLETE BUNDLE</b> · All 3 Clubs · 2-Year Access · <span class="ho-price">₹2,500</span></span>
+      <span><b>COMPLETE BUNDLE</b> · All 3 Clubs · 1-Month Access · <span class="ho-price">₹169</span></span>
       <span class="ho-cta">Grab Now →</span>
     </a>
-    <div class="live-status"><span class="live-dot"></span>MARKETS · LIVE DASHBOARD</div>
+    <div class="live-status"><span class="live-dot"></span>DAILY ANALYSIS · SECTOR INTELLIGENCE</div>
     <h1>Trade With <span class="grad">Structure</span>,<br>Not With Guesswork</h1>
     <p class="hero-sub">The <b style="color:var(--text);font-weight:600">FTY Premium Indicator</b> — built on the Laxman Rekha Strategy, a rule-based price action system for Indian market traders. Daily analysis, sector intelligence and a disciplined community. No tips, no hype, no guarantees.</p>
     <div class="hero-ctas">
@@ -646,91 +608,19 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
   </div>
 </section>
 
-<!-- ================= TICKER ================= -->  <div class="ticker" aria-label="Market ticker">
-  <div class="ticker-track" id="tickerTrack">
-    <span class="tk"><b>NIFTY 50</b> <span class="num">24,832.40</span> <span class="up num">▲ 0.84%</span></span>
-    <span class="tk"><b>SENSEX</b> <span class="num">81,455.40</span> <span class="up num">▲ 0.71%</span></span>
-    <span class="tk"><b>BANKNIFTY</b> <span class="num">51,204.90</span> <span class="down num">▼ 0.32%</span></span>
-    <span class="tk"><b>RELIANCE</b> <span class="num">2,914.60</span> <span class="up num">▲ 1.86%</span></span>
-    <span class="tk"><b>HDFCBANK</b> <span class="num">1,684.20</span> <span class="up num">▲ 0.94%</span></span>
-    <span class="tk"><b>TATAMOTORS</b> <span class="num">978.35</span> <span class="down num">▼ 0.64%</span></span>
-    <span class="tk"><b>INFY</b> <span class="num">1,842.10</span> <span class="up num">▲ 1.22%</span></span>
-    <span class="tk"><b>SBIN</b> <span class="num">826.75</span> <span class="up num">▲ 2.10%</span></span>
-    <span class="tk"><b>ADANIENT</b> <span class="num">3,051.00</span> <span class="down num">▼ 1.41%</span></span>
-    <span class="tk"><b>ITC</b> <span class="num">464.85</span> <span class="up num">▲ 0.52%</span></span>
-    <span class="tk"><b>BHARTIARTL</b> <span class="num">1,552.30</span> <span class="up num">▲ 1.08%</span></span>
-    <span class="tk"><b>MARUTI</b> <span class="num">12,486.55</span> <span class="down num">▼ 0.27%</span></span>
-    <!-- duplicate for seamless loop -->
-    <span class="tk"><b>NIFTY 50</b> <span class="num">24,832.40</span> <span class="up num">▲ 0.84%</span></span>
-    <span class="tk"><b>SENSEX</b> <span class="num">81,455.40</span> <span class="up num">▲ 0.71%</span></span>
-    <span class="tk"><b>BANKNIFTY</b> <span class="num">51,204.90</span> <span class="down num">▼ 0.32%</span></span>
-    <span class="tk"><b>RELIANCE</b> <span class="num">2,914.60</span> <span class="up num">▲ 1.86%</span></span>
-    <span class="tk"><b>HDFCBANK</b> <span class="num">1,684.20</span> <span class="up num">▲ 0.94%</span></span>
-    <span class="tk"><b>TATAMOTORS</b> <span class="num">978.35</span> <span class="down num">▼ 0.64%</span></span>
-    <span class="tk"><b>INFY</b> <span class="num">1,842.10</span> <span class="up num">▲ 1.22%</span></span>
-    <span class="tk"><b>SBIN</b> <span class="num">826.75</span> <span class="up num">▲ 2.10%</span></span>
-    <span class="tk"><b>ADANIENT</b> <span class="num">3,051.00</span> <span class="down num">▼ 1.41%</span></span>
-    <span class="tk"><b>ITC</b> <span class="num">464.85</span> <span class="up num">▲ 0.52%</span></span>
-    <span class="tk"><b>BHARTIARTL</b> <span class="num">1,552.30</span> <span class="up num">▲ 1.08%</span></span>
-    <span class="tk"><b>MARUTI</b> <span class="num">12,486.55</span> <span class="down num">▼ 0.27%</span></span>
-  </div>
-</div>
-
 <!-- ================= MARKET BENTO GRID ================= -->
 <section id="market" class="section">
   <div class="wrap">
     <div class="sec-head" data-rv>
       <span class="kicker">Market Dashboard</span>
       <h2>Everything That Moves, In One Grid</h2>
-      <p>Indices, sentiment, sectors, movers and live setups — the same view our premium members start their day with.</p>
+      <p>Sentiment, sector rotation and rule-based setups — the same view our premium members start their day with.</p>
     </div>
 
     <div class="bento">
 
-      <!-- 1 · MARKET OVERVIEW -->
-      <div class="widget w-lg w-green" data-rv>
-        <div class="w-head">
-          <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>Market Overview</div>
-          <span class="w-tag live">Live</span>
-        </div>
-        <div class="idx-row">
-          <div class="idx" data-key="NIFTY 50">
-            <div class="i-name">NIFTY 50</div>
-            <div class="i-val" data-countto="24832.40" data-dec="2">0.00</div>
-            <div class="i-chg up num">▲ +0.84% · +206.7</div>
-          </div>
-          <div class="idx" data-key="BANKNIFTY">
-            <div class="i-name">BANK NIFTY</div>
-            <div class="i-val" data-countto="51204.90" data-dec="2">0.00</div>
-            <div class="i-chg down num">▼ −0.32% · −164.8</div>
-          </div>
-          <div class="idx" data-key="SENSEX">
-            <div class="i-name">SENSEX</div>
-            <div class="i-val" data-countto="81455.40" data-dec="2">0.00</div>
-            <div class="i-chg up num">▲ +0.71% · +573.2</div>
-          </div>
-        </div>
-        <svg viewBox="0 0 640 150" style="margin-top:18px" aria-hidden="true">
-          <defs>
-            <linearGradient id="ovGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#00E676" stop-opacity=".22"/>
-              <stop offset="100%" stop-color="#00E676" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <g stroke="rgba(255,255,255,.05)" stroke-width="1">
-            <line x1="0" y1="38" x2="640" y2="38"/><line x1="0" y1="76" x2="640" y2="76"/><line x1="0" y1="114" x2="640" y2="114"/>
-          </g>
-          <path class="ov-fill" id="ovArea" fill="url(#ovGrad)" d="M0,118 L58,104 L116,112 L174,86 L232,94 L290,70 L348,78 L406,54 L464,62 L522,38 L580,46 L640,24 L640,150 L0,150 Z"/>
-          <polyline class="p-line" id="ovLine" points="0,118 58,104 116,112 174,86 232,94 290,70 348,78 406,54 464,62 522,38 580,46 640,24"
-            fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle id="ovDot" cx="640" cy="24" r="4.5" fill="#00E676"/>
-          <circle id="ovDotHalo" cx="640" cy="24" r="9" fill="none" stroke="#00E676" opacity=".35"/>
-        </svg>
-        <div class="w-foot"><span>Instrument: NIFTY 50 · Daily</span><span id="overviewUpdated">Source: NSE · Live feed</span></div>
-      </div>
-
       <!-- 2 · SENTIMENT -->
-      <div class="widget w-md" data-rv data-d="1">
+      <div class="widget w-half" data-rv data-d="1">
         <div class="w-head">
           <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>Market Sentiment</div>
           <span class="w-tag">Daily</span>
@@ -761,7 +651,7 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
       </div>
 
       <!-- 3 · SECTOR ROTATION -->
-      <div class="widget w-md" data-rv>
+      <div class="widget w-half" data-rv>
         <div class="w-head">
           <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="12" y="6" width="3" height="12"/><rect x="17" y="13" width="3" height="5"/></svg>Sector Rotation</div>
           <span class="w-tag">Today</span>
@@ -777,35 +667,8 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
         <div class="w-foot"><span>Benchmark: Nifty 500</span><span>Rotation favours Financials → IT</span></div>
       </div>
 
-      <!-- 4 · TOP MOVERS -->
-      <div class="widget w-lg" data-rv data-d="1">
-        <div class="w-head">
-          <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>Top Movers</div>
-          <span class="w-tag live">NSE · Cash</span>
-        </div>
-        <div class="movers">
-          <div class="mv g">
-            <h5><span class="dot"></span>Top Gainers</h5>
-            <div class="mv-row"><span class="sym">SBIN</span><span class="px num">₹826.75</span><span class="chg num">+2.10%</span></div>
-            <div class="mv-row"><span class="sym">RELIANCE</span><span class="px num">₹2,914.60</span><span class="chg num">+1.86%</span></div>
-            <div class="mv-row"><span class="sym">INFY</span><span class="px num">₹1,842.10</span><span class="chg num">+1.22%</span></div>
-            <div class="mv-row"><span class="sym">BHARTIARTL</span><span class="px num">₹1,552.30</span><span class="chg num">+1.08%</span></div>
-            <div class="mv-row"><span class="sym">HDFCBANK</span><span class="px num">₹1,684.20</span><span class="chg num">+0.94%</span></div>
-          </div>
-          <div class="mv l">
-            <h5><span class="dot"></span>Top Losers</h5>
-            <div class="mv-row"><span class="sym">ADANIENT</span><span class="px num">₹3,051.00</span><span class="chg num">−1.41%</span></div>
-            <div class="mv-row"><span class="sym">TATAMOTORS</span><span class="px num">₹978.35</span><span class="chg num">−0.64%</span></div>
-            <div class="mv-row"><span class="sym">MARUTI</span><span class="px num">₹12,486.55</span><span class="chg num">−0.27%</span></div>
-            <div class="mv-row"><span class="sym">LT</span><span class="px num">₹3,612.80</span><span class="chg num">−0.19%</span></div>
-            <div class="mv-row"><span class="sym">ULTRACEMCO</span><span class="px num">₹11,485.00</span><span class="chg num">−0.11%</span></div>
-          </div>
-        </div>
-        <div class="w-foot"><span>Volume-qualified · ≥ ₹1,000 Cr turnover</span><span id="moversUpdated">Updated 15:30 IST</span></div>
-      </div>
-
       <!-- 5 · TRADE SETUP -->
-      <div class="widget w-wide w-green" data-rv>
+      <div class="widget w-lg w-green" data-rv>
         <div class="w-head">
           <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Featured Trade Setup</div>
           <span class="w-tag">FTY Indicator · Swing</span>
@@ -831,8 +694,8 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
       <!-- 6 · LIVE SIGNALS -->
       <div class="widget w-md" data-rv data-d="1">
         <div class="w-head">
-          <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Live Signal Feed</div>
-          <span class="w-tag live">Auto</span>
+          <div class="w-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Signal Feed</div>
+          <span class="w-tag">Sample</span>
         </div>
         <div class="sig-rows">
           <div class="sig">
@@ -909,16 +772,17 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
     </div>
 
     <div class="bundle-banner" data-rv>
-      <span class="bb-msg">🔥 <b>Limited Offer</b> — All 3 Clubs · <span class="hl">2-Year Access</span> for <span class="hl">₹2,500</span> · <span style="color:var(--text-3)">save ₹4,628 vs monthly</span> · Ends in</span>
+      <span class="bb-msg">🔥 <b>Limited Offer</b> — All 3 Clubs · <span class="hl">1-Month Access</span> for <span class="hl">₹169</span> · <span style="color:var(--text-3)">save ₹128 vs monthly</span><span id="bbEndsLbl"> · Ends in</span></span>
       <div class="bundle-timer" role="timer" aria-label="Bundle offer countdown">
         <span class="seg" id="bbH">00</span><span class="sep">:</span>
         <span class="seg" id="bbM">00</span><span class="sep">:</span>
         <span class="seg" id="bbS">00</span>
       </div>
-      <a class="btn btn-primary btn-sm" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%202500%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">Grab the Bundle →</a>
+      <span class="ends-note" id="bbDateNote">Offer ends 23 Sept</span>
+      <a class="btn btn-primary btn-sm" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%20169%20-%201%20month%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">Grab the Bundle →</a>
     </div>
 
-    <div class="widget" style="padding:30px" data-rv>
+    <div class="widget club-panel" style="padding:30px" data-rv>
       <!-- tabs -->
       <div class="clubs" role="tablist" aria-label="Choose a club">
         <button class="club-tab active" role="tab" aria-selected="true" data-club="invest"><span class="t-ico">📈</span>Investment Club</button>
@@ -932,12 +796,6 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <span class="w-tag" style="margin-bottom:14px;display:inline-block">Long-Term Wealth</span>
           <h3 style="font-size:1.4rem;margin-bottom:10px">Investment Club</h3>
           <p class="club-desc">Positional portfolio ideas built on the 201 Framework — quality NSE stocks, staged entries and review checkpoints instead of "buy and pray".</p>
-          <ul class="benefits">
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Weekly portfolio research notes</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>201 Framework watchlist with entry zones</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Quarterly review & rebalance checkpoints</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
-          </ul>
           <div class="price-line">
             <span class="price-old">₹499</span>
             <span class="price-now">₹99</span><span class="price-note">/ month · billed via Superprofile</span>
@@ -945,6 +803,14 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <div class="club-cta">
             <a class="btn btn-primary" href="https://superprofile.bio/vig/66fbdf19fbba170013b464e4" target="_blank" rel="noopener">Join Investment Club →</a>
           </div>
+          <p class="cta-note"><b>✓</b> Instant access · Secure checkout · UPI accepted</p>
+          <div class="inc-label">What’s included</div>
+          <ul class="benefits">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Weekly portfolio research notes</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>201 Framework watchlist with entry zones</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Quarterly review & rebalance checkpoints</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
+          </ul>
         </div>
         <div class="club-stats">
           <div class="cstat"><div class="cs-v" data-countto="120" data-suffix="+">0</div><div class="cs-l">Members</div></div>
@@ -960,12 +826,6 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <span class="w-tag" style="margin-bottom:14px;display:inline-block">Multi-Day Setups</span>
           <h3 style="font-size:1.4rem;margin-bottom:10px">Swing Club</h3>
           <p class="club-desc">Multi-day FTY Premium Indicator setups posted with full trade plans — entry, stop, targets and invalidation — before the move, not after it.</p>
-          <ul class="benefits">
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>2–4 high-conviction swing plans per week</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Breakout + pullback scanner shortlists</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Position sizing calculator & risk sheet</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
-          </ul>
           <div class="price-line">
             <span class="price-old">₹599</span>
             <span class="price-now">₹99</span><span class="price-note">/ month · billed via Superprofile</span>
@@ -973,6 +833,14 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <div class="club-cta">
             <a class="btn btn-primary" href="https://cosmofeed.com/vig/6a79f3ac07c2620013db886a" target="_blank" rel="noopener">Join Swing Club →</a>
           </div>
+          <p class="cta-note"><b>✓</b> Instant access · Secure checkout · UPI accepted</p>
+          <div class="inc-label">What’s included</div>
+          <ul class="benefits">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>2–4 high-conviction swing plans per week</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Breakout + pullback scanner shortlists</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Position sizing calculator & risk sheet</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
+          </ul>
         </div>
         <div class="club-stats">
           <div class="cstat"><div class="cs-v" data-countto="180" data-suffix="+">0</div><div class="cs-l">Members</div></div>
@@ -988,12 +856,6 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <span class="w-tag" style="margin-bottom:14px;display:inline-block">Same-Day Setups</span>
           <h3 style="font-size:1.4rem;margin-bottom:10px">Intraday Club</h3>
           <p class="club-desc">The 11-21 Intraday Edge system — opening-range levels, momentum plays and a strict no-overtrading checklist for daily execution.</p>
-          <ul class="benefits">
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Daily pre-market level sheet (9:00 AM)</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live intraday scanner shortlists</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>11-21 Edge system playbook</li>
-            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
-          </ul>
           <div class="price-line">
             <span class="price-old">₹699</span>
             <span class="price-now">₹99</span><span class="price-note">/ month · billed via Superprofile</span>
@@ -1001,6 +863,14 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
           <div class="club-cta">
             <a class="btn btn-primary" href="https://superprofile.bio/vig/6a56e5362c247600130202e5" target="_blank" rel="noopener">Join Intraday Club →</a>
           </div>
+          <p class="cta-note"><b>✓</b> Instant access · Secure checkout · UPI accepted</p>
+          <div class="inc-label">What’s included</div>
+          <ul class="benefits">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Daily pre-market level sheet (9:00 AM)</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Live intraday scanner shortlists</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>11-21 Edge system playbook</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Private Telegram community</li>
+          </ul>
         </div>
         <div class="club-stats">
           <div class="cstat"><div class="cs-v" data-countto="150" data-suffix="+">0</div><div class="cs-l">Members</div></div>
@@ -1012,8 +882,8 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
     </div>
 
     <div class="clubs-foot" data-rv>
-      <a class="cf-item" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%202500%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
-        <span>🔥 <b>Complete Bundle</b> · All 3 Clubs · 2-Year Access · <span class="cf-price">₹2,500</span></span>
+      <a class="cf-item" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%20169%20-%201%20month%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
+        <span>🔥 <b>Complete Bundle</b> · All 3 Clubs · 1-Month Access · <span class="cf-price">₹169</span></span>
         <span class="cf-arrow">→</span>
       </a>
       <span class="cf-sep" aria-hidden="true"></span>
@@ -1208,6 +1078,15 @@ footer{border-top:1px solid var(--border);background:var(--bg-2);padding:60px 0 
   </button>
 </div>
 
+<!-- ================= MOBILE STICKY CTA ================= -->
+<div class="mobile-cta" id="mobileCta">
+  <div class="mc-txt">
+    <b>🔥 Complete Bundle · <span class="hl">₹169</span></b>
+    <span>All 3 Clubs · 1-Month Access</span>
+  </div>
+  <a class="btn btn-primary" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%20169%20-%201%20month%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">Grab Now →</a>
+</div>
+
 <script>
 (function(){
 "use strict";
@@ -1278,30 +1157,6 @@ if('IntersectionObserver' in window){
   },{threshold:.5});
   numEls.forEach(function(el){ no.observe(el); });
 }else{ numEls.forEach(animateNum); }
-
-/* ---------- Sparklines (hero floating widgets) ---------- */
-document.querySelectorAll('canvas.spark').forEach(function(cv){
-  var pts = (cv.dataset.points || '').split(',').map(Number);
-  var color = cv.dataset.color || '#00E676';
-  var ctx = cv.getContext('2d');
-  var w = cv.width, h = cv.height, pad = 3;
-  var min = Math.min.apply(null, pts), max = Math.max.apply(null, pts);
-  var rng = (max - min) || 1;
-  ctx.beginPath();
-  pts.forEach(function(p, i){
-    var x = pad + i * (w - pad*2) / (pts.length - 1);
-    var y = h - pad - (p - min) / rng * (h - pad*2);
-    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-  });
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
-  ctx.lineJoin = 'round';
-  ctx.stroke();
-  ctx.lineTo(w - pad, h); ctx.lineTo(pad, h); ctx.closePath();
-  var g = ctx.createLinearGradient(0, 0, 0, h);
-  g.addColorStop(0, color + '33'); g.addColorStop(1, color + '00');
-  ctx.fillStyle = g; ctx.fill();
-});
 
 /* ---------- Sentiment ring ---------- */
 var senti = document.getElementById('sentiVal');
@@ -1375,143 +1230,6 @@ if('IntersectionObserver' in window){
   lines.forEach(function(l){ plo.observe(l); });
 }else{ lines.forEach(function(l){ l.style.strokeDashoffset = '0'; }); }
 
-/* ---------- LIVE NSE DATA (data/nse.json refreshed by GitHub Action) ---------- */
-var STOCK_KEYS = ['RELIANCE','HDFCBANK','TATASTEEL','INFY','SBIN','ADANIENT','ITC','BHARTIARTL','MARUTI'];
-
-function inr(n, dec){
-  var s = (dec === 0) ? String(Math.round(n)) : Number(n).toFixed(dec == null ? 2 : dec);
-  var parts = s.split('.');
-  var last3 = parts[0].slice(-3);
-  var rest = parts[0].slice(0, -3);
-  if(rest) last3 = ',' + last3;
-  parts[0] = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + last3;
-  return parts.join('.');
-}
-
-function paintQuote(cell, q){
-  if(!q || !cell) return;
-  var val = cell.querySelector('.i-val');
-  var chg = cell.querySelector('.i-chg');
-  if(val) val.textContent = inr(q.price, 2);
-  if(chg){
-    var up = q.pct >= 0;
-    chg.className = 'i-chg num ' + (up ? 'up' : 'down');
-    chg.textContent = (up ? '\u25B2 +' : '\u25BC \u2212') + Math.abs(q.pct).toFixed(2) + '% \u00B7 ' + (up ? '+' : '\u2212') + inr(Math.abs(q.change), 2);
-  }
-}
-
-/* Ticker strip: keep the static HTML as fallback, re-render on data */
-var tickerTrack = document.getElementById('tickerTrack');
-var tickerFallback = tickerTrack ? tickerTrack.innerHTML : null;
-function renderTicker(data){
-  if(!tickerTrack) return;
-  var keys = Object.keys(data.quotes);
-  if(!keys.length) return;
-  var half = keys.map(function(k){
-    var q = data.quotes[k], up = q.pct >= 0;
-    return '<span class="tk"><b>' + k + '</b> <span class="num">' + inr(q.price, 2) + '</span> <span class="' + (up ? 'up' : 'down') + ' num">' + (up ? '\u25B2 ' : '\u25BC ') + Math.abs(q.pct).toFixed(2) + '%</span></span>';
-  }).join('\n    ');
-  tickerTrack.innerHTML = half + '\n    ' + half;
-}
-
-/* Top movers: rank the 9 tracked stocks by % change */
-function renderMovers(data){
-  var stocks = STOCK_KEYS.filter(function(k){ return data.quotes[k]; })
-    .map(function(k){ return { key: k, q: data.quotes[k] }; });
-  if(stocks.length < 4) return;
-  var gainers = stocks.slice().sort(function(a,b){ return b.q.pct - a.q.pct; }).slice(0,5);
-  var losers  = stocks.slice().sort(function(a,b){ return a.q.pct - b.q.pct; }).slice(0,5);
-  function rows(list){
-    return list.map(function(s){
-      var up = s.q.pct >= 0;
-      return '<div class="mv-row"><span class="sym">' + s.key + '</span><span class="px num">\u20B9' + inr(s.q.price, 2) + '</span><span class="chg num">' + (up ? '+' : '\u2212') + Math.abs(s.q.pct).toFixed(2) + '%</span></div>';
-    }).join('');
-  }
-  var g = document.querySelector('.mv.g'), l = document.querySelector('.mv.l');
-  if(g){ var old = g.querySelector('.mv-row'); if(old) old.insertAdjacentHTML('afterend', rows(gainers)); g.querySelectorAll('.mv-row').forEach(function(r,i){ if(i>=5) r.remove(); }); }
-  if(l){ var oldL = l.querySelector('.mv-row'); if(oldL) oldL.insertAdjacentHTML('afterend', rows(losers)); l.querySelectorAll('.mv-row').forEach(function(r,i){ if(i>=5) r.remove(); }); }
-}
-
-/* Market overview chart: redraw NIFTY intraday line from spark data */
-function renderOverview(data){
-  var q = data.quotes['NIFTY 50'];
-  var line = document.getElementById('ovLine');
-  if(!q || !q.spark || q.spark.length < 2 || !line) return;
-  var pts = q.spark, W = 640, H = 150, pad = 6;
-  var min = Math.min.apply(null, pts), max = Math.max.apply(null, pts);
-  var rng = (max - min) || 1;
-  var step = (W - pad*2) / (pts.length - 1);
-  var coords = pts.map(function(p, i){
-    return [ (pad + i*step).toFixed(1), (H - pad - (p - min)/rng*(H - pad*2)).toFixed(1) ];
-  });
-  var color = q.pct >= 0 ? '#00E676' : '#ff5c72';
-  var lineStr = coords.map(function(c){ return c[0] + ',' + c[1]; }).join(' ');
-  line.setAttribute('points', lineStr);
-  line.setAttribute('stroke', color);
-  var last = coords[coords.length - 1];
-  var dot = document.getElementById('ovDot'), halo = document.getElementById('ovDotHalo');
-  if(dot){ dot.setAttribute('cx', last[0]); dot.setAttribute('cy', last[1]); dot.setAttribute('fill', color); }
-  if(halo){ halo.setAttribute('cx', last[0]); halo.setAttribute('cy', last[1]); halo.setAttribute('stroke', color); }
-  var area = document.getElementById('ovArea');
-  if(area) area.setAttribute('d', 'M' + coords.map(function(c){ return c.join(','); }).join(' L') + ' L' + W + ',' + H + ' L0,' + H + ' Z');
-}
-
-/* Hero floating widgets: update values + redraw sparklines */
-function drawSpark(cv, pts, color){
-  if(!cv || !pts || pts.length < 2) return;
-  var ctx = cv.getContext('2d'), w = cv.width, h = cv.height, pad = 3;
-  ctx.clearRect(0, 0, w, h);
-  var min = Math.min.apply(null, pts), max = Math.max.apply(null, pts), rng = (max - min) || 1;
-  ctx.beginPath();
-  pts.forEach(function(p, i){
-    var x = pad + i*(w - pad*2)/(pts.length - 1);
-    var y = h - pad - (p - min)/rng*(h - pad*2);
-    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-  });
-  ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.stroke();
-  ctx.lineTo(w - pad, h); ctx.lineTo(pad, h); ctx.closePath();
-  var g = ctx.createLinearGradient(0, 0, 0, h);
-  g.addColorStop(0, color + '33'); g.addColorStop(1, color + '00');
-  ctx.fillStyle = g; ctx.fill();
-}
-function paintFw(fw, q){
-  if(!q || !fw) return;
-  var val = fw.querySelector('.fw-val'), chg = fw.querySelector('.fw-chg'), cv = fw.querySelector('canvas.spark');
-  var up = q.pct >= 0, color = up ? '#00E676' : '#ff5c72';
-  if(val) val.textContent = inr(q.price, 2);
-  if(chg){ chg.className = 'fw-chg num ' + (up ? 'up' : 'down'); chg.textContent = (up ? '\u25B2 +' : '\u25BC \u2212') + Math.abs(q.pct).toFixed(2) + '%'; }
-  if(cv && q.spark && q.spark.length > 1){
-    var thin = q.spark.filter(function(_, i){ return i % Math.ceil(q.spark.length / 12) === 0; });
-    drawSpark(cv, thin, color);
-  }
-}
-
-function applyData(d){
-  if(!d || !d.quotes) return;
-  document.querySelectorAll('.idx[data-key]').forEach(function(c){ paintQuote(c, d.quotes[c.dataset.key]); });
-  document.querySelectorAll('.fw[data-key]').forEach(function(f){ paintFw(f, d.quotes[f.dataset.key]); });
-  renderTicker(d);
-  renderMovers(d);
-  renderOverview(d);
-  var ovU = document.getElementById('overviewUpdated');
-  if(ovU && d.updated){
-    ovU.textContent = 'Live \u00B7 updated ' + new Date(d.updated).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-  }
-  var mvU = document.getElementById('moversUpdated');
-  if(mvU && d.updated){
-    mvU.textContent = 'Updated ' + new Date(d.updated).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-  }
-}
-
-function loadLive(){
-  fetch('data/nse.json?ts=' + Date.now())
-    .then(function(r){ return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status)); })
-    .then(applyData)
-    .catch(function(){ /* offline or fetch failed: static fallback stays */ });
-}
-loadLive();
-setInterval(loadLive, 300000);
-
 /* ---------- Club tabs ---------- */
 var tabs = document.querySelectorAll('.club-tab');
 var bodies = document.querySelectorAll('.club-body');
@@ -1531,26 +1249,54 @@ tabs.forEach(function(tab){
   });
 });
 
-/* ---------- Bundle banner countdown (resets daily at midnight) ---------- */
-function msUntilMidnight(){
-  var now = new Date();
-  var mid = new Date(now);
-  mid.setHours(24,0,0,0); // next local midnight
-  return mid - now;
-}
+/* ---------- Bundle banner countdown (fixed end date) ---------- */
+/* Nayi campaign ke liye sirf OFFER_END badlo (IST = +05:30) */
+var OFFER_END = '2026-09-23T23:59:59+05:30';
 var bbH = document.getElementById('bbH'),
     bbM = document.getElementById('bbM'),
     bbS = document.getElementById('bbS');
 if(bbH && bbM && bbS){
+  var offerEndMs = new Date(OFFER_END).getTime();
+  var bbTimer = bbH.parentNode;
   var pad2 = function(n){ return String(n).padStart(2,'0'); };
   var bbTick = function(){
-    var diff = Math.max(0, msUntilMidnight());
+    var diff = Math.max(0, offerEndMs - Date.now());
     bbH.textContent = pad2(Math.floor(diff/3600000));
     bbM.textContent = pad2(Math.floor(diff/60000)%60);
     bbS.textContent = pad2(Math.floor(diff/1000)%60);
+    if(diff <= 0){
+      clearInterval(bbInt);
+      bbTimer.style.display = 'none';
+      var lbl = document.getElementById('bbEndsLbl');
+      if(lbl) lbl.style.display = 'none';
+      var note = document.getElementById('bbDateNote');
+      if(note) note.style.display = 'none';
+    }
   };
   bbTick();
-  setInterval(bbTick, 1000);
+  var bbInt = setInterval(bbTick, 1000);
+}
+
+/* ---------- Mobile sticky CTA ---------- */
+var mobileCta = document.getElementById('mobileCta');
+if(mobileCta){
+  var clubsSec = document.getElementById('clubs');
+  var clubsVisible = false;
+  function updateMobileCta(){
+    var show = window.scrollY > 520 && !clubsVisible;
+    mobileCta.classList.toggle('show', show);
+    document.body.classList.toggle('cta-shown', show);
+  }
+  if(clubsSec && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ clubsVisible = e.isIntersecting; updateMobileCta(); });
+    },{threshold:.12}).observe(clubsSec);
+  }
+  window.addEventListener('scroll', updateMobileCta, {passive:true});
+  window.addEventListener('resize', updateMobileCta);
+  window.addEventListener('load', updateMobileCta);
+  setTimeout(updateMobileCta, 400);
+  updateMobileCta();
 }
 
 /* ---------- FAB ---------- */
