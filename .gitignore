@@ -1,0 +1,10 @@
+# WorkBuddy AI project data (working memory, skills) — local only, never published
+.workbuddy-ai/
+
+# Local tooling artifact
+.freebuff/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
