@@ -1196,8 +1196,10 @@ footer .wrap{position:relative;z-index:1}
 .risk-note b{color:var(--text-2);font-weight:600}
 
 /* ===================== RECENT ACTIVITY TOAST ===================== */
+/* Top-anchored, just under the fixed navbar — it used to sit bottom-left where
+   the sticky CTA + FAB crowded it. */
 .proof-toast{
-  position:fixed;left:16px;bottom:16px;z-index:180;
+  position:fixed;left:16px;top:calc(var(--nav-h) + 14px);z-index:180;
   display:flex;align-items:center;gap:12px;max-width:330px;padding:12px 12px 12px 14px;
   background:rgba(13,16,14,.96);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -1209,6 +1211,11 @@ footer .wrap{position:relative;z-index:1}
 }
 .proof-toast.show{transform:none;opacity:1;visibility:visible;
   transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease,visibility 0s}
+/* never cover the open mobile menu — that panel drops from the same corner */
+body.menu-open .proof-toast{
+  opacity:0!important;visibility:hidden!important;
+  transform:translateX(calc(-100% - 24px))!important;
+}
 .pt-av{
   flex:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-family:var(--mono);font-size:.9rem;font-weight:800;
@@ -1224,8 +1231,7 @@ footer .wrap{position:relative;z-index:1}
 }
 .pt-x:hover{color:var(--text);background:rgba(255,255,255,.07)}
 @media(max-width:640px){
-  .proof-toast{left:12px;right:12px;bottom:12px;max-width:none}
-  body.cta-shown .proof-toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .proof-toast{left:12px;right:12px;top:calc(var(--nav-h) + 10px);max-width:none}
 }
 @media(prefers-reduced-motion:reduce){.proof-toast{transition:none}}
 </style>
@@ -2107,11 +2113,15 @@ var mobileMenu = document.getElementById('mobileMenu');
 menuBtn.addEventListener('click', function(){
   var open = mobileMenu.classList.toggle('open');
   menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  /* the activity toast now lives at the top too, so stand it down while the
+     menu panel is open (see body.menu-open in the CSS) */
+  document.body.classList.toggle('menu-open', open);
 });
 mobileMenu.querySelectorAll('a').forEach(function(a){
   a.addEventListener('click', function(){
     mobileMenu.classList.remove('open');
     menuBtn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('menu-open');
   });
 });
 
@@ -2458,26 +2468,51 @@ if(tgBtn && TELEGRAM_ACCESS_LINK){
   if(tgHint) tgHint.hidden = true;
 }
 
-/* Razorpay CTA click hone par sticky CTA ko "Already paid? Get Access" mode me bhej do (2 ghante) */
-var PAY_FLAG = 'ftyBundlePayClicked';
+/* ---------- Sticky CTA: "Paid already?" mode ----------
+   BUG THA: bundle ke kisi bhi "buy" button pe click karte hi sticky bar
+   "✅ Paid ₹2,500 already?" ban jaata tha aur 2 ghante wahi rehta tha.
+   Wajah: `a[href*="Complete%20Bundle"]` un sab BUY links se match karta tha —
+   aur us click se sirf WhatsApp khulta hai, payment hui hi nahi hoti.
+   Ab koi guess nahi: "Paid already?" sirf tab dikhta hai jab user ACTUALLY
+   #access section (payment ke baad ka access flow) dekh raha ho, aur wahan se
+   hate to sticky bar wapas bundle offer ban jaata hai. */
+var mcBundleDefaults = (function(){
+  var t = document.getElementById('mcTitle'),
+      s = document.getElementById('mcSub'),
+      b = document.getElementById('mcBtn');
+  if(!t || !b) return null;
+  return { t:t.innerHTML, s:s ? s.textContent : '', href:b.getAttribute('href'), label:b.textContent };
+})();
 function showAccessCta(){
   var t = document.getElementById('mcTitle'),
       s = document.getElementById('mcSub'),
       b = document.getElementById('mcBtn');
   if(!t || !b) return;
   t.innerHTML = '✅ Paid ₹2,500 already?';
-  if(s) s.textContent = 'Send your Payment ID · get Telegram access';
+  if(s) s.textContent = 'Send Payment ID on WhatsApp';
   b.setAttribute('href', '#access');
   b.textContent = 'Get Access →';
 }
-function markPayIntent(){
-  try{ localStorage.setItem(PAY_FLAG, String(Date.now())); }catch(err){}
-  showAccessCta();
+function restoreBundleCta(){
+  if(!mcBundleDefaults) return;
+  var t = document.getElementById('mcTitle'),
+      s = document.getElementById('mcSub'),
+      b = document.getElementById('mcBtn');
+  if(!t || !b) return;
+  t.innerHTML = mcBundleDefaults.t;
+  if(s) s.textContent = mcBundleDefaults.s;
+  b.setAttribute('href', mcBundleDefaults.href);
+  b.textContent = mcBundleDefaults.label;
 }
-document.addEventListener('click', function(e){
-  var bundleLink = e.target.closest ? e.target.closest('a[href*="Complete%20Bundle"]') : null;
-  if(bundleLink) markPayIntent();
-});
+var accessSec = document.getElementById('access');
+if(accessSec && 'IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting) showAccessCta();
+      else restoreBundleCta();
+    });
+  },{threshold:.25}).observe(accessSec);
+}
 /* ---------- Space parallax: deep / mid / near layers move at different speeds ---------- */
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2498,10 +2533,6 @@ document.addEventListener('click', function(e){
   paint();
 })();
 
-try{
-  var payTs = parseInt(localStorage.getItem(PAY_FLAG) || '0', 10);
-  if(payTs && (Date.now() - payTs) < 2 * 60 * 60 * 1000) showAccessCta();
-}catch(err){}
 })();
 </script>
 <!-- ============================================================
