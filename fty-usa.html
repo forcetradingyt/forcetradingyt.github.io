@@ -985,6 +985,22 @@ body{padding-left:64px}
 body.view-home #homeView{display:flex;flex-direction:column;min-height:calc(100vh - 130px)}
 body.view-home .scan-only{display:none}
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0 0}
+/* ── home markets strip: one tappable card per market (Crypto / India / US) ── */
+.home-markets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:2px 0 0}
+@media(max-width:760px){.home-markets{grid-template-columns:1fr}}
+.mk-card{display:flex;flex-direction:column;gap:5px;text-align:left;font-family:inherit;color:var(--txt);background:var(--panel);box-shadow:var(--ring),var(--lift);border:1px solid transparent;border-radius:var(--r-lg);padding:12px 15px;cursor:pointer;transition:border-color .15s var(--ease-out),transform .15s var(--ease-out),background .15s var(--ease-out)}
+.mk-card:hover{border-color:color-mix(in srgb,var(--lime) 42%,transparent);transform:translateY(-1px);background:rgba(148,163,184,.04)}
+.mk-card:active{transform:translateY(0)}
+.mk-top{display:flex;align-items:center;gap:8px;min-width:0}
+.mk-ico{font-size:15px;line-height:1;flex-shrink:0}
+.mk-name{font-size:12.5px;font-weight:800;letter-spacing:.4px;white-space:nowrap}
+.mk-tag{margin-left:auto;font-family:var(--fm);font-size:9px;letter-spacing:.6px;text-transform:uppercase;padding:2px 7px;border-radius:999px;border:1px solid var(--line2);color:var(--faint);white-space:nowrap}
+.mk-tag.live{color:#5fd6a2;border-color:rgba(95,214,162,.35);background:rgba(95,214,162,.08)}
+.mk-num{font-family:var(--fm);font-size:23px;font-weight:800;line-height:1.15;letter-spacing:-.4px}
+.mk-num small{font-size:10px;font-weight:600;color:var(--faint);margin-left:5px;letter-spacing:.4px}
+.mk-sub{font-family:var(--fm);font-size:10.5px;color:var(--faint);display:flex;gap:9px;align-items:center;flex-wrap:wrap;min-height:14px}
+.mk-sub .u{color:#5fd6a2}
+.mk-sub .d{color:#f87171}
 .home-card{background:var(--panel);box-shadow:var(--ring),var(--lift);border-radius:var(--r-lg);padding:14px 16px}
 .hc-t{font-size:11px;font-weight:800;letter-spacing:1.6px;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
 .hc-idx{font-family:var(--fm);font-size:10px;font-weight:700;color:var(--lime);opacity:.72;margin-right:6px;letter-spacing:0;text-transform:none}
@@ -1085,7 +1101,7 @@ body.view-home #hmFoot{margin-top:auto}
 <div class="wrap" data-page-node-id="t6edpAm4jXbM13fjWucgv4">
 
 <header class="pulse" data-page-node-id="BBxrDSslCoktMYjfQKVn4I">
-<div class="brand" data-page-node-id="YfA8Tsbnp5zXZw6yCEutGd"><span class="brand-mark" data-page-node-id="6e97yOl6XhXW98VX5JnxuJ">⚡</span><div data-page-node-id="FPgrpDcHjpOuJgwkHmScmv"><div class="brand-name" data-page-node-id="X6BOMZM5kRl2FZrPVo5aZX"><span class="w1" data-page-node-id="vRWJ6vcnyaopF81Vw4HBxW">FTY</span> <em class="w2" data-page-node-id="IehOEvlqkXycRlWddyvsU9">SCANNER</em></div><div class="brand-sub" data-page-node-id="9xSy7CFNTtFOn5356ubezv">BINANCE SPOT · EMA SCANNER</div><div class="brand-quote">“Ride the trend. Respect the level.”</div></div></div>
+<div class="brand" data-page-node-id="YfA8Tsbnp5zXZw6yCEutGd"><span class="brand-mark" data-page-node-id="6e97yOl6XhXW98VX5JnxuJ">⚡</span><div data-page-node-id="FPgrpDcHjpOuJgwkHmScmv"><div class="brand-name" data-page-node-id="X6BOMZM5kRl2FZrPVo5aZX"><span class="w1" data-page-node-id="vRWJ6vcnyaopF81Vw4HBxW">FTY</span> <em class="w2" data-page-node-id="IehOEvlqkXycRlWddyvsU9">SCANNER</em></div><div class="brand-sub" data-page-node-id="9xSy7CFNTtFOn5356ubezv">CRYPTO · INDIA · US · EMA SCANNER</div><div class="brand-quote">“Ride the trend. Respect the level.”</div></div></div>
 <div class="pulse-stats" id="overview" data-page-node-id="cMbkR24HJOW5Cxjy2VIFih"></div>
 <div class="pulse-side" data-page-node-id="gSlAHhXMwBTaZf0gHoK8qN">
 <div class="mkt" id="mktStatus" data-page-node-id="ILW1fCBztBFHL350CgN06h"><i class="dot" data-page-node-id="F4dTqKqX8nM83o0vlcwdEC"></i><span id="mktTxt" data-page-node-id="lkLlv0R9hbxIZzfZ8k1XsU">—</span></div>
@@ -1099,20 +1115,39 @@ body.view-home #hmFoot{margin-top:auto}
 <section id="homeView" aria-label="Home dashboard" data-page-node-id="331jDWqeV37ahHK6kTuh0m">
 <div class="hero" data-page-node-id="7xiKkHL7nii3EthY7uS8x0">
 <div class="hero-l" data-page-node-id="t6pyhwxp9URnFXanX3KLIs"><div class="hero-hi" id="heroGreet" data-page-node-id="sNRcPTvH1Gefs1yGziqT73">Good evening 👋</div><div class="hero-sub" id="heroSub" data-page-node-id="Iw2ZOzRSPXtCncfdtW6sOJ">Checking the market pulse…</div></div>
-<div class="hero-r" data-page-node-id="oJJ3Vtu8cTTmf0KkzpQEcZ"><span class="hm-pill" id="hmMood" data-page-node-id="MIiJZ47aEqSET9brqLQWIQ">Market mood — …</span><span class="hm-chips" id="hmChips" data-page-node-id="UdVTkCZ8SHA4WFyvkxxcTn"></span></div>
+<div class="hero-r" data-page-node-id="oJJ3Vtu8cTTmf0KkzpQEcZ"><span class="hm-pill" id="hmMood" data-page-node-id="MIiJZ47aEqSET9brqLQWIQ">Crypto mood — …</span><span class="hm-chips" id="hmChips" data-page-node-id="UdVTkCZ8SHA4WFyvkxxcTn"></span></div>
+</div>
+<div class="home-markets" id="hmMarkets" aria-label="Markets — jump to a scanner">
+<button class="mk-card" onclick="showView('scan')" title="Open the crypto scanner — Binance spot" data-mk="crypto">
+<span class="mk-top"><span class="mk-ico" aria-hidden="true">🔬</span><span class="mk-name">Crypto</span><span class="mk-tag" id="mkTagCrypto">—</span></span>
+<span class="mk-num" id="mkNumCrypto">—<small>qualified</small></span>
+<span class="mk-sub" id="mkSubCrypto">Binance spot · loading…</span>
+</button>
+<button class="mk-card" onclick="showView('india')" title="Open the India scanner — NSE + BSE" data-mk="india">
+<span class="mk-top"><span class="mk-ico" aria-hidden="true">🇮🇳</span><span class="mk-name">India</span><span class="mk-tag" id="mkTagIndia">—</span></span>
+<span class="mk-num" id="mkNumIndia">—<small>qualified</small></span>
+<span class="mk-sub" id="mkSubIndia">NSE + BSE · loading…</span>
+</button>
+<button class="mk-card" onclick="showView('us')" title="Open the US scanner — NYSE + NASDAQ + AMEX" data-mk="us">
+<span class="mk-top"><span class="mk-ico" aria-hidden="true">🇺🇸</span><span class="mk-name">US</span><span class="mk-tag" id="mkTagUS">—</span></span>
+<span class="mk-num" id="mkNumUS">—<small>qualified</small></span>
+<span class="mk-sub" id="mkSubUS">NYSE + NASDAQ · loading…</span>
+</button>
 </div>
 <div class="home-grid" data-page-node-id="u1p7rBFR5wnYSOF5Xo64oI">
 <div class="home-card" data-page-node-id="qLKWEHhn5tRMe5WK8FREuD">
-<div class="hc-t" data-page-node-id="XjSEpRn2r1l6n8hb6g7mpm"><span class="hc-idx" data-page-node-id="POJf19Q1AFzv9i2KO52VPn">01</span>Market snapshot</div>
+<div class="hc-t" data-page-node-id="XjSEpRn2r1l6n8hb6g7mpm"><span class="hc-idx" data-page-node-id="POJf19Q1AFzv9i2KO52VPn">01</span>Crypto snapshot</div>
 <div class="hc-rows" id="hmStats" data-page-node-id="E751Klc7jINx7GXJy4ss6E"><div class="hc-row" data-page-node-id="eP26ZEJ7G8yELeN1nqtGqE"><span class="k" data-page-node-id="NbIBTkXCFWkYVAeXefbtZp">BTC / USDT</span><span class="v" data-page-node-id="fswVICzc58gSBE8RXeCDWc"><span class="skl skl-val" aria-hidden="true" data-page-node-id="5h1PzQozgxzPSe6RZOnIGP"></span></span></div><div class="hc-row" data-page-node-id="QDqAB2HEqMMDAADgrLNJDc"><span class="k" data-page-node-id="jmxxx9JngePtLsbJDKHdyA">ETH / USDT</span><span class="v" data-page-node-id="ATuIs8rSugifzUCiLgDxQM"><span class="skl skl-val" aria-hidden="true" data-page-node-id="BP3a1SezInE8r6VkK3wZY2"></span></span></div><div class="hc-note" data-page-node-id="Bg3aXtCxJTI5PDcYNiryJI">Fetching Binance prices…</div></div>
 </div>
 <div class="home-card" data-page-node-id="tRLabT6EZJKnToMqp8ny87">
-<div class="hc-t" data-page-node-id="qnKniw10MsXjHIlhD5ItgN"><span class="hc-idx" data-page-node-id="WKmWng9hqDzqDjhoCBCkJf">02</span>Scan board</div>
+<div class="hc-t" data-page-node-id="qnKniw10MsXjHIlhD5ItgN"><span class="hc-idx" data-page-node-id="WKmWng9hqDzqDjhoCBCkJf">02</span>Crypto scan board</div>
 <div class="hc-rows" id="hmBoard" data-page-node-id="moUFA3Ln4a1dwHWNETYUhP"><div class="hc-note" data-page-node-id="TtxQDxnczIQwWFCGjGlgM6">No scan data yet — open the scanner and hit <b data-page-node-id="nY6UtencYshDQBEfi1DKsV">Scan Market</b>.</div></div>
 </div>
 <div class="home-card home-actions" data-page-node-id="FwIL5XflbO1ufkAJIB76Cl">
 <div class="hc-t" data-page-node-id="jDIrTQ5GaMir33lKjo7U3Z"><span class="hc-idx" data-page-node-id="qWbetQubpAIVziTIBHOmlC">03</span>Quick actions</div>
-<button class="hc-btn primary" onclick="showView('scan')" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Open scanner</button>
+<button class="hc-btn primary" onclick="showView('scan')" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Crypto scanner</button>
+<button class="hc-btn" onclick="showView('india')">🇮🇳 India scanner</button>
+<button class="hc-btn" onclick="showView('us')">🇺🇸 US scanner</button>
 <button class="hc-btn" onclick="showView('chart')" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Open full chart</button>
 <button class="hc-btn" onclick="dockToggle()" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Results &amp; watchlist</button>
 </div>
@@ -1838,8 +1873,8 @@ else{lbl='Neutral · BTC flat at '+(btc>=0?'+':'')+btc.toFixed(1)+'% in 24h';}
 let sig=[n,fol,strong,btc,eth].join('|');
 if(sig===_heroSig)return;_heroSig=sig;
 if(g)g.textContent=heroGreet();
-if(s)s.textContent=n?('Scan is warm — '+n+' qualified coins on the board. Open any coin to see its full chart.'):'Welcome to FTY Scanner — run a scan, then open any coin on the full chart.';
-m.textContent='Market mood — '+lbl;m.className='hm-pill'+(mood?' '+mood:'');
+if(s)s.textContent=n?('Crypto scan is warm — '+n+' qualified coins on the board. Open any coin to see its full chart.'):'Welcome to FTY Scanner — pick a market, run a scan, then open any symbol on the full chart.';
+m.textContent='Crypto mood — '+lbl;m.className='hm-pill'+(mood?' '+mood:'');
 let h='';
 if(btc!=null)h+='<span class="hm-chip">BTC <b class="'+(btc>=0?'u':'d')+'">'+(btc>=0?'+':'')+btc.toFixed(2)+'%</b></span>';
 if(eth!=null)h+='<span class="hm-chip">ETH <b class="'+(eth>=0?'u':'d')+'">'+(eth>=0?'+':'')+eth.toFixed(2)+'%</b></span>';
@@ -1857,6 +1892,7 @@ openChart(sym,(r&&r.ex)||'BINANCE',(r&&r.lvl)||0,r||null);}
 function renderHome(){
 if(!document.getElementById('homeView'))return;
 renderHero();
+try{hmMarketsRender();}catch(e){}
 // market snapshot (01) + watchlist glance strip — each owns its own change-guard
 try{hmSnapRender();}catch(e){}
 try{hmWlRender();}catch(e){}
@@ -4780,7 +4816,7 @@ function cspwQFlush(){
  if(cspwSrchIsOpen()&&_cspwSrchG!=='all'){let inp=chQ('cspSrchIn');cspwSrchRender(inp?inp.value:'');}
  // the same batch also paints the dock (text-swap) and the Home surfaces
  try{if(cspwDockOn()&&typeof dkPaintQuotes==='function')dkPaintQuotes();}catch(e){}
- if(cspwHomeOn()){try{hmSnapRender();}catch(e){}try{hmWlRender();}catch(e){}}
+ if(cspwHomeOn()){try{hmSnapRender();}catch(e){}try{hmWlRender();}catch(e){}try{hmMarketsRender();}catch(e){}}
 }
 // toolbar price: 24h% from the quote when available — candle-based value (existing
 // chChrome behaviour) stays as the fallback until a quote has been fetched
@@ -5312,6 +5348,121 @@ function hmSnapRender(){
  if(sig===_hmSnapSig)return;_hmSnapSig=sig;
  ms.innerHTML='<div class="hm-grid">'+cells+'</div>'+moodHtml+'<div class="hc-note">'+note+'</div>';
  try{cspwQNeed(CSPW_MAJORS);}catch(e){}
+}
+// ── Home: markets strip — Crypto / India / US at a glance ──────────────
+// India & US run in same-origin srcdoc iframes, so their persisted scan lives
+// in OUR localStorage under the 'inapp::' shim prefix (see the payload shim).
+// No postMessage bridge needed — read the key the app already writes.
+const HM_MKT_KEYS={india:'inapp::ftyScannerIndiaV1',us:'inapp::ftyScannerUSV1'};
+const _hmMktCache={};
+let _hmMkSig='';
+function hmOtherScan(key){
+if(!key)return null;
+let raw=null;try{raw=localStorage.getItem(key);}catch(e){return null;}
+if(!raw)return null;
+let c=_hmMktCache[key];
+if(c&&c.raw===raw)return c;
+if(raw.length>12e6){c={raw:raw,n:null};_hmMktCache[key]=c;return c;}  // too big to parse on a render tick
+let seen={},n=0;
+try{
+let d=JSON.parse(raw);
+Object.keys(d||{}).forEach(tf=>{
+let g=d[tf];if(!g||typeof g!=='object')return;
+Object.keys(g).forEach(k=>{
+let arr=g[k];if(!Array.isArray(arr))return;
+for(let i=0;i<arr.length;i++){let r=arr[i];if(r&&r.symbol&&!seen[r.symbol]){seen[r.symbol]=1;n++;}}
+});
+});
+}catch(e){return null;}
+c={raw:raw,n:n};_hmMktCache[key]=c;return c;
+}
+// Index quotes for the market cards — ONE Yahoo spark call for all four
+// symbols, through a CORS proxy chain. r.jina.ai first: it is the only route
+// that answers from a file:// page (origin 'null'), the rest are fallbacks.
+// Cached 5 min; a failed round retries after ~1 min.
+const HM_IDX=[{k:'NIFTY',s:'^NSEI'},{k:'SENSEX',s:'^BSESN'},{k:'SPY',s:'SPY'},{k:'QQQ',s:'QQQ'}];
+const HM_IDX_PROXY=[
+u=>'https://r.jina.ai/'+encodeURIComponent(u),
+u=>'https://test.cors.workers.dev/?'+u,
+u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),
+u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+u=>'https://api.cors.lol/?url='+encodeURIComponent(u)
+];
+let _hmIdx={},_hmIdxAt=0,_hmIdxBusy=false,_hmIdxRoute=-1;
+function hmFetchTxt(u,ms){
+return new Promise(res=>{
+let c=new AbortController(),t=setTimeout(()=>c.abort(),ms||8000),done=false;
+let fin=v=>{if(done)return;done=true;clearTimeout(t);res(v);};
+fetch(u,{signal:c.signal}).then(r=>r.ok?r.text():'').then(txt=>fin(txt||'')).catch(()=>fin(''));
+});
+}
+function hmJSON(t){
+if(!t)return null;let b=t.indexOf('{'),e=t.lastIndexOf('}');
+if(b<0||e<=b)return null;
+try{return JSON.parse(t.slice(b,e+1));}catch(_){return null;}
+}
+async function hmIdxFetch(){
+if(_hmIdxBusy)return;
+if(Date.now()-_hmIdxAt<300000)return;
+_hmIdxBusy=true;
+let out=null;
+try{
+let u='https://query1.finance.yahoo.com/v7/finance/spark?symbols='
++HM_IDX.map(x=>encodeURIComponent(x.s)).join(',')+'&range=1d&interval=5m';
+let order=[];
+if(_hmIdxRoute>=0)order.push(_hmIdxRoute);
+for(let x=0;x<HM_IDX_PROXY.length;x++)if(order.indexOf(x)<0)order.push(x);
+for(let k=0;k<order.length&&!out;k++){
+let txt=await hmFetchTxt(HM_IDX_PROXY[order[k]](u),20000);
+let j=hmJSON(txt),res=j&&j.spark&&j.spark.result;
+if(!res||!res.length)continue;
+let bysym={};
+res.forEach(r=>{
+let meta=(r.response&&r.response[0]&&r.response[0].meta)||{};
+let px=meta.regularMarketPrice,prev=meta.chartPreviousClose||meta.previousClose;
+if(px>0)bysym[r.symbol]={p:px,c:(prev>0?(px-prev)/prev*100:null)};
+});
+let got={};
+HM_IDX.forEach(it=>{if(bysym[it.s])got[it.k]=bysym[it.s];});
+if(Object.keys(got).length){out=got;_hmIdxRoute=order[k];}
+}
+}catch(e){}
+_hmIdxBusy=false;
+if(out){_hmIdx=out;_hmIdxAt=Date.now();_hmMkSig='';try{renderHome();}catch(e){}}
+else{_hmIdxAt=Date.now()-240000;}   // every route failed — retry in ~1 min
+}
+function hmMkPx(v){
+if(!(v>0))return'—';
+return v>=1000?v.toLocaleString('en-US',{maximumFractionDigits:0}):v.toLocaleString('en-US',{maximumFractionDigits:2});
+}
+function hmMkChg(v){
+if(v==null)return'<span>—</span>';
+return'<span class="'+(v>=0?'u':'d')+'">'+(v>=0?'+':'')+v.toFixed(2)+'%</span>';
+}
+function hmMarketsRender(){
+if(!chQ('hmMarkets'))return;
+let rows=(typeof __ftyRows!=='undefined'&&Array.isArray(__ftyRows))?__ftyRows:[];
+let btc=hmQuotes('BTCUSDT');
+let inS=hmOtherScan(HM_MKT_KEYS.india),usS=hmOtherScan(HM_MKT_KEYS.us);
+let iN=_hmIdx.NIFTY,iS=_hmIdx.SENSEX,iSP=_hmIdx.SPY,iQ=_hmIdx.QQQ;
+let sig=[rows.length,btc?btc.p+'/'+btc.c:'-',inS?inS.n:'-',usS?usS.n:'-',
+iN?iN.p+'/'+iN.c:'-',iS?iS.p+'/'+iS.c:'-',iSP?iSP.p+'/'+iSP.c:'-',iQ?iQ.p+'/'+iQ.c:'-'].join('|');
+if(sig===_hmMkSig)return;_hmMkSig=sig;
+let set=(id,n,sub,scanned)=>{
+let num=chQ('mkNum'+id),tag=chQ('mkTag'+id),sb=chQ('mkSub'+id);
+if(num)num.innerHTML=(n==null?'—':n)+'<small> qualified</small>';
+if(tag){tag.textContent=(!scanned?'no scan':(n>0?'ready':'empty'));tag.className='mk-tag'+(n>0?' live':'');}
+if(sb)sb.innerHTML=sub;
+};
+let cScanned=rows.length>0||!!hmLastScan();
+set('Crypto',rows.length,btc?('<span>BTC '+hmMkPx(btc.p)+'</span>'+hmMkChg(btc.c)+'<span>24h</span>'):'<span>Binance spot · waiting for quotes…</span>',cScanned);
+set('India',inS?inS.n:null,(iN||iS)
+?('<span>NIFTY '+hmMkPx(iN&&iN.p)+'</span>'+hmMkChg(iN&&iN.c)+(iS?('<span>SENSEX '+hmMkChg(iS.c)+'</span>'):''))
+:'<span>NSE + BSE · open the tab to scan</span>',!!inS);
+set('US',usS?usS.n:null,(iSP||iQ)
+?('<span>SPY '+hmMkPx(iSP&&iSP.p)+'</span>'+hmMkChg(iSP&&iSP.c)+(iQ?('<span>QQQ '+hmMkChg(iQ.c)+'</span>'):''))
+:'<span>NYSE + NASDAQ · open the tab to scan</span>',!!usS);
+try{hmIdxFetch();}catch(e){}
 }
 function hmWlRender(){
  let el=chQ('hfMeta2');if(!el)return;
