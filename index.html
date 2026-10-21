@@ -741,6 +741,8 @@ body::after{
 .bc-o-badge{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#04170c;background:var(--primary);padding:4px 11px;border-radius:999px;white-space:nowrap}
 .bc-o-meta{margin-top:7px;font-size:.71rem;color:var(--text-3);line-height:1.5}
 .bc-o-meta b{color:var(--text-2);font-weight:600}
+.bc-o-meta a{color:var(--text-2);text-decoration:underline;text-underline-offset:2px}
+.bc-o-meta a:hover{color:var(--primary)}
 .bc-o-cta{margin-top:16px;width:100%}
 .bc-o-cta .btn{width:100%;font-size:.84rem;padding:11px 14px;white-space:normal;line-height:1.25;text-align:center}
 .bc-foot{margin-top:14px;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;color:var(--text-3);line-height:1.7}
@@ -1343,6 +1345,50 @@ footer .wrap{position:relative;z-index:1}
 }
 .sub-x:hover{color:var(--text);background:rgba(255,255,255,.12);transform:rotate(90deg)}
 .sub-x:active{transform:scale(.9)}
+/* ================= PAYMENT MODAL (Razorpay checkout, same page) =================
+   Bundle CTAs ab naye tab / WhatsApp par nahi bhejte — Razorpay ka hosted
+   checkout isi modal ke andar khulta hai. Footer ka "open in new tab" link
+   un users ke liye fallback hai jinke bank/UPI app iframe me atak jaayein. */
+.pay-modal{
+  position:relative;width:100%;max-width:460px;
+  height:min(760px,calc(100vh - 36px));
+  height:min(760px,calc(100dvh - 36px));
+  display:flex;flex-direction:column;overflow:hidden;
+  background:#fff;border:1px solid var(--border-2);border-radius:var(--r-lg);
+  box-shadow:0 30px 90px rgba(0,0,0,.72),0 0 0 1px rgba(0,230,118,.07);
+  animation:subRise .28s cubic-bezier(.2,.8,.2,1);
+}
+.pay-hd{
+  flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px 10px 16px;background:linear-gradient(165deg,#0e1412,#070a09);
+  border-bottom:1px solid var(--border-2);
+}
+.pay-kick{font-family:var(--mono);font-size:.56rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}
+.pay-x{
+  width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:50%;
+  color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--border);
+  cursor:pointer;transition:var(--tr);-webkit-tap-highlight-color:transparent;
+}
+.pay-x:hover{color:var(--text);background:rgba(255,255,255,.12);transform:rotate(90deg)}
+.pay-x:active{transform:scale(.9)}
+.pay-body{position:relative;flex:1;min-height:0;background:#fff}
+.pay-body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.pay-load{position:absolute;inset:0;z-index:2;display:grid;place-items:center;background:#fff;transition:opacity .25s ease;pointer-events:none}
+.pay-load.hide{opacity:0}
+.pay-load span{width:26px;height:26px;border-radius:50%;border:2px solid rgba(0,0,0,.12);border-top-color:#2371ec;animation:paySpin .7s linear infinite}
+@keyframes paySpin{to{transform:rotate(360deg)}}
+.pay-ft{
+  flex:none;padding:9px 14px;background:#070a09;border-top:1px solid var(--border-2);
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.04em;color:var(--text-3);text-align:center;line-height:1.6;
+}
+.pay-ft a{color:var(--primary);text-decoration:underline;text-underline-offset:2px}
+.pay-ov.close .pay-modal{animation:subDrop .16s ease-in forwards}
+@media(max-width:560px){
+  .pay-ov{padding:0}
+  .pay-modal{max-width:none;height:100vh;height:100dvh;border-radius:0;border:0}
+  .pay-hd{padding-top:calc(10px + env(safe-area-inset-top,0px))}
+  .pay-ft{padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}
+}
 .sub-hd{padding:24px 22px 0}
 .sub-kick{font-family:var(--mono);font-size:.56rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
 .sub-title{font-size:1.32rem;font-weight:700;letter-spacing:-.02em;margin-top:9px;line-height:1.25;padding-right:26px}
@@ -1516,7 +1562,7 @@ body.sub-lock{overflow:hidden}
   </div>
 
   <div class="wrap hero-inner">
-    <a class="hero-offer" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
+    <a class="hero-offer" href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener" data-pay>
       <span class="ho-fire">🔥</span>
       <span><b>COMPLETE BUNDLE</b> · All 3 Clubs · <span class="ho-price">₹1,999</span>/2 years</span>
       <span class="ho-cta">Grab Now →</span>
@@ -1694,9 +1740,9 @@ body.sub-lock{overflow:hidden}
           <div class="bc-o-price"><span class="cur">₹</span>1,999<small>/ 2 yrs</small></div>
           <span class="bc-o-badge big">One payment · 24 months access</span>
           <div class="bc-o-cta bc-cta">
-            <a class="btn btn-primary" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">Get the Bundle · ₹1,999 →</a>
+            <a class="btn btn-primary" href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener" data-pay>Pay ₹1,999 Online →</a>
           </div>
-          <p class="bc-o-meta">≈ <b>₹84/mo</b> · checkout on WhatsApp</p>
+          <p class="bc-o-meta">≈ <b>₹84/mo</b> · secure checkout · <a href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">buy on WhatsApp</a></p>
         </div>
       </div>
       <p class="bc-foot">Renews every 2 years · no auto-debit · we send a WhatsApp reminder before it ends</p>
@@ -1922,7 +1968,7 @@ body.sub-lock{overflow:hidden}
     </div>
 
     <div class="clubs-foot" data-rv>
-      <a class="cf-item" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
+      <a class="cf-item" href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener" data-pay>
         <span>🔥 <b>Complete Bundle</b> · All 3 Clubs · <span class="cf-price">₹1,999</span>/2 years · cancel anytime</span>
         <span class="cf-arrow">→</span>
       </a>
@@ -2293,7 +2339,7 @@ body.sub-lock{overflow:hidden}
         <span class="sub-opt-price">₹99<small>/mo</small></span>
         <span class="sub-opt-go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
       </a>
-      <a class="sub-opt best" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">
+      <a class="sub-opt best" href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener" data-pay>
         <span class="sub-opt-ico ico-bundle" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.1 4.2 7.3v9.4L12 20.9l7.8-4.2V7.3L12 3.1Z" fill="currentColor" fill-opacity=".12"/><path d="M4.4 7.4 12 11.7l7.6-4.3M12 11.7V20.6"/><path d="M8.2 5.2 15.9 9.5" opacity=".7"/></svg>
         </span>
@@ -2312,13 +2358,30 @@ body.sub-lock{overflow:hidden}
   </div>
 </div>
 
+<!-- ================= PAYMENT MODAL (Razorpay, same page) ================= -->
+<div class="sub-ov pay-ov" id="payOv" role="dialog" aria-modal="true" aria-labelledby="payTitle" aria-hidden="true">
+  <div class="pay-modal" role="document">
+    <div class="pay-hd">
+      <span class="pay-kick" id="payTitle">Secure checkout · Razorpay</span>
+      <button class="pay-x" type="button" id="payX" aria-label="Close checkout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="pay-body">
+      <div class="pay-load" id="payLoad" aria-hidden="true"><span></span></div>
+      <iframe id="payFrame" title="Razorpay secure checkout — Complete Bundle ₹1,999" src="about:blank" allow="payment" loading="lazy"></iframe>
+    </div>
+    <p class="pay-ft">Complete Bundle · ₹1,999 / 2 years · <a href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener noreferrer">open in new tab</a></p>
+  </div>
+</div>
+
 <!-- ================= MOBILE STICKY CTA ================= -->
 <div class="mobile-cta" id="mobileCta">
   <div class="mc-txt">
     <b id="mcTitle">🔥 Complete Bundle · <span class="hl">₹1,999</span></b>
     <span id="mcSub">All 3 Clubs · 2 years</span>
   </div>
-  <a class="btn btn-primary" id="mcBtn" href="https://wa.me/918054393976?text=Hi%20Force%20Trading%20YT!%20I%20want%20to%20buy%20the%20Complete%20Bundle%20(Rs%201%2C999%20-%202%20year%20access%20to%20Investment%2C%20Swing%20and%20Intraday%20Clubs)." target="_blank" rel="noopener">Get Bundle →</a>
+  <a class="btn btn-primary" id="mcBtn" href="https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view" target="_blank" rel="noopener" data-pay>Get Bundle →</a>
 </div>
 
 <script>
@@ -2483,7 +2546,11 @@ function setMobileCta(id){
       b = document.getElementById('mcBtn');
   if(t) t.innerHTML = info.t;
   if(s) s.textContent = info.s;
-  if(b) b.setAttribute('href', info.href);
+  if(b){
+    b.setAttribute('href', info.href);
+    /* club plan CTA hai — bundle ka on-page payment modal na khule */
+    b.removeAttribute('data-pay');
+  }
 }
 function activateClub(id, dir){
   document.querySelectorAll('.club-tab').forEach(function(t){
@@ -2616,6 +2683,96 @@ if(subAccess) subAccess.addEventListener('click', function(){
   var acc = document.getElementById('access');
   if(acc && acc.scrollIntoView) setTimeout(function(){ acc.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
 });
+
+/* ---------- Payment modal (Razorpay checkout, same page) ----------
+   Har bundle CTA [data-pay] ab isi page par Razorpay checkout kholta hai.
+   Pehli baar open par iframe load hota hai; close karne par state bani
+   rehti hai taaki galti se band ho jaye to dobara shuru na karna pade. */
+var PAY_URL = 'https://pages.razorpay.com/pl_TqVIDa8o74mEU5/view',
+    payOv = document.getElementById('payOv'),
+    payX = document.getElementById('payX'),
+    payFrame = document.getElementById('payFrame'),
+    payLoad = document.getElementById('payLoad'),
+    payLast = null,
+    payLoaded = false;
+
+function payPreload(){
+  if(payLoaded || !payFrame) return;
+  payLoaded = true;
+  if(payLoad) payLoad.classList.remove('hide');
+  payFrame.src = PAY_URL;
+}
+
+function payOpen(src){
+  if(!payOv) return;
+  payLast = src || document.activeElement;
+  /* popup ke andar wala link band popup me chhup jata hai — us case me
+     focus wapas bundle card ke CTA par le jao */
+  if(payLast && payLast.closest && payLast.closest('#subOv')){
+    payLast = document.querySelector('.bc-o-cta [data-pay]') || null;
+  }
+  /* Pehle modal paint karo, phir iframe load — click par modal turant
+     khulega, Razorpay page spinner ke peeche load hota rahega. */
+  payOv.classList.remove('close');
+  payOv.classList.add('open');
+  payOv.setAttribute('aria-hidden','false');
+  document.body.classList.add('sub-lock');
+  if(payX) payX.focus({preventScroll:true});
+  if(!payLoaded) setTimeout(payPreload, 30);
+  if(window.dataLayer) window.dataLayer.push({event:'pay_modal_open', source:(src && src.textContent || '').trim().slice(0,40)});
+}
+
+function payClose(){
+  if(!payOv || !payOv.classList.contains('open')) return;
+  payOv.classList.remove('open');
+  payOv.classList.add('close');
+  payOv.setAttribute('aria-hidden','true');
+  document.body.classList.remove('sub-lock');
+  setTimeout(function(){ payOv.classList.remove('close'); }, 170);
+  if(payLast && payLast.focus && payOv.contains(document.activeElement)) payLast.focus({preventScroll:true});
+}
+
+if(payX) payX.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); payClose(); });
+if(payOv) payOv.addEventListener('click', function(e){ if(e.target === payOv) payClose(); });
+/* Razorpay page load hote hi spinner hatao (about:blank ki load par nahi) */
+if(payFrame) payFrame.addEventListener('load', function(){
+  if(payLoad && payFrame.src && payFrame.src.indexOf('razorpay.com') > -1) payLoad.classList.add('hide');
+});
+document.addEventListener('keydown', function(e){
+  if(!payOv || !payOv.classList.contains('open')) return;
+  if(e.key === 'Escape') payClose();
+  if(e.key === 'Tab'){
+    var f = payOv.querySelectorAll('a[href],button:not([disabled])');
+    if(!f.length) return;
+    var first = f[0], last = f[f.length-1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
+/* Har [data-pay] CTA — hero offer, bundle card, clubs foot, popup bundle, sticky bar */
+document.addEventListener('click', function(e){
+  var p = e.target.closest ? e.target.closest('[data-pay]') : null;
+  if(!p) return;
+  e.preventDefault();
+  if(p.closest && p.closest('#subOv')) subClose();
+  payOpen(p);
+});
+/* Checkout preload — buy CTA ke paas aate hi Razorpay page load karo,
+   taaki click par modal pehle se bhara hua mile. */
+['pointerover','touchstart','focusin'].forEach(function(ev){
+  document.addEventListener(ev, function(e){
+    if(e.target.closest && e.target.closest('[data-pay]')) payPreload();
+  }, {passive:true});
+});
+if('IntersectionObserver' in window){
+  var payIo = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ payPreload(); payIo.disconnect(); }
+    });
+  }, {rootMargin:'400px 0px'});
+  var bcPre = document.querySelector('.bundle-card');
+  if(bcPre) payIo.observe(bcPre);
+}
 /* Koi bhi .js-join element popup kholta hai (nav, hero, final CTA, sticky bar) */
 document.addEventListener('click', function(e){
   var j = e.target.closest ? e.target.closest('.js-join') : null;
@@ -2816,6 +2973,7 @@ if(tgBtn && TELEGRAM_ACCESS_LINK){
     if(a.id === 'mcBtn') return 'sticky_mobile_cta';
     if(a.id === 'tgAccessBtn') return 'telegram_access';
     if(a.id === 'fabMain') return 'contact_fab';
+    if(h.indexOf('pages.razorpay.com') > -1) return 'razorpay_checkout';
     if(h.indexOf('wa.me') > -1) return 'whatsapp_checkout';
     if(h.indexOf('chat.whatsapp.com') > -1) return 'whatsapp_community';
     if(h.indexOf('superprofile.bio') > -1) return 'superprofile_plan';
