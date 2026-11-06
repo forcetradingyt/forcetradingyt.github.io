@@ -112,7 +112,8 @@
 {"@type":"Question","name":"Which club should I pick?","acceptedAnswer":{"@type":"Answer","text":"Investment for weeks-to-months, Swing for 3–7 day moves, Intraday for same-day trades. Not sure? Take the bundle."}},
 {"@type":"Question","name":"Is the bundle a subscription? How do I cancel it?","acceptedAnswer":{"@type":"Answer","text":"It covers 24 months. There is no auto-debit mandate — we send a WhatsApp renewal reminder when it ends, and you can simply tell us to stop."}},
 {"@type":"Question","name":"How do I get access after I pay?","acceptedAnswer":{"@type":"Answer","text":"Your private Telegram invite comes back to you on WhatsApp right after we verify the payment, usually within minutes."}},
-{"@type":"Question","name":"What payment methods are accepted?","acceptedAnswer":{"@type":"Answer","text":"UPI, cards and net banking — processed securely through Superprofile. The bundle is checked out on WhatsApp."}},
+{"@type":"Question","name":"What payment methods are accepted?","acceptedAnswer":{"@type":"Answer","text":"UPI, cards and net banking. The ₹1,999 bundle is paid securely on this page via Razorpay — no redirect. Individual club plans use their own checkout."}},
+{"@type":"Question","name":"Can I get FREE Premium with a demat account?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open a demat account with one of our partner brokers (Dhan, Zerodha, Angel One, Fyers and more), then send your broker name, client ID and a screenshot on WhatsApp. You get a 3-year premium membership — worth ₹9,999 — completely free, including all groups and FTY Scanner."}},
 {"@type":"Question","name":"Is there a refund policy?","acceptedAnswer":{"@type":"Answer","text":"Digital products are non-refundable once accessed, since content is delivered instantly. Message support if you have a specific concern."}},
 {"@type":"Question","name":"Is the Scanner a one-time purchase or subscription?","acceptedAnswer":{"@type":"Answer","text":"The Scanner has separate plans: ₹99 for 15 days, ₹149 for 30 days, ₹349 for 90 days or ₹999 for 365 days. Your licence key arrives by email and works on 2 devices."}},
 {"@type":"Question","name":"Is this SEBI-registered investment advice?","acceptedAnswer":{"@type":"Answer","text":"No. Force Trading YT is an education brand, not a SEBI-registered adviser. We publish rule-based setups for learning only — every trading decision remains yours."}},
@@ -990,6 +991,64 @@ summary::-webkit-details-marker{display:none}
 details[open] .faq-x{transform:rotate(45deg);background:var(--primary-dim)}
 .faq-a{padding:0 20px 17px;color:var(--text-2);font-size:.87rem}
 
+/* ===================== DEMAT OFFER (FREE PREMIUM) ===================== */
+section.demat-section{padding:0 0 84px}
+.demat-card{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:1.12fr .88fr;
+  background:linear-gradient(155deg,rgba(61,139,255,.08),rgba(0,230,118,.05) 48%,rgba(5,5,5,0) 72%),var(--panel-solid);
+  border:1px solid var(--border-2);border-radius:24px;
+}
+.demat-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:radial-gradient(ellipse 70% 100% at 20% 0%,#000,transparent 72%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 100% at 20% 0%,#000,transparent 72%);
+}
+.demat-main,.demat-side{position:relative;z-index:1}
+.demat-main{padding:40px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.demat-eyebrow{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--space-blue)}
+.demat-main h3{font-size:clamp(1.2rem,2.2vw,1.5rem);font-weight:700;letter-spacing:-.01em}
+.demat-main>p{color:var(--text-2);font-size:.86rem;max-width:470px}
+.db-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:4px}
+.db-chip{
+  display:flex;flex-direction:column;gap:3px;padding:13px 15px;border-radius:12px;
+  border:1px solid var(--border);background:rgba(255,255,255,.03);
+  transition:transform var(--tr),border-color var(--tr),background var(--tr);
+}
+.db-chip b{font-size:.86rem;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.db-chip b span{color:var(--text-3);font-weight:400}
+.db-chip>span{font-family:var(--mono);font-size:.55rem;letter-spacing:.03em;color:var(--text-3)}
+.db-chip:hover{transform:translateY(-2px);border-color:var(--space-blue-line);background:rgba(61,139,255,.07)}
+.db-chip:hover b span{color:var(--primary)}
+.db-all{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);margin-top:2px;transition:color var(--tr)}
+.db-all:hover{color:var(--primary)}
+.demat-side{
+  display:flex;flex-direction:column;gap:10px;padding:40px 34px;
+  border-left:1px solid var(--border);
+  background:linear-gradient(165deg,rgba(0,230,118,.10),rgba(5,8,6,.55));
+}
+.demat-side .demat-eyebrow{color:var(--primary)}
+.demat-value{font-size:clamp(1.9rem,3.6vw,2.5rem);font-weight:800;letter-spacing:-.035em;line-height:1;margin:4px 0 2px}
+.demat-value small{display:block;margin-top:7px;font-size:.62rem;font-weight:500;letter-spacing:.03em;color:var(--text-3);font-family:var(--mono)}
+.demat-list{list-style:none;display:grid;gap:7px;margin:8px 0 14px;padding:0}
+.demat-list li{display:flex;gap:8px;font-size:.78rem;line-height:1.5;color:var(--text-2)}
+.demat-list li::before{content:"✓";color:var(--primary);font-weight:800;flex:none}
+.demat-side .btn{width:100%;margin-top:auto;font-size:.84rem;padding:12px 18px}
+.demat-note{font-size:.62rem;line-height:1.55;color:var(--text-3)}
+.demat-note b{color:var(--text-2);font-weight:600}
+.demat-disc{padding-top:10px;border-top:1px solid var(--border);font-size:.58rem}
+@media(max-width:900px){
+  .demat-card{grid-template-columns:1fr}
+  .demat-side{border-left:0;border-top:1px solid var(--border)}
+  body.demat-in .fab-wrap{opacity:0!important;visibility:hidden;pointer-events:none}
+}
+@media(max-width:640px){
+  section.demat-section{padding:0 0 60px}
+  .demat-main,.demat-side{padding:26px 20px}
+  .db-grid{grid-template-columns:1fr}
+}
+
 /* --- Final CTA --- */
 .final-cta{
   position:relative;overflow:hidden;text-align:center;
@@ -1571,7 +1630,7 @@ body.sub-lock{overflow:hidden}
     <p class="hero-sub">The <b style="color:var(--text);font-weight:600">FTY Premium Indicator</b> — rule-based price action for Indian market traders. Daily analysis, sector intelligence, no tips, no guarantees.</p>
     <div class="hero-ctas">
       <a href="#clubs" class="btn btn-primary js-join">Join for ₹99/month →</a>
-      <a href="https://fty-premium-club.web.app/" class="btn btn-ghost" target="_blank" rel="noopener">Check Your Subscription →</a>
+      <a href="#demat" class="btn btn-ghost">FREE 3-Year Premium via Demat →</a>
     </div>
     <div class="hero-proof">
       <div class="hp-cell"><b data-countto="5000" data-suffix="+">5,000+</b><span>Traders in the community</span></div>
@@ -1993,6 +2052,57 @@ body.sub-lock{overflow:hidden}
 <span class="meteor m5" aria-hidden="true"></span>
 <span class="meteor m6" aria-hidden="true"></span>
 
+<!-- ================= DEMAT OFFER: FREE PREMIUM ================= -->
+<section id="demat" class="section demat-section">
+  <div class="wrap">
+    <div class="sec-head" data-rv>
+      <span class="kicker">🎁 Premium 100% Free</span>
+      <h2>Open a Demat Account.<br>Unlock 3-Year Premium — FREE.</h2>
+      <p>Another way in: open an account with a partner broker below and unlock a 3-year premium membership — worth <b style="color:var(--text)">₹9,999</b> — completely free. All groups + FTY Scanner included. No payment needed.</p>
+    </div>
+
+    <div class="demat-card" data-rv>
+      <div class="demat-main">
+        <span class="demat-eyebrow">Step 1 · Open a demat account</span>
+        <h3>Pick a partner broker</h3>
+        <p>Open your account directly with the broker using the partner links below. Dhan, Zerodha, Angel One and Fyers are the most popular choices.</p>
+        <div class="db-grid">
+          <a class="db-chip" href="https://join.dhan.co/?invite=ARYPW62321" target="_blank" rel="noopener">
+            <b>Dhan <span aria-hidden="true">↗</span></b>
+            <span>Zero delivery brokerage</span>
+          </a>
+          <a class="db-chip" href="https://zerodha.com/open-account?c=EFV142" target="_blank" rel="noopener">
+            <b>Zerodha <span aria-hidden="true">↗</span></b>
+            <span>Popular discount broker</span>
+          </a>
+          <a class="db-chip" href="https://wa.me/918054393976?text=Hi%2C%20I%20want%20to%20open%20an%20account%20on%20Angel%20One.%20Please%20share%20the%20link." target="_blank" rel="noopener">
+            <b>Angel One <span aria-hidden="true">↗</span></b>
+            <span>Full-service broker</span>
+          </a>
+          <a class="db-chip" href="https://fyers.onelink.me/cj1P/okuhx4n0" target="_blank" rel="noopener">
+            <b>Fyers <span aria-hidden="true">↗</span></b>
+            <span>Advanced charting</span>
+          </a>
+        </div>
+        <a class="db-all" href="rewards.html#demat">View all partner brokers →</a>
+      </div>
+
+      <div class="demat-side">
+        <span class="demat-eyebrow">Step 2 · Claim your FREE 3-year membership</span>
+        <div class="demat-value">₹9,999<small>3-year value · 100% free with your demat account</small></div>
+        <ul class="demat-list">
+          <li>All premium Telegram groups — Investment, Swing &amp; Intraday (3 years)</li>
+          <li>FTY Scanner — full access (3 years)</li>
+          <li>Premium strategies, ebooks, PDFs &amp; video tutorials</li>
+        </ul>
+        <a class="btn btn-primary" id="dematClaimBtn" href="https://wa.me/918054393976?text=Hi%2C%20I%27ve%20opened%20a%20demat%20account.%20I%27d%20like%20to%20claim%20my%203-year%20Premium%20membership%20%28all%20groups%20%2B%20FTY%20Scanner%29.%20Sending%20my%20broker%20name%2C%20client%20ID%20and%20screenshot%20below." target="_blank" rel="noopener">Claim My FREE Premium →</a>
+        <p class="demat-note">Send your <b>broker name, client ID and screenshot</b> on WhatsApp. Activation is manual, usually within a few hours.</p>
+        <p class="demat-note demat-disc">We may earn a referral fee from partner brokers — your account terms and charges stay the same.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= ALREADY PAID? GET ACCESS ================= -->
 <section id="access" class="section" style="padding:0 0 92px">
   <div class="wrap">
@@ -2207,7 +2317,8 @@ body.sub-lock{overflow:hidden}
       <details><summary>Which club should I pick?<span class="faq-x"></span></summary><div class="faq-a">Investment for weeks-to-months, Swing for 3–7 day moves, Intraday for same-day trades. Not sure? Take the bundle.</div></details>
       <details><summary>Is the bundle a subscription? How do I cancel it?<span class="faq-x"></span></summary><div class="faq-a">It covers 24 months. There is no auto-debit mandate — we send a WhatsApp renewal reminder when it ends, and you can simply tell us to stop.</div></details>
       <details><summary>How do I get access after I pay?<span class="faq-x"></span></summary><div class="faq-a">Your private Telegram invite comes back to you on WhatsApp right after we verify the payment, usually within minutes.</div></details>
-      <details><summary>What payment methods are accepted?<span class="faq-x"></span></summary><div class="faq-a">UPI, cards and net banking — processed securely through Superprofile. The bundle is checked out on WhatsApp.</div></details>
+      <details><summary>What payment methods are accepted?<span class="faq-x"></span></summary><div class="faq-a">UPI, cards and net banking. The ₹1,999 bundle is paid securely on this page via Razorpay — no redirect. Individual club plans use their own checkout.</div></details>
+      <details><summary>Can I get FREE Premium with a demat account?<span class="faq-x"></span></summary><div class="faq-a">Yes. Open a demat account with one of our partner brokers (Dhan, Zerodha, Angel One, Fyers and more), then send your broker name, client ID and a screenshot on WhatsApp. You get a 3-year premium membership — worth ₹9,999 — completely free, including all groups and FTY Scanner.</div></details>
       <details><summary>Is there a refund policy?<span class="faq-x"></span></summary><div class="faq-a">Digital products are non-refundable once accessed, since content is delivered instantly. Message support if you have a specific concern.</div></details>
       <details><summary>Is the Scanner a one-time purchase or subscription?<span class="faq-x"></span></summary><div class="faq-a">The Scanner has separate plans: ₹99 for 15 days, ₹149 for 30 days, ₹349 for 90 days or ₹999 for 365 days. Your licence key arrives by email and works on 2 devices.</div></details>
       <details><summary>Is this SEBI-registered investment advice?<span class="faq-x"></span></summary><div class="faq-a">No. Force Trading YT is an education brand, not a SEBI-registered adviser. We publish rule-based setups for learning only — every trading decision remains yours.</div></details>
@@ -2227,7 +2338,7 @@ body.sub-lock{overflow:hidden}
       <p>Join 5,000+ traders mastering the Laxman Rekha Strategy with the FTY Premium Indicator. Plans start at <b style="color:var(--primary)">₹99/month</b> — or take all three clubs for <b style="color:var(--primary)">₹1,999 / 2 years</b>. Structured analysis, defined risk, honest education.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
         <a href="#clubs" class="btn btn-primary js-join" style="padding:15px 40px">See plans &amp; join →</a>
-        <a href="https://forcetradingyt.github.io/rewards.html" class="btn btn-ghost" style="padding:15px 32px">🎁 Open Demat · Get Free Access</a>
+        <a href="#demat" class="btn btn-ghost" style="padding:15px 32px">🎁 FREE 3-Year Premium via Demat</a>
       </div>
       <p class="risk-note" style="margin-top:26px"><b>Educational content only.</b> We are not SEBI-registered investment advisers, we publish no buy/sell recommendations, and trading involves risk of loss.</p>
     </div>
@@ -2254,7 +2365,7 @@ body.sub-lock{overflow:hidden}
           <li><a href="#scanner">Scanner</a></li>
           <li><a href="#watchlist">Watchlist</a></li>
           <li><a href="https://forcetradingyt.github.io/pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="https://forcetradingyt.github.io/rewards.html">Open Demat — Free Premium</a></li>
+          <li><a href="#demat">FREE 3-Year Premium via Demat</a></li>
         </ul>
       </div>
       <div>
@@ -2856,16 +2967,24 @@ if(bbH && bbM && bbS){
 var mobileCta = document.getElementById('mobileCta');
 if(mobileCta){
   var clubsSec = document.getElementById('clubs');
+  var dematSec = document.getElementById('demat');
   var clubsVisible = false;
+  var dematVisible = false;
   function updateMobileCta(){
-    var show = window.scrollY > 520 && !clubsVisible;
+    var show = window.scrollY > 520 && !clubsVisible && !dematVisible;
     mobileCta.classList.toggle('show', show);
     document.body.classList.toggle('cta-shown', show);
+    document.body.classList.toggle('demat-in', dematVisible);
   }
   if(clubsSec && 'IntersectionObserver' in window){
     new IntersectionObserver(function(es){
       es.forEach(function(e){ clubsVisible = e.isIntersecting; updateMobileCta(); });
     },{threshold:.12}).observe(clubsSec);
+  }
+  if(dematSec && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ dematVisible = e.isIntersecting; updateMobileCta(); });
+    },{threshold:.12}).observe(dematSec);
   }
   window.addEventListener('scroll', updateMobileCta, {passive:true});
   window.addEventListener('resize', updateMobileCta);
@@ -2973,6 +3092,8 @@ if(tgBtn && TELEGRAM_ACCESS_LINK){
     if(a.id === 'mcBtn') return 'sticky_mobile_cta';
     if(a.id === 'tgAccessBtn') return 'telegram_access';
     if(a.id === 'fabMain') return 'contact_fab';
+    if(a.id === 'dematClaimBtn') return 'demat_claim';
+    if(a.closest && a.closest('#demat')) return a.classList.contains('db-all') ? 'demat_brokers_page' : 'demat_broker';
     if(h.indexOf('pages.razorpay.com') > -1) return 'razorpay_checkout';
     if(h.indexOf('wa.me') > -1) return 'whatsapp_checkout';
     if(h.indexOf('chat.whatsapp.com') > -1) return 'whatsapp_community';
