@@ -114,6 +114,7 @@ radial-gradient(900px 700px at 50% 110%,rgba(168,85,247,.055),transparent 60%),v
 /* view switching: Chart = embedded chart, Scan = scanner */
 body.view-chart .wrap{display:none}
 @media(max-width:700px){.topbar{gap:8px;padding:0 10px}.topbar-brand{font-size:14px}}
+@media(max-width:520px){.topbar{gap:5px;padding:0 8px}.topbar-side{gap:4px}.icon-btn{width:33px;height:33px}.theme-dots{gap:4px}.tdot{width:14px;height:14px}.topbar-brand{font-size:13px}}
 .mkt{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;letter-spacing:1.4px;color:var(--dim);box-shadow:var(--ring);border-radius:99px;padding:9px 15px;background:var(--panel)}
 .mkt .dot{width:8px;height:8px;border-radius:50%;background:#64748b;flex-shrink:0}
 .mkt.live{color:var(--up);box-shadow:0 0 0 1px rgba(74,222,128,.32)}
@@ -441,7 +442,7 @@ body.scan-fresh .deal{animation:dealIn .45s var(--ease-out) backwards}
 .btn-scan{padding:10px 16px}
 }
 @media(max-width:768px){
-.wrap{padding:0 14px 60px}
+.wrap{padding:62px 14px 60px}
 .controls-bar{margin:0 -8px 14px;top:6px}
 .lv-lbl{width:100%}
 .lv-lbl.sub{width:100%;margin-left:0}
@@ -1374,6 +1375,17 @@ body.view-home .wrap{padding-bottom:24px}
 body.view-home .brand-quote{display:none}          /* the header stat strip belongs to the scanner, not the dashboard */
 body.view-home #homeView{min-height:calc(100vh - 96px);display:flex;flex-direction:column;gap:14px}
 
+/* ── icon set: line icons in the rail, real flags for the markets ── */
+.nav-tab .rt-ico{display:grid;place-items:center;height:20px;font-size:0;line-height:0}
+.nav-tab .rt-ico svg{width:20px;height:20px;display:block}
+.nav-tab .rt-ico svg.flag{width:21px;height:14px;border-radius:2.5px;box-shadow:0 0 0 1px rgba(255,255,255,.16)}
+.mk-ico{display:grid;place-items:center;width:22px;height:22px;font-size:0;line-height:0}
+.mk-ico svg{width:19px;height:19px;display:block;color:var(--dim)}
+.mk-ico svg.flag{width:20px;height:13.5px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.16)}
+.hc-btn svg{width:15px;height:15px;flex:none;opacity:.95}
+.hc-btn svg.flag{width:16px;height:11px;border-radius:1.5px}
+.hm-empty-ico svg{width:38px;height:38px;color:var(--lime);opacity:.9}
+
 /* ── hero ── */
 .hero2{display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;padding:2px 2px 0}
 .hero2-l{flex:1 1 380px;min-width:0}
@@ -1385,6 +1397,7 @@ body.view-home #homeView{min-height:calc(100vh - 96px);display:flex;flex-directi
 .sess-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(148,163,184,.055);box-shadow:var(--ring);border-radius:999px;padding:6px 12px 6px 10px;font-size:10.5px;font-weight:700;color:var(--dim);white-space:nowrap}
 .sess-chip i{width:7px;height:7px;border-radius:50%;background:#64748b;flex:none}
 .sess-chip b{color:var(--txt);font-weight:800}
+.sess-chip em{font-style:normal;font-weight:700}
 .sess-chip small{font-family:var(--fm);font-size:9px;color:var(--faint);letter-spacing:.3px}
 .sess-chip.on{color:var(--txt)}
 .sess-chip.on i{background:var(--up);box-shadow:0 0 10px color-mix(in srgb,var(--up) 60%,transparent);animation:sessPulse 2.4s ease-in-out infinite}
@@ -1470,14 +1483,14 @@ body.view-home #hfStrip2{margin-top:0}
 </div>
 </header>
 <nav class="side-rail" aria-label="Main navigation" data-page-node-id="wgEd3iwP8SE4EeaXyoYgnH">
-<button class="nav-tab" id="navHome" onclick="showView('home')" aria-pressed="false" title="Home dashboard — shortcut H" data-page-node-id="mndzAIlLFmkA0Y6eve1VIL"><span class="rt-ico" aria-hidden="true" data-page-node-id="qTvjM9PCj7WnCBDFk9iXsS">🏠</span><span data-page-node-id="F2XrzyRLpZrUvxblzMXxno">Home</span></button>
-<button class="nav-tab" id="navIndia" onclick="showView('india')" aria-pressed="false" title="India scan — NSE + BSE — shortcut 4" data-page-node-id="5f8xn5HWB6a3an2YqzEO2k"><span class="rt-ico" aria-hidden="true" data-page-node-id="ZCMbECZsTTohjV9v7SEZ85">🇮🇳</span><span data-page-node-id="1SLDIH7pIn4UuDUejoPZmX">India</span></button>
-<button class="nav-tab" id="navUS" onclick="showView('us')" aria-pressed="false" title="US scan — NYSE + NASDAQ + AMEX — shortcut 5"><span class="rt-ico" aria-hidden="true">🇺🇸</span><span>US</span></button>
-<button class="nav-tab on" id="navScan" onclick="showView('scan')" aria-pressed="true" title="Crypto scan — Binance spot — shortcut 1" data-page-node-id="CrHztzdZxqI4ijzGEAwjRs"><span class="rt-ico" aria-hidden="true" data-page-node-id="RiyN2flfZddlPE8RElK3jg">🔬</span><span data-page-node-id="XroFTzyxwgpaPD4bYGwaEl">Crypto</span></button>
-<button class="nav-tab" id="navSectors" onclick="showView('sectors')" aria-pressed="false" title="Sector rotation — India · US · Crypto — shortcut 2"><span class="rt-ico" aria-hidden="true">🧭</span><span>Sectors</span></button>
-<button class="nav-tab" id="navFlow" onclick="showView('flow')" aria-pressed="false" title="Order flow — where the money is going — shortcut 6"><span class="rt-ico" aria-hidden="true">💰</span><span>Flow</span></button>
-<button class="nav-tab" id="navLearn" onclick="showView('learn')" aria-pressed="false" title="How to use FTY Scanner — shortcut 3"><span class="rt-ico" aria-hidden="true">📖</span><span>Learn</span></button>
-<button class="nav-tab ws-rail" id="navSetup" onclick="openWorkspace()" title="Workspace — choose your markets and tools" aria-haspopup="dialog"><span class="rt-ico" aria-hidden="true">⚙</span><span>Setup</span></button>
+<button class="nav-tab" id="navHome" onclick="showView('home')" aria-pressed="false" title="Home dashboard — shortcut H" data-page-node-id="mndzAIlLFmkA0Y6eve1VIL"><span class="rt-ico" aria-hidden="true" data-page-node-id="qTvjM9PCj7WnCBDFk9iXsS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.2 12 4l8 7.2"/><path d="M6.3 9.9V20h11.4V9.9"/><path d="M10 20v-5.1h4V20"/></svg></span><span data-page-node-id="F2XrzyRLpZrUvxblzMXxno">Home</span></button>
+<button class="nav-tab" id="navIndia" onclick="showView('india')" aria-pressed="false" title="India scan — NSE + BSE — shortcut 4" data-page-node-id="5f8xn5HWB6a3an2YqzEO2k"><span class="rt-ico" aria-hidden="true" data-page-node-id="ZCMbECZsTTohjV9v7SEZ85"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="5.33" fill="#FF9933"/><rect y="5.33" width="24" height="5.34" fill="#f6f8fb"/><rect y="10.67" width="24" height="5.33" fill="#138808"/><circle cx="12" cy="8" r="1.85" fill="none" stroke="#1a237e" stroke-width=".75"/><circle cx="12" cy="8" r=".35" fill="#1a237e"/></svg></span><span data-page-node-id="1SLDIH7pIn4UuDUejoPZmX">India</span></button>
+<button class="nav-tab" id="navUS" onclick="showView('us')" aria-pressed="false" title="US scan — NYSE + NASDAQ + AMEX — shortcut 5"><span class="rt-ico" aria-hidden="true"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="16" fill="#f6f8fb"/><g fill="#B22234"><rect width="24" height="1.24"/><rect y="2.48" width="24" height="1.24"/><rect y="4.96" width="24" height="1.24"/><rect y="7.44" width="24" height="1.24"/><rect y="9.92" width="24" height="1.24"/><rect y="12.4" width="24" height="1.24"/><rect y="14.76" width="24" height="1.24"/></g><rect width="9.6" height="8.68" fill="#3C3B6E"/></svg></span><span>US</span></button>
+<button class="nav-tab on" id="navScan" onclick="showView('scan')" aria-pressed="true" title="Crypto scan — Binance spot — shortcut 1" data-page-node-id="CrHztzdZxqI4ijzGEAwjRs"><span class="rt-ico" aria-hidden="true" data-page-node-id="RiyN2flfZddlPE8RElK3jg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M9.9 7.9h2.9a1.95 1.95 0 0 1 0 3.9H9.9m0 0h3.2a1.95 1.95 0 0 1 0 3.9H9.9M9.9 7.9v8M11.5 6.4v1.5M11.5 15.9v1.5"/></svg></span><span data-page-node-id="XroFTzyxwgpaPD4bYGwaEl">Crypto</span></button>
+<button class="nav-tab" id="navSectors" onclick="showView('sectors')" aria-pressed="false" title="Sector rotation — India · US · Crypto — shortcut 2"><span class="rt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 12V3.4a8.6 8.6 0 0 1 8.6 8.6z" fill="currentColor" stroke="none" opacity=".35"/><path d="M12 12h8.6"/></svg></span><span>Sectors</span></button>
+<button class="nav-tab" id="navFlow" onclick="showView('flow')" aria-pressed="false" title="Order flow — where the money is going — shortcut 6"><span class="rt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c2.6-3.2 5.2 3.2 7.8 0S16.4 5.8 21 9"/><path d="M3 15c2.6-3.2 5.2 3.2 7.8 0S16.4 11.8 21 15"/></svg></span><span>Flow</span></button>
+<button class="nav-tab" id="navLearn" onclick="showView('learn')" aria-pressed="false" title="How to use FTY Scanner — shortcut 3"><span class="rt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.3A2.3 2.3 0 0 1 6.3 3H20v14.4H6.3A2.3 2.3 0 0 0 4 19.7z"/><path d="M4 19.7A2.3 2.3 0 0 1 6.3 17.4H20"/></svg></span><span>Learn</span></button>
+<button class="nav-tab ws-rail" id="navSetup" onclick="openWorkspace()" title="Workspace — choose your markets and tools" aria-haspopup="dialog"><span class="rt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.2h8.2M17.4 8.2H20M4 15.8h2.6M11.8 15.8H20"/><circle cx="14.8" cy="8.2" r="2.2"/><circle cx="9.2" cy="15.8" r="2.2"/></svg></span><span>Setup</span></button>
 </nav>
 <div class="wrap" data-page-node-id="t6edpAm4jXbM13fjWucgv4">
 
@@ -1508,21 +1521,21 @@ body.view-home #hfStrip2{margin-top:0}
 
 <div class="home-markets" id="hmMarkets" aria-label="Markets — jump to a scanner">
 <button class="mk-card" onclick="showView('scan')" title="Open the crypto scanner — Binance spot" data-mk="crypto">
-<span class="mk-top"><span class="mk-ico" aria-hidden="true">🔬</span><span class="mk-name">Crypto</span><span class="mk-tag" id="mkTagCrypto">—</span></span>
+<span class="mk-top"><span class="mk-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M9.9 7.9h2.9a1.95 1.95 0 0 1 0 3.9H9.9m0 0h3.2a1.95 1.95 0 0 1 0 3.9H9.9M9.9 7.9v8M11.5 6.4v1.5M11.5 15.9v1.5"/></svg></span><span class="mk-name">Crypto</span><span class="mk-tag" id="mkTagCrypto">—</span></span>
 <span class="mk-num" id="mkNumCrypto">—<small>qualified</small></span>
 <span class="mk-sub" id="mkSubCrypto">Binance spot · loading…</span>
 <span class="mk-pulse" aria-hidden="true"><i></i></span>
 <span class="mk-go">Open scanner →</span>
 </button>
 <button class="mk-card" onclick="showView('india')" title="Open the India scanner — NSE + BSE" data-mk="india">
-<span class="mk-top"><span class="mk-ico" aria-hidden="true">🇮🇳</span><span class="mk-name">India</span><span class="mk-tag" id="mkTagIndia">—</span></span>
+<span class="mk-top"><span class="mk-ico" aria-hidden="true"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="5.33" fill="#FF9933"/><rect y="5.33" width="24" height="5.34" fill="#f6f8fb"/><rect y="10.67" width="24" height="5.33" fill="#138808"/><circle cx="12" cy="8" r="1.85" fill="none" stroke="#1a237e" stroke-width=".75"/><circle cx="12" cy="8" r=".35" fill="#1a237e"/></svg></span><span class="mk-name">India</span><span class="mk-tag" id="mkTagIndia">—</span></span>
 <span class="mk-num" id="mkNumIndia">—<small>qualified</small></span>
 <span class="mk-sub" id="mkSubIndia">NSE + BSE · loading…</span>
 <span class="mk-pulse" aria-hidden="true"><i></i></span>
 <span class="mk-go">Open scanner →</span>
 </button>
 <button class="mk-card" onclick="showView('us')" title="Open the US scanner — NYSE + NASDAQ + AMEX" data-mk="us">
-<span class="mk-top"><span class="mk-ico" aria-hidden="true">🇺🇸</span><span class="mk-name">US</span><span class="mk-tag" id="mkTagUS">—</span></span>
+<span class="mk-top"><span class="mk-ico" aria-hidden="true"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="16" fill="#f6f8fb"/><g fill="#B22234"><rect width="24" height="1.24"/><rect y="2.48" width="24" height="1.24"/><rect y="4.96" width="24" height="1.24"/><rect y="7.44" width="24" height="1.24"/><rect y="9.92" width="24" height="1.24"/><rect y="12.4" width="24" height="1.24"/><rect y="14.76" width="24" height="1.24"/></g><rect width="9.6" height="8.68" fill="#3C3B6E"/></svg></span><span class="mk-name">US</span><span class="mk-tag" id="mkTagUS">—</span></span>
 <span class="mk-num" id="mkNumUS">—<small>qualified</small></span>
 <span class="mk-sub" id="mkSubUS">NYSE + NASDAQ · loading…</span>
 <span class="mk-pulse" aria-hidden="true"><i></i></span>
@@ -1548,19 +1561,19 @@ body.view-home #hfStrip2{margin-top:0}
 <div class="home-card home-actions" data-page-node-id="FwIL5XflbO1ufkAJIB76Cl">
 <div class="hc-t" data-page-node-id="jDIrTQ5GaMir33lKjo7U3Z"><span class="hc-idx" data-page-node-id="qWbetQubpAIVziTIBHOmlC">03</span>Jump to</div>
 <div class="act-group"><span class="act-lbl">SCAN</span>
-<button class="hc-btn primary" onclick="showView('scan')" data-act="crypto" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Crypto</button>
-<button class="hc-btn" onclick="showView('india')" data-act="india">🇮🇳 India</button>
-<button class="hc-btn" onclick="showView('us')" data-act="us">🇺🇸 US</button>
+<button class="hc-btn primary" onclick="showView('scan')" data-act="crypto" data-page-node-id="1UmekbUvmEFDz7CjO249vO"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.7"/><path d="M9.9 7.9h2.9a1.95 1.95 0 0 1 0 3.9H9.9m0 0h3.2a1.95 1.95 0 0 1 0 3.9H9.9M9.9 7.9v8M11.5 6.4v1.5M11.5 15.9v1.5"/></svg><span>Crypto</span></button>
+<button class="hc-btn" onclick="showView('india')" data-act="india"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="5.33" fill="#FF9933"/><rect y="5.33" width="24" height="5.34" fill="#f6f8fb"/><rect y="10.67" width="24" height="5.33" fill="#138808"/><circle cx="12" cy="8" r="1.85" fill="none" stroke="#1a237e" stroke-width=".75"/><circle cx="12" cy="8" r=".35" fill="#1a237e"/></svg><span>India</span></button>
+<button class="hc-btn" onclick="showView('us')" data-act="us"><svg class="flag" viewBox="0 0 24 16"><rect width="24" height="16" fill="#f6f8fb"/><g fill="#B22234"><rect width="24" height="1.24"/><rect y="2.48" width="24" height="1.24"/><rect y="4.96" width="24" height="1.24"/><rect y="7.44" width="24" height="1.24"/><rect y="9.92" width="24" height="1.24"/><rect y="12.4" width="24" height="1.24"/><rect y="14.76" width="24" height="1.24"/></g><rect width="9.6" height="8.68" fill="#3C3B6E"/></svg><span>US</span></button>
 </div>
 <div class="act-group"><span class="act-lbl">RESEARCH</span>
-<button class="hc-btn" onclick="showView('sectors')" data-act="sectors">🧭 Sectors</button>
-<button class="hc-btn" onclick="showView('flow')" data-act="flow">💰 Order flow</button>
-<button class="hc-btn" onclick="showView('chart')" data-act="chart" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Chart</button>
+<button class="hc-btn" onclick="showView('sectors')" data-act="sectors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 12V3.4a8.6 8.6 0 0 1 8.6 8.6z" fill="currentColor" stroke="none" opacity=".35"/><path d="M12 12h8.6"/></svg><span>Sectors</span></button>
+<button class="hc-btn" onclick="showView('flow')" data-act="flow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c2.6-3.2 5.2 3.2 7.8 0S16.4 5.8 21 9"/><path d="M3 15c2.6-3.2 5.2 3.2 7.8 0S16.4 11.8 21 15"/></svg><span>Order flow</span></button>
+<button class="hc-btn" onclick="showView('chart')" data-act="chart" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5.6" y="8.4" width="3.2" height="8" rx="1"/><path d="M7.2 5.4v3M7.2 16.4v2.2"/><rect x="14.6" y="5.4" width="3.2" height="7" rx="1"/><path d="M16.2 3.4v2M16.2 12.4v3.2"/></svg><span>Chart</span></button>
 </div>
 <div class="act-group"><span class="act-lbl">TOOLS</span>
-<button class="hc-btn" onclick="showView('learn')">📖 Learn</button>
-<button class="hc-btn" onclick="dockToggle()" data-act="dock" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Watchlist</button>
-<button class="hc-btn ws-open" onclick="openWorkspace()" title="Choose markets and tools — the dashboard follows">⚙ Setup</button>
+<button class="hc-btn" onclick="showView('learn')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.3A2.3 2.3 0 0 1 6.3 3H20v14.4H6.3A2.3 2.3 0 0 0 4 19.7z"/><path d="M4 19.7A2.3 2.3 0 0 1 6.3 17.4H20"/></svg><span>Learn</span></button>
+<button class="hc-btn" onclick="dockToggle()" data-act="dock" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.2l2.35 4.9 5.15.72-3.75 3.66.9 5.2L12 16.2l-4.65 2.48.9-5.2L4.5 9.82l5.15-.72z"/></svg><span>Watchlist</span></button>
+<button class="hc-btn ws-open" onclick="openWorkspace()" title="Choose markets and tools — the dashboard follows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.2h8.2M17.4 8.2H20M4 15.8h2.6M11.8 15.8H20"/><circle cx="14.8" cy="8.2" r="2.2"/><circle cx="9.2" cy="15.8" r="2.2"/></svg><span>Setup</span></button>
 </div>
 </div>
 </div>
@@ -1575,11 +1588,11 @@ body.view-home #hfStrip2{margin-top:0}
 <div class="home-foot" id="hmFoot" aria-label="How to read this board" data-page-node-id="vFA3ClsygsL2yqRRH6VOTG">
 <span class="hf-eyebrow" data-page-node-id="OQbIUJj8b4GRu90ClAjhdG">How it reads</span>
 <div class="hf-grid" data-page-node-id="lh6BIqHHnxMQIwSXSThbMX">
-<div class="hf-item" data-page-node-id="gkqbnCnHIronDnJgdHo13K"><i class="hf-dot" style="background:var(--up)" data-page-node-id="cc2THFNSvKLLOtn6QT6p1o"></i><div data-page-node-id="ufxfEzeeL83L1Y2DqmtEdp"><b data-page-node-id="8fDbKo4Kfn9FCQq9qj4y2O">QUALIFIED</b><span data-page-node-id="lzom5fl043au47vYsFVNpU">Price never closed below its EMA — clean support</span></div></div>
-<div class="hf-item" data-page-node-id="XouQHzY70n9fKp5CIbUhtg"><i class="hf-dot" style="background:var(--cyan)" data-page-node-id="rbuTNei2BeFDaZoiRZ28IF"></i><div data-page-node-id="I4tuMPjsN86pxefkGd8Pn9"><b data-page-node-id="s5XmoqfFyt2bwW20tGmbKk">FRESH</b><span data-page-node-id="EC0CHuLEctFqQfQUfQU8FV">Retest or rejection on the latest candles</span></div></div>
-<div class="hf-item" data-page-node-id="RIIwAQ8CHBXK4nATW8NnRR"><i class="hf-dot" style="background:var(--gold)" data-page-node-id="L1Z4mDGeyXsp2Vziu6wXuX"></i><div data-page-node-id="UL1hHd7AyxOchIS1Q5n6Pd"><b data-page-node-id="x3gicEyFy2c3yhPCiCcpb2">SCORE 90+</b><span data-page-node-id="Kdgo0wCVomyFZ8bAg6zmmC">Near-perfect respect — zero breaks</span></div></div>
+<div class="hf-item" data-page-node-id="gkqbnCnHIronDnJgdHo13K"><i class="hf-dot" style="background:var(--up)" data-page-node-id="cc2THFNSvKLLOtn6QT6p1o"></i><div data-page-node-id="ufxfEzeeL83L1Y2DqmtEdp"><b data-page-node-id="8fDbKo4Kfn9FCQq9qj4y2O">QUALIFIED</b><span>Never closed below its EMA</span></div></div>
+<div class="hf-item" data-page-node-id="XouQHzY70n9fKp5CIbUhtg"><i class="hf-dot" style="background:var(--cyan)" data-page-node-id="rbuTNei2BeFDaZoiRZ28IF"></i><div data-page-node-id="I4tuMPjsN86pxefkGd8Pn9"><b data-page-node-id="s5XmoqfFyt2bwW20tGmbKk">FRESH</b><span>Retest on the latest candles</span></div></div>
+<div class="hf-item" data-page-node-id="RIIwAQ8CHBXK4nATW8NnRR"><i class="hf-dot" style="background:var(--gold)" data-page-node-id="L1Z4mDGeyXsp2Vziu6wXuX"></i><div data-page-node-id="UL1hHd7AyxOchIS1Q5n6Pd"><b data-page-node-id="x3gicEyFy2c3yhPCiCcpb2">SCORE 90+</b><span>Zero breaks</span></div></div>
 </div>
-<div class="hf-meta" data-page-node-id="n4Mb3Y1Qo2NoKKck4hGFQK"><span id="hfLastPass" data-page-node-id="cTFLWutyYt8mMR0AFIWEgW">No pass yet — hit Scan Market</span><button class="btn-ghost hf-guide" onclick="openGuide()" data-page-node-id="mrXVEpx9i2uLjH3eHF0hdQ">📖 Guide</button></div>
+<div class="hf-meta" data-page-node-id="n4Mb3Y1Qo2NoKKck4hGFQK"><span id="hfLastPass" data-page-node-id="cTFLWutyYt8mMR0AFIWEgW">No pass yet</span><button class="btn-ghost hf-guide" onclick="openGuide()" data-page-node-id="mrXVEpx9i2uLjH3eHF0hdQ">📖 Guide</button></div>
 </div>
 </section>
 
@@ -2663,7 +2676,7 @@ const rows=[
 {k:'us',ico:'🇺🇸',nm:'US',on:st.us,sub:'21:30–04:00'}
 ].filter(function(r){return typeof wsHasMk!=='function'||wsHasMk(r.k);});
 el.innerHTML=rows.map(function(r){
-return '<span class="sess-chip '+(r.on?'on':'off')+'"><i></i><b>'+r.ico+' '+r.nm+'</b> '+(r.on?'OPEN':'CLOSED')+' <small>'+r.sub+' IST</small></span>';
+return '<span class="sess-chip '+(r.on?'on':'off')+'" title="'+r.nm+' · '+r.sub+' IST"><i></i><b>'+r.nm+'</b> <em>'+(r.on?'Open':'Closed')+'</em></span>';
 }).join('');
 }
 // The pulse bar is the same component on every market card: ±3% fills half the bar.
@@ -2730,22 +2743,22 @@ let fol=rows.filter(r=>(r.score||0)>=70).length,strong=rows.filter(r=>isStrongSi
 let folPct=n?Math.round(fol/n*100):0;
 let mood='',lbl='';
 if(n){
-if(folPct>=25&&(btc==null||btc>-.5)){mood='bull';lbl='Bullish · '+folPct+'% of coins respect their EMA';}
-else if(folPct>=10){lbl='Mildly strong · '+folPct+'% EMA followers';}
-else if(folPct<5&&btc!=null&&btc<-1){mood='bear';lbl='Bearish · only '+folPct+'% holding the EMA';}
-else{lbl='Mixed tape · '+folPct+'% EMA followers';}
+if(folPct>=25&&(btc==null||btc>-.5)){mood='bull';lbl='Bullish · '+folPct+'% holding EMA';}
+else if(folPct>=10){lbl='Strong-ish · '+folPct+'% followers';}
+else if(folPct<5&&btc!=null&&btc<-1){mood='bear';lbl='Bearish · '+folPct+'% holding';}
+else{lbl='Mixed · '+folPct+'% followers';}
 }else if(btc!=null){
-if(btc>=1.5){mood='bull';lbl='Bullish · BTC +'+btc.toFixed(1)+'% in 24h';}
-else if(btc>=.3){lbl='Mildly bullish · BTC +'+btc.toFixed(1)+'% in 24h';}
-else if(btc<=-1.5){mood='bear';lbl='Bearish · BTC '+btc.toFixed(1)+'% in 24h';}
-else if(btc<=-.3){lbl='Mildly bearish · BTC '+btc.toFixed(1)+'% in 24h';}
-else{lbl='Neutral · BTC flat at '+(btc>=0?'+':'')+btc.toFixed(1)+'% in 24h';}
-}else{lbl='checking BTC and ETH…';}
+if(btc>=1.5){mood='bull';lbl='Bullish · BTC +'+btc.toFixed(1)+'%';}
+else if(btc>=.3){lbl='Mildly bullish · BTC +'+btc.toFixed(1)+'%';}
+else if(btc<=-1.5){mood='bear';lbl='Bearish · BTC '+btc.toFixed(1)+'%';}
+else if(btc<=-.3){lbl='Mildly bearish · BTC '+btc.toFixed(1)+'%';}
+else{lbl='Neutral · BTC '+(btc>=0?'+':'')+btc.toFixed(1)+'%';}
+}else{lbl='checking…';}
 let sig=[n,fol,strong,btc,eth].join('|');
 if(sig===_heroSig)return;_heroSig=sig;
 if(g)g.textContent=heroGreet();
-if(s)s.textContent=n?('Crypto scan is warm — '+n+' qualified coins on the board. Open any coin to see its full chart.'):'Welcome to FTY Scanner — pick a market, run a scan, then open any symbol on the full chart.';
-m.textContent='Crypto mood — '+lbl;m.className='hm-pill'+(mood?' '+mood:'');
+if(s)s.textContent=n?(n+' qualified · '+TF_META[TF].lbl+' · '+(strong?strong+' strong':'live')):'Pick a market. Hit Scan.';
+m.textContent='Crypto · '+lbl;m.className='hm-pill'+(mood?' '+mood:'');
 let h='';
 if(btc!=null)h+='<span class="hm-chip">BTC <b class="'+(btc>=0?'u':'d')+'">'+(btc>=0?'+':'')+btc.toFixed(2)+'%</b></span>';
 if(eth!=null)h+='<span class="hm-chip">ETH <b class="'+(eth>=0?'u':'d')+'">'+(eth>=0?'+':'')+eth.toFixed(2)+'%</b></span>';
@@ -2779,26 +2792,26 @@ let mb=$('hmBoard');
 if(mb){
 let h='',stale=false;
 if(rows.length&&st){
-h='<div class="hc-row"><span class="k">Qualified coins</span><span class="v">'+st.total+'</span></div>'
-+'<div class="hc-row"><span class="k">Never broke the EMA</span><span class="v">'+st.neverBroke+'</span></div>'
-+'<div class="hc-row"><span class="k">EMA followers (70+)</span><span class="v">'+fol+'</span></div>'
-+'<div class="hc-row"><span class="k">Strong buys</span><span class="v">'+strong+'</span></div>'
-+'<div class="hc-row"><span class="k">Fresh setups</span><span class="v">'+(st.fresh==null?'—':st.fresh)+'</span></div>';
+h='<div class="hc-row"><span class="k">Qualified</span><span class="v">'+st.total+'</span></div>'
++'<div class="hc-row"><span class="k">Never broke</span><span class="v">'+st.neverBroke+'</span></div>'
++'<div class="hc-row"><span class="k">Followers 70+</span><span class="v">'+fol+'</span></div>'
++'<div class="hc-row"><span class="k">Strong buy</span><span class="v">'+strong+'</span></div>'
++'<div class="hc-row"><span class="k">Fresh</span><span class="v">'+(st.fresh==null?'—':st.fresh)+'</span></div>';
 }else if(ls){
 // Last saved pass (ftyLastScan) — real numbers with an age chip instead of a
 // permanent "No scan data yet" even though a pass has run.
 stale=hmStale(ls.ts);
 h='<div class="hm-age"><span class="hm-age-chip">'+hmAgo(ls.ts)+' · '+(ls.universe||0)+' coins · '+hmTfLbl(ls.tf)+'</span>'+(stale?'<button class="btn-ghost hm-rerun" onclick="hmReRun()" title="Scan again for fresh numbers">⟳ Re-run</button>':'')+'</div>'
-+'<div class="hc-row"><span class="k">Qualified coins</span><span class="v">'+ls.qualified+'</span></div>'
-+'<div class="hc-row"><span class="k">Fresh setups</span><span class="v">'+(ls.fresh==null?'—':ls.fresh)+'</span></div>'
++'<div class="hc-row"><span class="k">Qualified</span><span class="v">'+ls.qualified+'</span></div>'
++'<div class="hc-row"><span class="k">Fresh</span><span class="v">'+(ls.fresh==null?'—':ls.fresh)+'</span></div>'
 +'<div class="hc-row"><span class="k">Avg score</span><span class="v">'+(typeof ls.avgScore==='number'?ls.avgScore:'—')+'</span></div>'
 +(ls.top||[]).slice(0,3).map(t=>'<div class="hm-ls-row"><span class="hm-ls-sym">'+t.sym+'</span><span class="score-bar"><i style="width:'+Math.max(4,Math.min(100,Math.round(t.score||0)))+'%"></i></span><span class="hm-ls-sc">'+(t.score||0)+'</span><span class="hm-ls-dist">'+(t.dist==null?'':((t.dist>=0?'+':'')+t.dist+'%'))+'</span></div>').join('')
 +'<div class="hc-note">Top qualified from the last pass — run a scan for live numbers.</div>';
 }else h='<div class="hm-empty">'
-+'<div class="hm-empty-ico">📡</div>'
++'<div class="hm-empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.6"/><path d="M20 20l-4.4-4.4"/><path d="M8.2 10.8h5.2M10.8 8.2v5.2"/></svg></div>'
 +'<div class="hm-empty-t">No scan yet</div>'
-+'<div class="hm-empty-s">Pick a market, hit Scan, then open any row. First run with <b>This TF</b> and <b>Top 100</b> takes about a minute.</div>'
-+'<div class="hm-empty-acts"><button class="btn-scan" onclick="hmStart()">🚀 Scan now</button>'
++'<div class="hm-empty-s">Pick a market, hit Scan, open a row.</div>'
++'<div class="hm-empty-acts"><button class="btn-scan" onclick="hmStart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;margin-right:5px"><circle cx="10.8" cy="10.8" r="6.6"/><path d="M20 20l-4.4-4.4"/></svg>Scan now</button>'
 +'<button class="btn-ghost" onclick="showView(\'learn\')">How it works</button></div>'
 +'<ol class="hm-steps"><li><b>1</b>Pick a market</li><li><b>2</b>Hit Scan</li><li><b>3</b>Open a row</li></ol>'
 +'</div>';
@@ -2815,7 +2828,7 @@ if(hf){
 let scp=Array.isArray(lastScopeTFs)?(lastScopeTFs.length>=TFS.length?'all '+lastScopeTFs.length+' TFs':lastScopeTFs.map(t=>TF_META[t].lbl).join('/')):'';
 if(scp)hf.textContent='Last pass · '+scp+' · '+(st&&st.total!=null?st.total:0)+' qualified';
 else if(ls)hf.textContent='Last pass '+hmAgo(ls.ts)+' · '+(ls.qualified||0)+' qualified'+(hmStale(ls.ts)?' — stale':'');
-else hf.textContent='No pass yet — hit Scan Market';
+else hf.textContent='No pass yet';
 }
 }
 
@@ -6489,13 +6502,13 @@ if(tag){tag.textContent=(!scanned?'no scan':(n>0?'ready':'empty'));tag.className
 if(sb)sb.innerHTML=sub;
 };
 let cScanned=rows.length>0||!!hmLastScan();
-set('Crypto',rows.length,btc?('<span>BTC '+hmMkPx(btc.p)+'</span>'+hmMkChg(btc.c)+'<span>24h</span>'):'<span>Binance spot · waiting for quotes…</span>',cScanned);
+set('Crypto',rows.length,btc?('<span>BTC '+hmMkPx(btc.p)+'</span>'+hmMkChg(btc.c)):'<span>Binance spot · waiting for quotes…</span>',cScanned);
 set('India',inS?inS.n:null,(iN||iS)
 ?('<span>NIFTY '+hmMkPx(iN&&iN.p)+'</span>'+hmMkChg(iN&&iN.c)+(iS?('<span>SENSEX '+hmMkChg(iS.c)+'</span>'):''))
-:'<span>NSE + BSE · open the tab to scan</span>',!!inS);
+:'<span>NSE + BSE</span>',!!inS);
 set('US',usS?usS.n:null,(iSP||iQ)
 ?('<span>SPY '+hmMkPx(iSP&&iSP.p)+'</span>'+hmMkChg(iSP&&iSP.c)+(iQ?('<span>QQQ '+hmMkChg(iQ.c)+'</span>'):''))
-:'<span>NYSE + NASDAQ · open the tab to scan</span>',!!usS);
+:'<span>NYSE + NASDAQ</span>',!!usS);
 try{hmPulse();}catch(e){}
 try{hmIdxFetch();}catch(e){}
 }
@@ -6504,7 +6517,7 @@ function hmWlRender(){
  let wl=(typeof dkWL!=='undefined'&&Array.isArray(dkWL))?dkWL.slice(0,6):[];
  let sig=wl.map(s=>{let q=_cspwQ[s.sym];return s.sym+(q?':'+q.p+'/'+q.c:'');}).join(',');
  if(sig===_hmWlSig)return;_hmWlSig=sig;
- if(!wl.length){el.innerHTML='<span class="hm-wl-empty">★ Build your watchlist from scan results</span>';return;}
+ if(!wl.length){el.innerHTML='<span class="hm-wl-empty">★ Add from scan results</span>';return;}
  el.innerHTML=wl.map(s=>{
   let q=_cspwQ[s.sym];if(!(q&&q.p>0)&&s.p!=null)q={p:s.p,c:s.c};
   let chg=q&&q.c!=null?'<span class="c '+(q.c>=0?'u':'d')+'">'+(q.c>=0?'+':'')+q.c.toFixed(2)+'%</span>':'<span class="c">—</span>';
