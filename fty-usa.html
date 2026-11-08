@@ -158,8 +158,8 @@ body.view-chart .wrap{display:none}
 .btn-scan:disabled{opacity:.55;cursor:wait}
 .srch{background:rgba(8,13,26,.85);border:1px solid var(--line);color:var(--txt);padding:10px 14px;border-radius:var(--r-md);font-size:12.5px;flex:0 1 210px;min-width:140px;transition:border-color .16s var(--ease-out),box-shadow .16s var(--ease-out)}
 .srch:focus{outline:none;border-color:color-mix(in srgb,var(--lime) 50%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--lime) 16%,transparent)}
-#filterPanel{display:grid;grid-template-rows:0fr;opacity:0;visibility:hidden;transition:grid-template-rows .28s var(--ease-out),opacity .22s var(--ease-out),visibility 0s .3s}
-#filterPanel.open{grid-template-rows:1fr;opacity:1;visibility:visible;transition:grid-template-rows .28s var(--ease-out),opacity .22s var(--ease-out),visibility 0s 0s}
+/* #filterPanel is a .cb-sheet drawer now — the old dropdown rules are gone */
+
 .fp-inner{overflow:hidden;min-height:0}
 .ex-seg{display:flex;gap:5px;background:rgba(8,13,26,.75);border:1px solid var(--line);border-radius:var(--r-md);padding:4px}
 .ex-seg button{background:none;border:none;border-radius:var(--r-sm);color:var(--dim);font-size:11.5px;font-weight:700;padding:7px 15px;cursor:pointer}
@@ -952,6 +952,9 @@ body.view-india .wrap,body.view-us .wrap{display:none}
 .side-rail{position:fixed;left:0;top:52px;bottom:0;width:64px;z-index:120;display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 0;background:rgba(6,9,17,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--line)}
 .side-rail .nav-tab{width:52px;min-height:56px;padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;letter-spacing:.5px;text-transform:uppercase;border-radius:13px}
 .side-rail .rt-ico{font-size:18px;line-height:1;font-weight:400}
+/* Setup sits at the bottom of the rail — the one place people look for settings */
+.side-rail .ws-rail{margin-top:auto;opacity:.72}
+.side-rail .ws-rail:hover{opacity:1}
 body{padding-left:64px}
 /* ── EMA manager panel ── */
 .ma-row{display:flex;align-items:center;gap:6px;margin:6px 0}
@@ -1012,7 +1015,9 @@ body.view-home .scan-only{display:none}
 .hc-row .v .u{color:#5fd6a2}
 .hc-row .v .d{color:#f87171}
 .hc-note{color:var(--dim);font-size:12px;line-height:1.6}
-.home-actions{display:flex;flex-direction:column;gap:8px}
+.home-actions{display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.home-actions .hc-t{flex:1 1 100%}
+.home-actions .hc-btn{flex:1 1 190px}
 .hc-btn{display:flex;align-items:center;gap:9px;border:1px solid var(--line2);background:rgba(148,163,184,.05);color:var(--txt);border-radius:var(--r-md);padding:10px 13px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s var(--ease-out)}
 .hc-btn:hover{background:rgba(201,242,75,.08)}
 .hc-btn.primary{background:linear-gradient(140deg,var(--lime),color-mix(in srgb,var(--lime) 68%,#0c1403));color:var(--lime-ink);border-color:transparent}
@@ -1061,6 +1066,129 @@ body.view-home #hmFoot{margin-top:auto}
 .ema-inp{width:100px;height:34px;flex:0 0 100px;align-self:flex-end;text-align:center;padding:0 8px;border-radius:10px;border:1px solid var(--line);background:rgba(12,19,35,.85);color:var(--txt);font-size:11.5px;font-family:inherit}
 .ema-inp:focus{outline:none;border-color:var(--line2)}
 @media(max-width:700px){.side-rail{width:50px;gap:8px;padding:10px 0}.side-rail .nav-tab{width:42px;min-height:48px;font-size:8px;padding:7px 1px 5px}.side-rail .rt-ico{font-size:16px}body{padding-left:50px}.hero-hi{font-size:19px}.hero{margin-top:2px}.scope-note{display:block;margin-left:0}}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   WORKSPACE SETUP — the user picks the markets + tools they actually use.
+   Unpicked things are hidden with CSS, never deleted: one click brings
+   them back, and every saved setting (watchlist, paper terminal, filters,
+   theme) survives because nothing is torn down.
+   ═══════════════════════════════════════════════════════════════════════ */
+#wsModal{z-index:9100}
+.ws-modal{max-width:880px;padding:24px 24px 18px}
+.ws-top{display:flex;align-items:flex-start;gap:14px}
+.ws-top-tx{flex:1;min-width:0}
+.ws-eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:1.9px;color:var(--lime);background:color-mix(in srgb,var(--lime) 12%,transparent);border:1px solid color-mix(in srgb,var(--lime) 30%,transparent);border-radius:999px;padding:4px 10px;margin-bottom:9px}
+.ws-title{font-size:21px;font-weight:800;letter-spacing:-.3px;margin:0;line-height:1.2}
+.ws-lead{font-size:12px;color:var(--dim);margin:7px 0 0;line-height:1.6;max-width:62ch}
+.ws-x{border:none;background:rgba(148,163,184,.08);color:var(--dim);width:30px;height:30px;border-radius:9px;cursor:pointer;font-size:13px;flex:0 0 auto;transition:background .15s,color .15s}
+.ws-x:hover{background:rgba(148,163,184,.16);color:var(--txt)}
+.ws-presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px;align-items:center}
+.ws-presets-l{font-family:var(--fm);font-size:9px;letter-spacing:1.4px;color:var(--faint);font-weight:700;margin-right:1px}
+.ws-preset{border:1px dashed var(--line2);background:transparent;color:var(--dim);font-family:inherit;font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
+.ws-preset:hover{color:var(--lime);border-color:color-mix(in srgb,var(--lime) 45%,transparent);background:color-mix(in srgb,var(--lime) 7%,transparent)}
+.ws-sec{margin-top:19px}
+.ws-sec-h{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:9px;letter-spacing:1.7px;font-weight:700;color:var(--faint);text-transform:uppercase}
+.ws-sec-h b{color:var(--lime);font-size:10px}
+.ws-sec-h em{font-style:normal;letter-spacing:.2px;text-transform:none;font-family:var(--fu);font-size:10.5px;font-weight:600;color:var(--faint);margin-left:auto}
+.ws-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:9px}
+.ws-mk{position:relative;display:flex;flex-direction:column;gap:3px;text-align:left;font-family:inherit;color:var(--txt);padding:13px 14px 12px;border-radius:15px;background:rgba(148,163,184,.045);border:1px solid var(--line);cursor:pointer;transition:border-color .15s,background .15s,transform .15s var(--ease-out)}
+.ws-mk:hover{border-color:var(--line2);transform:translateY(-1px)}
+.ws-mk:active{transform:translateY(0) scale(.99)}
+.ws-mk.on{border-color:color-mix(in srgb,var(--lime) 52%,transparent);background:color-mix(in srgb,var(--lime) 8%,rgba(148,163,184,.04))}
+.ws-mk .ws-ico{font-size:19px;line-height:1.1}
+.ws-mk .ws-nm{font-weight:800;font-size:13.5px;letter-spacing:.1px}
+.ws-mk .ws-sub{font-family:var(--fm);font-size:9.5px;color:var(--faint);line-height:1.45}
+.ws-mk .ws-tag{font-family:var(--fm);font-size:8.5px;letter-spacing:.5px;color:var(--faint);margin-top:2px}
+.ws-ck{position:absolute;top:10px;right:10px;width:17px;height:17px;border-radius:50%;border:1.5px solid var(--line2);display:grid;place-items:center;font-size:9.5px;line-height:1;color:transparent;transition:background .15s,border-color .15s,color .15s}
+.ws-mk.on .ws-ck{background:var(--lime);border-color:var(--lime);color:var(--lime-ink)}
+.ws-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:9px}
+.ws-tool{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:13px;background:rgba(148,163,184,.035);border:1px solid var(--line);cursor:pointer;font-family:inherit;color:var(--txt);text-align:left;transition:border-color .15s,background .15s}
+.ws-tool:hover{border-color:var(--line2)}
+.ws-tool.on{border-color:color-mix(in srgb,var(--lime) 38%,transparent);background:color-mix(in srgb,var(--lime) 6%,rgba(148,163,184,.03))}
+.ws-tool .ws-t-ico{width:20px;flex:0 0 20px;display:grid;place-items:center;color:var(--faint);transition:color .15s}
+.ws-tool .ws-t-ico svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
+.ws-tool.on .ws-t-ico{color:var(--lime)}
+.ws-tool .ws-t-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+.ws-tool .ws-t-nm{font-size:12px;font-weight:700}
+.ws-tool .ws-t-sub{font-size:9.5px;color:var(--faint);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ws-sw{margin-left:auto;flex:0 0 32px;width:32px;height:18px;border-radius:999px;background:rgba(148,163,184,.2);position:relative;transition:background .16s}
+.ws-sw i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#8fa0bd;transition:left .16s var(--ease-out),background .16s}
+.ws-tool.on .ws-sw{background:color-mix(in srgb,var(--lime) 32%,transparent)}
+.ws-tool.on .ws-sw i{left:16px;background:var(--lime)}
+.ws-lock{display:flex;align-items:center;gap:9px;margin-top:8px;padding:8px 12px;border-radius:12px;border:1px dashed var(--line2);font-size:10.5px;color:var(--faint)}
+.ws-lock b{color:var(--dim);font-weight:700}
+.ws-foot{display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:15px;border-top:1px solid var(--line);flex-wrap:wrap}
+.ws-sum{font-family:var(--fm);font-size:11px;color:var(--dim);line-height:1.55}
+.ws-sum b{color:var(--lime);letter-spacing:.3px}
+.ws-err{color:#fca5a5;font-size:11px;font-weight:700;margin-top:3px}
+.ws-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.ws-skip{border:none;background:none;color:var(--faint);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.ws-skip:hover{color:var(--dim)}
+@media(max-width:680px){.ws-modal{padding:20px 16px 14px}.ws-grid{grid-template-columns:1fr}.ws-tools{grid-template-columns:1fr}.ws-title{font-size:18px}.ws-lead{font-size:11.5px}}
+
+/* visibility driven by the saved workspace — hide, never delete */
+body.ws-no-crypto #navScan,body.ws-no-crypto [data-mk="crypto"],body.ws-no-crypto [data-act="crypto"],body.ws-no-crypto [data-hm="crypto"]{display:none!important}
+body.ws-no-india #navIndia,body.ws-no-india [data-mk="india"],body.ws-no-india [data-act="india"]{display:none!important}
+body.ws-no-us #navUS,body.ws-no-us [data-mk="us"],body.ws-no-us [data-act="us"]{display:none!important}
+body.ws-no-chart #navChart,body.ws-no-chart [data-act="chart"]{display:none!important}
+body.ws-no-dock #navDock,body.ws-no-dock #dockBtn,body.ws-no-dock [data-act="dock"]{display:none!important}
+body.ws-no-alerts #alertBtn{display:none!important}
+body.ws-no-ai #aiAnalysisSection{display:none!important}
+/* the market cards re-flow to the number of markets actually chosen */
+.home-markets[data-count="1"]{grid-template-columns:minmax(0,1fr)}
+.home-markets[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.home-markets[data-count]{grid-template-columns:1fr!important}}
+/* ═══════════════════════════════════════════════════════════════════════
+   SCAN CONTROLS — same language as the India / US scanners: one slim pill
+   bar (side · timeframe · EMA · filters · search) + Scan, and the real
+   options live in two sheets instead of a wall of buttons on the page.
+   ═══════════════════════════════════════════════════════════════════════ */
+.controls-bar{padding:8px;border-radius:16px;margin:0 -4px 14px}
+.cb-strip{display:flex;align-items:center;gap:8px;min-width:0}
+.cb-pills{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;overflow-x:auto;scrollbar-width:none}
+.cb-pills::-webkit-scrollbar{display:none}
+.cb-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(10,16,30,.9);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit;transition:border-color .15s,color .15s,background-color .15s}
+.cb-pill:hover{border-color:var(--line2);color:var(--txt)}
+.cb-pill.on{color:var(--lime);border-color:color-mix(in srgb,var(--lime) 45%,transparent);background:var(--lime-soft)}
+.cb-pill .n{font-family:var(--fm);font-size:10px;background:rgba(148,163,184,.16);border-radius:5px;padding:1px 5px}
+.cb-pill .n:empty{display:none}
+.cb-srch{flex:1 1 auto;min-width:0;max-width:240px;padding:8px 12px;border-radius:999px;font-size:12px}
+.cb-strip .btn-scan{padding:10px 18px;font-size:12.5px;border-radius:999px;flex:0 0 auto;margin-left:auto}
+.cb-strip #stopScanBtn{flex:0 0 auto}
+.cb-scrim{position:fixed;inset:0;background:rgba(3,6,12,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.cb-scrim.show{opacity:1;pointer-events:auto}
+.cb-sheet{position:fixed;z-index:210;background:var(--bg1);border:1px solid var(--line2);box-shadow:0 24px 70px rgba(0,0,0,.6);display:flex;flex-direction:column;visibility:hidden;top:0;right:0;bottom:0;width:400px;max-width:92vw;transform:translateX(103%);border-radius:18px 0 0 18px;transition:transform .22s var(--ease-out),visibility .22s}
+.cb-sheet.show{transform:translateX(0);visibility:visible}
+.cb-sheet-h{display:flex;align-items:center;gap:8px;padding:14px 16px 10px;border-bottom:1px solid var(--line);flex-shrink:0}
+.cb-sheet-h b{font-size:13px;flex-shrink:0}
+.cb-sheet-note{font-size:10.5px;color:var(--faint);margin-left:8px;padding-left:8px;border-left:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-x{margin-left:auto;width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--dim);cursor:pointer;font-size:13px;line-height:1;flex-shrink:0;font-family:inherit}
+.cb-x:hover{color:var(--txt);border-color:var(--line2)}
+.cb-sheet-b{padding:14px 16px 16px;overflow-y:auto;overscroll-behavior:contain;flex:1 1 auto}
+.cb-sheet-b .lv-row{margin-bottom:14px}
+.cb-sheet-b .lv-row:last-child{margin-bottom:0}
+.cb-sheet-b .lv-lbl{width:96px;color:var(--faint);letter-spacing:1.4px}
+.cb-sheet-f{padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);flex-shrink:0}
+.cb-apply{width:100%;background:var(--lime);color:var(--lime-ink);border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+.cb-apply:active{transform:scale(.99)}
+.cb-sheet .seg,.cb-sheet .ex-seg{flex-wrap:wrap}
+.ema-seg{display:flex;flex-wrap:wrap;gap:5px}
+.ema-sub{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.ema-sub:empty{display:none}
+.ema-sub .btn-ema.sm{font-size:10.5px;padding:5px 9px}
+/* SELL side colours — same shapes, red instead of green */
+.sig.ss{background:color-mix(in srgb,var(--down) 20%,transparent);color:#fca5a5;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--down) 40%,transparent)}
+.sig.s{background:color-mix(in srgb,var(--down) 12%,transparent);color:#f0a0a0}
+@media(max-width:700px){
+.cb-srch{display:none}
+.cb-pill{padding:8px 11px}
+.cb-strip .btn-scan{margin-left:0;padding:10px 14px}
+.cb-sheet{left:0;right:0;bottom:0;top:auto;width:auto;max-width:none;max-height:82vh;border-radius:20px 20px 0 0;transform:translateY(103%);border-bottom:none}
+.cb-sheet.show{transform:translateY(0)}
+.cb-sheet-h{position:relative;padding-top:20px}
+.cb-sheet-h::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:99px;background:var(--line2)}
+.cb-sheet-b .lv-lbl{width:100%}
+}
 </style>
 </head>
 <body data-page-node-id="M3jVaqQUz6sm9ZXCcMDC3s">
@@ -1086,6 +1214,7 @@ body.view-home #hmFoot{margin-top:auto}
 <header class="topbar" data-page-node-id="ivubypl9P6umpPLss5r1YN">
 <div class="topbar-brand" data-page-node-id="bbEB06M5h46orkZNyMsJoh">⚡ FTY <span data-page-node-id="RHuMGSvYqZ3aYAvrVtN8MQ">SCANNER</span></div>
 <div class="topbar-side" data-page-node-id="dXtlEn7UEm8XPpnTjxRQey">
+<button class="icon-btn" id="wsBtn" onclick="openWorkspace()" title="Workspace — choose which markets and tools you use" aria-label="Workspace setup" aria-haspopup="dialog"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <button class="icon-btn" id="guideBtn" onclick="openGuide()" title="Quick guide — new users start here" aria-label="Open quick guide" data-page-node-id="kNAunaycZN6AqXD26cjLC9"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="dWFKIGfGA6o4gQeZiwBFb8"><circle cx="12" cy="12" r="10" data-page-node-id="GZEZehHzgEFe5xDDu1Iv0N"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" data-page-node-id="pGS5DTdWByIB1cBAVjhQim"/><line x1="12" y1="17" x2="12.01" y2="17" data-page-node-id="wCGKfazzwcYMxLnsAjKzRg"/></svg></button>
 <div class="theme-dots" id="themeDots" title="Theme" data-page-node-id="FGrYDXacI38QnR5Q03l7zF"><button class="tdot on" data-th="midnight" style="--dot:#c9f24b" aria-label="Midnight Lime" data-page-node-id="TL5d4XFSPmCQjrtcSVmmfP"></button><button class="tdot" data-th="arctic" style="--dot:#7dd3fc" aria-label="Arctic Ice" data-page-node-id="KP8XZB2cLGCGLd6NJoLP82"></button><button class="tdot" data-th="sunset" style="--dot:#ff9e5e" aria-label="Sunset Copper" data-page-node-id="r4n2XuByFtbIh5bUDw6aKQ"></button></div>
 </div>
@@ -1097,12 +1226,13 @@ body.view-home #hmFoot{margin-top:auto}
 <button class="nav-tab on" id="navScan" onclick="showView('scan')" aria-pressed="true" title="Crypto scan — Binance spot — shortcut 1" data-page-node-id="CrHztzdZxqI4ijzGEAwjRs"><span class="rt-ico" aria-hidden="true" data-page-node-id="RiyN2flfZddlPE8RElK3jg">🔬</span><span data-page-node-id="XroFTzyxwgpaPD4bYGwaEl">Crypto</span></button>
 <button class="nav-tab" id="navChart" onclick="showView('chart')" aria-pressed="false" title="Chart workspace — shortcut 2" data-page-node-id="MbT7P4V9kuHJ6SwCGAQ4yF"><span class="rt-ico" aria-hidden="true" data-page-node-id="QOBQU07Qg2uRN3FK42itXH">📈</span><span data-page-node-id="zjsEaa85VD1kRmnCvCnIiA">Chart</span></button>
 <button class="nav-tab" id="navDock" onclick="dockToggle()" aria-pressed="false" title="Watchlist + paper terminal panel — shortcut 3" data-page-node-id="u72GuAcEhsBhCN724hX2Hw"><span class="rt-ico" aria-hidden="true" data-page-node-id="L9qvLblpwFaqpSpBgBfSVG">☰</span><span data-page-node-id="T65mjFMSJDyBQE0kNy5v4l">Results</span></button>
+<button class="nav-tab ws-rail" id="navSetup" onclick="openWorkspace()" title="Workspace — choose your markets and tools" aria-haspopup="dialog"><span class="rt-ico" aria-hidden="true">⚙</span><span>Setup</span></button>
 </nav>
 <div class="wrap" data-page-node-id="t6edpAm4jXbM13fjWucgv4">
 
 <header class="pulse" data-page-node-id="BBxrDSslCoktMYjfQKVn4I">
 <div class="brand" data-page-node-id="YfA8Tsbnp5zXZw6yCEutGd"><span class="brand-mark" data-page-node-id="6e97yOl6XhXW98VX5JnxuJ">⚡</span><div data-page-node-id="FPgrpDcHjpOuJgwkHmScmv"><div class="brand-name" data-page-node-id="X6BOMZM5kRl2FZrPVo5aZX"><span class="w1" data-page-node-id="vRWJ6vcnyaopF81Vw4HBxW">FTY</span> <em class="w2" data-page-node-id="IehOEvlqkXycRlWddyvsU9">SCANNER</em></div><div class="brand-sub" data-page-node-id="9xSy7CFNTtFOn5356ubezv">CRYPTO · INDIA · US · EMA SCANNER</div><div class="brand-quote">“Ride the trend. Respect the level.”</div></div></div>
-<div class="pulse-stats" id="overview" data-page-node-id="cMbkR24HJOW5Cxjy2VIFih"></div>
+<div class="pulse-stats" id="overview" data-hm="crypto" data-page-node-id="cMbkR24HJOW5Cxjy2VIFih"></div>
 <div class="pulse-side" data-page-node-id="gSlAHhXMwBTaZf0gHoK8qN">
 <div class="mkt" id="mktStatus" data-page-node-id="ILW1fCBztBFHL350CgN06h"><i class="dot" data-page-node-id="F4dTqKqX8nM83o0vlcwdEC"></i><span id="mktTxt" data-page-node-id="lkLlv0R9hbxIZzfZ8k1XsU">—</span></div>
 <div class="clock" id="istClock" data-page-node-id="j8sXmQSqnU0otBkGBE5HLy">--:--:--</div>
@@ -1115,7 +1245,7 @@ body.view-home #hmFoot{margin-top:auto}
 <section id="homeView" aria-label="Home dashboard" data-page-node-id="331jDWqeV37ahHK6kTuh0m">
 <div class="hero" data-page-node-id="7xiKkHL7nii3EthY7uS8x0">
 <div class="hero-l" data-page-node-id="t6pyhwxp9URnFXanX3KLIs"><div class="hero-hi" id="heroGreet" data-page-node-id="sNRcPTvH1Gefs1yGziqT73">Good evening 👋</div><div class="hero-sub" id="heroSub" data-page-node-id="Iw2ZOzRSPXtCncfdtW6sOJ">Checking the market pulse…</div></div>
-<div class="hero-r" data-page-node-id="oJJ3Vtu8cTTmf0KkzpQEcZ"><span class="hm-pill" id="hmMood" data-page-node-id="MIiJZ47aEqSET9brqLQWIQ">Crypto mood — …</span><span class="hm-chips" id="hmChips" data-page-node-id="UdVTkCZ8SHA4WFyvkxxcTn"></span></div>
+<div class="hero-r" data-page-node-id="oJJ3Vtu8cTTmf0KkzpQEcZ"><span class="hm-pill" id="hmMood" data-hm="crypto" data-page-node-id="MIiJZ47aEqSET9brqLQWIQ">Crypto mood — …</span><span class="hm-chips" id="hmChips" data-hm="crypto" data-page-node-id="UdVTkCZ8SHA4WFyvkxxcTn"></span></div>
 </div>
 <div class="home-markets" id="hmMarkets" aria-label="Markets — jump to a scanner">
 <button class="mk-card" onclick="showView('scan')" title="Open the crypto scanner — Binance spot" data-mk="crypto">
@@ -1135,24 +1265,25 @@ body.view-home #hmFoot{margin-top:auto}
 </button>
 </div>
 <div class="home-grid" data-page-node-id="u1p7rBFR5wnYSOF5Xo64oI">
-<div class="home-card" data-page-node-id="qLKWEHhn5tRMe5WK8FREuD">
+<div class="home-card" data-hm="crypto" data-page-node-id="qLKWEHhn5tRMe5WK8FREuD">
 <div class="hc-t" data-page-node-id="XjSEpRn2r1l6n8hb6g7mpm"><span class="hc-idx" data-page-node-id="POJf19Q1AFzv9i2KO52VPn">01</span>Crypto snapshot</div>
 <div class="hc-rows" id="hmStats" data-page-node-id="E751Klc7jINx7GXJy4ss6E"><div class="hc-row" data-page-node-id="eP26ZEJ7G8yELeN1nqtGqE"><span class="k" data-page-node-id="NbIBTkXCFWkYVAeXefbtZp">BTC / USDT</span><span class="v" data-page-node-id="fswVICzc58gSBE8RXeCDWc"><span class="skl skl-val" aria-hidden="true" data-page-node-id="5h1PzQozgxzPSe6RZOnIGP"></span></span></div><div class="hc-row" data-page-node-id="QDqAB2HEqMMDAADgrLNJDc"><span class="k" data-page-node-id="jmxxx9JngePtLsbJDKHdyA">ETH / USDT</span><span class="v" data-page-node-id="ATuIs8rSugifzUCiLgDxQM"><span class="skl skl-val" aria-hidden="true" data-page-node-id="BP3a1SezInE8r6VkK3wZY2"></span></span></div><div class="hc-note" data-page-node-id="Bg3aXtCxJTI5PDcYNiryJI">Fetching Binance prices…</div></div>
 </div>
-<div class="home-card" data-page-node-id="tRLabT6EZJKnToMqp8ny87">
+<div class="home-card" data-hm="crypto" data-page-node-id="tRLabT6EZJKnToMqp8ny87">
 <div class="hc-t" data-page-node-id="qnKniw10MsXjHIlhD5ItgN"><span class="hc-idx" data-page-node-id="WKmWng9hqDzqDjhoCBCkJf">02</span>Crypto scan board</div>
 <div class="hc-rows" id="hmBoard" data-page-node-id="moUFA3Ln4a1dwHWNETYUhP"><div class="hc-note" data-page-node-id="TtxQDxnczIQwWFCGjGlgM6">No scan data yet — open the scanner and hit <b data-page-node-id="nY6UtencYshDQBEfi1DKsV">Scan Market</b>.</div></div>
 </div>
 <div class="home-card home-actions" data-page-node-id="FwIL5XflbO1ufkAJIB76Cl">
 <div class="hc-t" data-page-node-id="jDIrTQ5GaMir33lKjo7U3Z"><span class="hc-idx" data-page-node-id="qWbetQubpAIVziTIBHOmlC">03</span>Quick actions</div>
-<button class="hc-btn primary" onclick="showView('scan')" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Crypto scanner</button>
-<button class="hc-btn" onclick="showView('india')">🇮🇳 India scanner</button>
-<button class="hc-btn" onclick="showView('us')">🇺🇸 US scanner</button>
-<button class="hc-btn" onclick="showView('chart')" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Open full chart</button>
-<button class="hc-btn" onclick="dockToggle()" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Results &amp; watchlist</button>
+<button class="hc-btn primary" onclick="showView('scan')" data-act="crypto" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Crypto scanner</button>
+<button class="hc-btn" onclick="showView('india')" data-act="india">🇮🇳 India scanner</button>
+<button class="hc-btn" onclick="showView('us')" data-act="us">🇺🇸 US scanner</button>
+<button class="hc-btn" onclick="showView('chart')" data-act="chart" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Open full chart</button>
+<button class="hc-btn" onclick="dockToggle()" data-act="dock" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Results &amp; watchlist</button>
+<button class="hc-btn ws-open" onclick="openWorkspace()" title="Choose markets and tools — the dashboard follows">⚙ Workspace setup</button>
 </div>
 </div>
-<div class="home-card" id="homeTopCard" hidden style="margin-top:14px" data-page-node-id="qjKlpVn5BoFimu3kjEv4gw">
+<div class="home-card" id="homeTopCard" data-hm="crypto" hidden style="margin-top:14px" data-page-node-id="qjKlpVn5BoFimu3kjEv4gw">
 <div class="hc-t" data-page-node-id="t0fK1bH9NBGaNZKnHViRCm"><span class="hc-idx" data-page-node-id="yNUSl8nLpwLsYdIC5Id8gm">04</span>Top qualified right now <span class="hc-hint" data-page-node-id="HTino7mxvBMsdcS1Vnvtz7">tap to open full chart</span></div>
 <div class="home-top-list" id="homeTop" data-page-node-id="VdlO08RavIydH4DZceV3Dq"></div>
 </div>
@@ -1173,51 +1304,75 @@ body.view-home #hmFoot{margin-top:auto}
 
 <div class="tape scan-only" id="tape" title="Live qualifiers" data-page-node-id="oEd4Zbdc8d2E9rRZFp29cQ"><div class="tape-track" id="tapeTrack" data-page-node-id="dJY6dwEDN8mnlLKumMBQDv"><div class="tape-half" data-page-node-id="jBLSMhmFXPx9OCjKkI90TE"><span class="tape-item dim" data-page-node-id="N1TMdTIfLnH2CC0oI9PYqn">🔬 Hit Scan Market — qualified coins will stream here live</span></div></div></div>
 
-<div class="controls-bar scan-only" data-page-node-id="pvrJeAORIxAA8EiWsLl848">
-<div class="lv-row" data-page-node-id="BiQ2sLTNtzMVFunioUxHLB"><div class="lv-lbl" data-page-node-id="zFaGU09weJshXCyq8JvvnV">TIMEFRAME</div><div class="tf-groups" data-page-node-id="nzzodE1qFhktu1AJjhFMtg"><div class="tf-group" data-page-node-id="foSZDAnHBROwIpERavSxJ1"><span class="tf-glbl" data-page-node-id="t29UZW2CdxnCUO3EDsoLrb">INTRADAY</span><div class="seg tf-cards" id="tfTabsIntra" data-page-node-id="4BWpemeA5fSRKrbDSWtAkn"></div></div><div class="tf-group" data-page-node-id="Nhi4U8xukmGcop1a6ulZ7B"><span class="tf-glbl" data-page-node-id="4GI2EbCzmd9FV24iYPOwfg">SWING</span><div class="seg tf-cards" id="tfTabsSwing" data-page-node-id="ddoYko5QyYGB12lcvvrtHS"></div></div></div><div class="lv-lbl sub" data-page-node-id="9jMSyWzbdao8fi4LENGBCB">MODE</div><div class="ema-buttons" id="emaButtons" data-page-node-id="wGQUJ6dKgmuROve3fhdZgC"></div><input id="emaCustom" class="ema-inp" type="number" min="2" max="500" step="1" inputmode="numeric" placeholder="EMA #" title="Type any EMA period (2–500) and press Enter — next scan finds only that EMA" aria-label="Custom EMA period" onkeydown="if(event.key==='Enter'){event.preventDefault();setScanEMA(this.value);}" data-page-node-id="EnsQos3arRlGjmQTdHGtlR"></div>
-<div class="lv-row" data-page-node-id="fDfBk9ZWGXztWrGqG0yK6F"><div class="lv-lbl" data-page-node-id="GPrlSqeLg76KkKP8iPWzHl">SCAN SCOPE</div><div class="scope-chips" id="scopeChips" data-page-node-id="a3cfwlvjgwMB2XDsTcjBzH"></div><span class="scope-note" id="scopeNote" data-page-node-id="nhLj8AcHaYJsuzLIoElny3"></span></div>
-<div class="scope-grid-wrap" id="scopeGridRow" hidden data-page-node-id="usU82dbUKTp1OPlUu5HqmY"><div class="scope-chips" id="scopeGrid" data-page-node-id="lD4uchbkNRRHxDDWTNAW6B"></div><span class="scope-note" data-page-node-id="6n6JAXSPAiJdGLyPo7HZ3s">Pick one or more timeframes · click again to remove</span></div>
-<div class="dropbar" data-page-node-id="lguHuTGwLaQHBBz7axiPpH">
-<button class="drop-toggle" id="filterDropBtn" onclick="toggleFilters()" data-page-node-id="o1FZi1hC3Qa1ndwuSk2Dyu"><span data-page-node-id="T7NOcskKDyeuUmVEZ83JQQ"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="55HsAijRG6U2RQIc4GvGAU"><circle cx="12" cy="12" r="3" data-page-node-id="v0w2bgrLGM9ZKdMmouXscD"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" data-page-node-id="bu4Ee6zV4JKs284asjbDYR"/></svg> <b data-page-node-id="r1aCgfyjFAq3SBzJcetDkr">FILTERS</b><span class="drop-sum" id="filterSum" data-page-node-id="hCLJndAKEYbvURS2eUHAEI"></span></span><span class="drop-chev" data-page-node-id="vjvPDLr7x8wPFwQsYsdIl1">▾</span></button>
-<button class="btn-scan" id="satSyncBtn" onclick="liveScan()" data-page-node-id="nApCBgXX8h1V1TkXdFpeP2"><span class="ic-swap" aria-hidden="true" data-page-node-id="9Xoeix4I5t4O1rhlo1D1dk"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="fbF0BugJMjsEKDEb1Ety4A"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" data-page-node-id="qSwWBoAoWmxeLvm2zF6H3u"/><path d="M4 12h16" data-page-node-id="CdPfT1Z8Bsk23wWcrNbrNw"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="yXEryUDEAk99jMWe8ZDeyl"><polyline points="20 6 9 17 4 12" data-page-node-id="iSh3EdYn9KUP5NrMmCL5QV"/></svg></span> <span id="scanBtnLabel" data-page-node-id="X5kuUFjOk6nPtVCWDGUcgZ">Scan Market</span></button>
-<button class="btn-ghost" id="stopScanBtn" onclick="stopScan()" hidden title="Stop the running scan — everything already found is kept" data-page-node-id="NYxhULg2PBAt7h0kmgg6qd">⏹ Stop</button>
-<input type="text" id="symSearch" class="srch" placeholder="🔎 Search coin..." aria-label="Search coins by symbol" oninput="debouncedSearch()" data-page-node-id="RGBTN9eA8pC41LiJmrurO8">
-<button class="icon-btn kbtn" onclick="openPal()" title="Command palette — Ctrl/⌘ K" data-page-node-id="Pyxx6BKTP0r3ZvPgcosjkf">⌘K</button>
+<div class="controls-bar scan-only" id="controlsBar" data-page-node-id="pvrJeAORIxAA8EiWsLl848">
+<div class="cb-strip">
+<div class="cb-pills">
+<button class="cb-pill" id="cbSide" onclick="cbSheet('setup')" title="Scan side — BUY rides above the EMA, SELL below it">BUY</button>
+<button class="cb-pill" id="cbTf" onclick="cbSheet('setup')" title="Timeframe for the next scan">1H</button>
+<button class="cb-pill" id="cbEma" onclick="cbSheet('setup')" title="EMA lens — Auto or a fixed period">Auto</button>
+<button class="cb-pill" id="filterDropBtn" onclick="cbSheet('filters')" title="View filters — market, price, strategy, universe">Filters<span class="n" id="cbFiltN"></span></button>
+<input type="text" id="symSearch" class="srch cb-srch" placeholder="Search coin" aria-label="Search coins by symbol" oninput="debouncedSearch()" data-page-node-id="RGBTN9eA8pC41LiJmrurO8">
 </div>
-<div id="filterPanel" data-page-node-id="CRLccMmQFTTjJBQ3YeC6Gb">
-<div class="fp-inner" data-page-node-id="iAslG3d0jyB1u4ENe2CiYK">
-<div class="lv-row" data-page-node-id="UM7WMY6HREizmRYBXNVBVy"><div class="lv-lbl" data-page-node-id="XyCGDyDpXGTRvakUeWf99M">MARKET</div>
+<button class="btn-scan" id="satSyncBtn" onclick="liveScan()" data-page-node-id="nApCBgXX8h1V1TkXdFpeP2"><span class="ic-swap" aria-hidden="true" data-page-node-id="9Xoeix4I5t4O1rhlo1D1dk"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="fbF0BugJMjsEKDEb1Ety4A"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" data-page-node-id="qSwWBoAoWmxeLvm2zF6H3u"/><path d="M4 12h16" data-page-node-id="CdPfT1Z8Bsk23wWcrNbrNw"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="yXEryUDEAk99jMWe8ZDeyl"><polyline points="20 6 9 17 4 12" data-page-node-id="iSh3EdYn9KUP5NrMmCL5QV"/></svg></span> <span id="scanBtnLabel" data-page-node-id="X5kuUFjOk6nPtVCWDGUcgZ">Scan</span></button>
+<button class="btn-ghost" id="stopScanBtn" onclick="stopScan()" hidden title="Stop the running scan — everything already found is kept" data-page-node-id="NYxhULg2PBAt7h0kmgg6qd">⏹ Stop</button>
+</div>
+</div>
+
+<div class="cb-scrim" id="cbScrim" onclick="cbSheetClose()"></div>
+
+<!-- Scan setup: what the NEXT pass will do (scope · side · timeframe · EMA) -->
+<div class="cb-sheet" id="setupPanel" role="dialog" aria-label="Scan setup">
+<div class="cb-sheet-h"><b>Scan setup</b><span class="cb-sheet-note">next scan isi se chalega</span><button class="cb-x" onclick="cbSheetClose()" aria-label="Close">✕</button></div>
+<div class="cb-sheet-b">
+<div class="lv-row"><div class="lv-lbl">SCAN</div>
+<div class="seg" id="scopeSeg">
+<button class="tf-card on" data-scope="all" onclick="setScanScopeMode('all')" title="Har timeframe board bharega — scan lamba chalega">All 11 TFs</button>
+<button class="tf-card" data-scope="swing" onclick="setScanScopeMode('swing')" title="Sirf Daily + Weekly + Monthly">Swing · D/W/M</button>
+<button class="tf-card" data-scope="one" onclick="setScanScopeMode('one')" title="Sirf ye timeframe — sabse fast">This TF · fast</button>
+</div></div>
+<div class="lv-row"><div class="lv-lbl">SIDE</div>
+<div class="seg" id="sideSeg">
+<button class="tf-card" data-side="BUY" onclick="setSide('BUY')" title="Price rides ABOVE the EMA — support holds">▲ BUY</button>
+<button class="tf-card" data-side="SELL" onclick="setSide('SELL')" title="Price rides BELOW the EMA — resistance holds">▼ SELL</button>
+</div></div>
+<div class="lv-row"><div class="lv-lbl">TIMEFRAME</div><div class="seg tf-cards" id="tfTabs"></div></div>
+<div class="lv-row"><div class="lv-lbl">EMA</div><div class="seg ema-seg" id="emaSeg"></div><input id="emaCustom" class="ema-inp" type="number" min="2" max="500" step="1" inputmode="numeric" placeholder="EMA #" title="Type any EMA period (2–500) and press Enter — next scan finds only that EMA" aria-label="Custom EMA period" onkeydown="if(event.key==='Enter'){event.preventDefault();setScanEMA(this.value);}"><div class="ema-sub" id="emaSubRow"></div></div>
+</div>
+<div class="cb-sheet-f"><button class="cb-apply" onclick="cbSheetClose()">Done</button></div>
+</div>
+
+<!-- View filters: sirf list chhaanti hai (scan target nahi badalta) -->
+<div class="cb-sheet" id="filterPanel" role="dialog" aria-label="View filters">
+<div class="cb-sheet-h"><b>View filters</b><span class="cb-sheet-note">sirf list chhaanti hai</span><button class="cb-x" onclick="cbSheetClose()" aria-label="Close">✕</button></div>
+<div class="cb-sheet-b">
+<div class="lv-row"><div class="lv-lbl">MARKET</div>
 <div class="ex-seg" id="exSeg" data-page-node-id="E7bqez8cteq8dOknJLO0uD">
 <button data-ex="ALL" class="active" onclick="setExFilter('ALL')" data-page-node-id="wH4yz5ejATDUaTkW0Gy1kA">All</button>
 <button data-ex="BINANCE" onclick="setExFilter('BINANCE')" data-page-node-id="s92KvJh8BCg7dbks9oX7kv">Binance</button>
+</div></div>
+<div class="lv-row"><div class="lv-lbl">MIN PRICE $</div><input type="number" id="minPriceInp" class="srch" style="flex:1 1 140px;min-width:120px" placeholder="e.g. 1.5 — blank = all" inputmode="decimal" min="0" step="any" oninput="debouncedMinPrice()"></div>
+<div class="lv-row"><div class="lv-lbl">STRATEGY</div>
+<button class="fchip" id="f_followers" data-filter="followers" onclick="setFilter('followers')" title="Coins scoring 70+ — price repeatedly uses the EMA as support" data-page-node-id="xrubMDTtwiYnWUSH2RmDBc"><span class="ic-swap" aria-hidden="true" data-page-node-id="cEpFbzLDGrD6mAUjQ2DffZ"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="tGxuKuYCqBczwmhHH9EhpG"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" data-page-node-id="GSKFSrehWk7lbCGUlhua3E"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="JDf6Bhgp6pYQUBTNLZsDkn"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" data-page-node-id="tCpRds1IJG8L1vLXDlCLG5"/></svg></span> EMA Followers</button>
+<button class="fchip" id="f_fresh" data-filter="fresh" onclick="setFilter('fresh')" title="Recent EMA retest, rejection or continuation setup" data-page-node-id="HDWAG5YbASjRGjm1EOzdkk"><span class="ic-swap" aria-hidden="true" data-page-node-id="xzzpZT7GTECDLItFSLKEIE"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="JGyWx4NzmV6yjpJ1lGtuDj"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" data-page-node-id="wEe8nGkzJQUQGM7Xkihp6N"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="NKMjm5ClEMUNDrid6KNOqY"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" data-page-node-id="cHN7rt0GrWIC1UcJi4u2M8"/></svg></span> Fresh Setup</button>
+<button class="fchip" id="f_strong" data-filter="strong" onclick="setFilter('strong')" title="Strong signal: Never Broke + score 90+ + fresh setup" data-page-node-id="dkwcK99TiFXUorpyv5lZFL"><span class="ic-swap" aria-hidden="true" data-page-node-id="jo35lDBqiBjq94vlV97XNA"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="kyAsNArlGYfVK4UKphlKQC"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" data-page-node-id="gfkWWJTyMspfGjEu4aAmyk"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="mU3OwEYdWsDikAVDvPDfAO"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" data-page-node-id="L1uqlE2ifsXAFAfJowhEhI"/></svg></span> Strong Buy</button>
+<button class="fchip" id="f_setup" data-filter="setup" onclick="setFilter('setup')" title="Coins forming a candle setup at the EMA: Hammer, Pin Bar, Bullish candle, or sitting within 2% of the EMA" data-page-node-id="Lcn4aNOUTAawlHfnIS79FE"><span class="ic-swap" aria-hidden="true" data-page-node-id="UBNOC5al8Y6sMhQotYKIhS"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="K5O6Rpu6CRX3vsqHRhHUX8"><circle cx="12" cy="12" r="10" data-page-node-id="uWrgV07vocLgffaKmz5OPT"/><circle cx="12" cy="12" r="6" data-page-node-id="jyMSdtkXCYJIPlAbaln5DC"/><circle cx="12" cy="12" r="2" data-page-node-id="A0UWWcTsJdPbF7MoufFtl8"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="BCCrLzxhcMM20VzYqjhjKM"><circle cx="12" cy="12" r="10" data-page-node-id="YPuEL8vVvw3PZD6v29zLmx"/><circle cx="12" cy="12" r="6" data-page-node-id="pulkbG5Kw1yBHAcQTgtDGl"/><circle cx="12" cy="12" r="2" data-page-node-id="3xO7fIv3HsJDd6qkNun2DB"/></svg></span> Setup</button>
 </div>
-</div>
-<div class="lv-row" data-page-node-id="minPriceRowHub"><div class="lv-lbl">MIN PRICE $</div><input type="number" id="minPriceInp" class="srch" style="flex:0 1 150px;min-width:130px" placeholder="e.g. 1.5 — blank = all" inputmode="decimal" min="0" step="any" oninput="debouncedMinPrice()"><span class="dash-mut" style="font-size:11px">only coins above this price</span></div>
-<div class="lv-row" data-page-node-id="xCJkkwxdzsGMG6Vrl0F58y"><div class="lv-lbl" data-page-node-id="2xEOY08P8cKtqcVpG8Ek8v">STRATEGY</div>
-<button class="fchip" id="f_followers" onclick="setFilter('followers')" title="Coins scoring 70+ — price repeatedly uses the EMA as support" data-page-node-id="xrubMDTtwiYnWUSH2RmDBc"><span class="ic-swap" aria-hidden="true" data-page-node-id="cEpFbzLDGrD6mAUjQ2DffZ"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="tGxuKuYCqBczwmhHH9EhpG"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" data-page-node-id="GSKFSrehWk7lbCGUlhua3E"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="JDf6Bhgp6pYQUBTNLZsDkn"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" data-page-node-id="tCpRds1IJG8L1vLXDlCLG5"/></svg></span> EMA Followers</button>
-<button class="fchip" id="f_fresh" onclick="setFilter('fresh')" title="Recent EMA retest, rejection or continuation setup" data-page-node-id="HDWAG5YbASjRGjm1EOzdkk"><span class="ic-swap" aria-hidden="true" data-page-node-id="xzzpZT7GTECDLItFSLKEIE"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="JGyWx4NzmV6yjpJ1lGtuDj"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" data-page-node-id="wEe8nGkzJQUQGM7Xkihp6N"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="NKMjm5ClEMUNDrid6KNOqY"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" data-page-node-id="cHN7rt0GrWIC1UcJi4u2M8"/></svg></span> Fresh Setup</button>
-<button class="fchip" id="f_strong" onclick="setFilter('strong')" title="Strong Buy signal: Never Broke + score 90+ + fresh setup" data-page-node-id="dkwcK99TiFXUorpyv5lZFL"><span class="ic-swap" aria-hidden="true" data-page-node-id="jo35lDBqiBjq94vlV97XNA"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="kyAsNArlGYfVK4UKphlKQC"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" data-page-node-id="gfkWWJTyMspfGjEu4aAmyk"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="mU3OwEYdWsDikAVDvPDfAO"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" data-page-node-id="L1uqlE2ifsXAFAfJowhEhI"/></svg></span> Strong Buy</button>
-<button class="fchip" id="f_setup" onclick="setFilter('setup')" title="Coins forming a candle setup at the EMA: Hammer, Pin Bar, Bullish candle, or sitting within 2% of the EMA" data-page-node-id="Lcn4aNOUTAawlHfnIS79FE"><span class="ic-swap" aria-hidden="true" data-page-node-id="UBNOC5al8Y6sMhQotYKIhS"><svg class="ic ic-a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="K5O6Rpu6CRX3vsqHRhHUX8"><circle cx="12" cy="12" r="10" data-page-node-id="uWrgV07vocLgffaKmz5OPT"/><circle cx="12" cy="12" r="6" data-page-node-id="jyMSdtkXCYJIPlAbaln5DC"/><circle cx="12" cy="12" r="2" data-page-node-id="A0UWWcTsJdPbF7MoufFtl8"/></svg><svg class="ic ic-b" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" data-page-node-id="BCCrLzxhcMM20VzYqjhjKM"><circle cx="12" cy="12" r="10" data-page-node-id="YPuEL8vVvw3PZD6v29zLmx"/><circle cx="12" cy="12" r="6" data-page-node-id="pulkbG5Kw1yBHAcQTgtDGl"/><circle cx="12" cy="12" r="2" data-page-node-id="3xO7fIv3HsJDd6qkNun2DB"/></svg></span> Setup</button>
-</div>
-<div class="lv-row" data-page-node-id="ty6Gh7XVz8z70tqWIGFfAq"><div class="lv-lbl" data-page-node-id="DXIcSJCTH6VzkETGIAj1SR">AUTO RESCAN</div>
-<div class="ex-seg" id="autoSeg" role="group" aria-label="Automatic rescan interval" data-page-node-id="CYTyI8kpnnGUKu6IHxfm9v">
-<button data-auto="0" class="active" onclick="setAuto(0)" title="Never rescan on its own" data-page-node-id="K2e0ENh1iDzS8vwN1Pf4Hg">Off</button>
-<button data-auto="5" onclick="setAuto(5)" title="Rescan automatically every 5 minutes" data-page-node-id="tL31Yc1TLi6LuVVGnzXFex">Every 5m</button>
-<button data-auto="15" onclick="setAuto(15)" title="Rescan automatically every 15 minutes" data-page-node-id="tefzcQsmw10JrXntj9LyZ5">Every 15m</button>
-</div>
-<div class="dash-mut" style="font-size:11px" data-page-node-id="dVGKUd99IfhftoMvcv1bGs">keeps the board warm while the tab stays open</div></div>
-<div class="lv-row" data-page-node-id="0GmXWFmHeuzgR9tLpyfR5w"><div class="lv-lbl" data-page-node-id="aPaoZqHvt8qM3W2guFO7IN">UNIVERSE</div>
+<div class="lv-row"><div class="lv-lbl">UNIVERSE</div>
 <div class="ex-seg" id="uniSeg" role="group" aria-label="Scan universe size" data-page-node-id="SzAjlV1DCTEG5Y77DjXDw0">
 <button data-uni="100" onclick="setUniverse(100)" title="Fastest — the 100 most liquid USDT pairs" data-page-node-id="V9VhdfNxlWBMBl1BNEjjJ0">Top 100</button>
 <button data-uni="200" onclick="setUniverse(200)" title="Balanced — 200 most liquid USDT pairs" data-page-node-id="bE9fSonBUvErjB9gmTKYQ5">Top 200</button>
 <button data-uni="300" class="active" onclick="setUniverse(300)" title="Widest net — 300 most liquid USDT pairs" data-page-node-id="gFj0RiinjAffA5uANoRcxZ">Top 300</button>
+</div></div>
+<div class="lv-row"><div class="lv-lbl">AUTO RESCAN</div>
+<div class="ex-seg" id="autoSeg" role="group" aria-label="Automatic rescan interval" data-page-node-id="CYTyI8kpnnGUKu6IHxfm9v">
+<button data-auto="0" class="active" onclick="setAuto(0)" title="Never rescan on its own" data-page-node-id="K2e0ENh1iDzS8vwN1Pf4Hg">Off</button>
+<button data-auto="5" onclick="setAuto(5)" title="Rescan automatically every 5 minutes" data-page-node-id="tL31Yc1TLi6LuVVGnzXFex">Every 5m</button>
+<button data-auto="15" onclick="setAuto(15)" title="Rescan automatically every 15 minutes" data-page-node-id="tefzcQsmw10JrXntj9LyZ5">Every 15m</button>
+</div></div>
 </div>
-<div class="dash-mut" style="font-size:11px" data-page-node-id="AYGSiiXki1PdOFRqVxXNXB">USDT spot pairs by 24h volume · Binance · fewer pairs = shorter scan</div></div>
-</div>
-</div>
+<div class="cb-sheet-f"><button class="cb-apply" onclick="cbSheetClose()">Show <span id="cbShowN">0</span> coins</button></div>
 </div>
 
-<div class="last-upd scan-only" id="lastUpdated" data-page-node-id="SOVSm5HGCTl2aW8i1sCYf9"></div>
 <div id="content" class="scan-only" data-page-node-id="CuF2IOTqhQP9kO0ZHanrHA"></div>
 <div class="count scan-only" id="totalCount" data-page-node-id="4exWA7x48chJEURS5smwsx"></div>
 
@@ -1276,8 +1431,8 @@ body.view-home #hmFoot{margin-top:auto}
 <h3 data-page-node-id="mqD8PlKDqduOlWKq0CmCCC">❓ FTY Scanner — Quick Guide</h3>
 <div class="dash-mut" style="margin-bottom:14px" data-page-node-id="6S56H88tWf9nL39JJ8RY8Q">New here? Follow these 3 steps — that's it.</div>
 <div class="guide-steps" data-page-node-id="CxwEbSxBwymEDCZDUV4gQ5">
-<div class="gstep" data-page-node-id="UPmvs6jfUX5c4O50OZjQRN"><b data-page-node-id="VbQiC4r2tOOxGnahlOBw7H">1</b><div data-page-node-id="FENSdLMekaemhCbzPIWT6y"><strong data-page-node-id="EOqxodIneNUjgFImVqklHW">Hit Scan Market</strong><span data-page-node-id="gP8GIgOprNCKRAc9z3KEdb">Top USDT coins on Binance are scanned automatically. First time, keep <b data-page-node-id="aO23jvq7LoByWnEGjGFhBH">Top 100</b> (~40 sec) — Top 300 takes ~3 minutes.</span></div></div>
-<div class="gstep" data-page-node-id="o09S73uUsQFkzpdbghAZY5"><b data-page-node-id="sNTAQ8AFx3pQw9DmFJ6xnE">2</b><div data-page-node-id="ymGhDCXwnFwl56SgMGXlQD"><strong data-page-node-id="Lgs7qpIdIkv9H26Y7Z2BLI">Pick what to scan — then filter what you see</strong><span data-page-node-id="5yNBAdTzlmFw5Y3AZx84UU"><b data-page-node-id="jdGiuNxNTTlUerfL0gzq9f">SCAN SCOPE</b> = what the scan covers: <b data-page-node-id="ySV8keXCVS9a4UBGGeXMJw">All TFs</b>, <b data-page-node-id="GuX1RFYOKxVPwSA7cYYwUV">⚡ this TF only</b> (much faster) or <b data-page-node-id="0uwFKge8G6KmP7qvGOoZRa">Pick TFs</b> for a custom set. <b data-page-node-id="1mhPkfZD9jmiQ2iVkVogj6">MODE</b> = AUTO or one fixed EMA (50/100/200… quicker still). <b data-page-node-id="poE25cEHenkYJwGxn1YSd9">TIMEFRAME</b> just switches the results board · <b data-page-node-id="bYzY2czcmyrjZTB4Yo1iQW">FILTERS</b> = Strong Buy / Fresh Setup.</span></div></div>
+<div class="gstep" data-page-node-id="UPmvs6jfUX5c4O50OZjQRN"><b data-page-node-id="VbQiC4r2tOOxGnahlOBw7H">1</b><div data-page-node-id="FENSdLMekaemhCbzPIWT6y"><strong data-page-node-id="EOqxodIneNUjgFImVqklHW">Hit Scan</strong><span data-page-node-id="gP8GIgOprNCKRAc9z3KEdb">Top USDT coins on Binance are scanned automatically. First time, keep <b data-page-node-id="aO23jvq7LoByWnEGjGFhBH">Top 100</b> (~40 sec) — Top 300 takes ~3 minutes.</span></div></div>
+<div class="gstep" data-page-node-id="o09S73uUsQFkzpdbghAZY5"><b data-page-node-id="sNTAQ8AFx3pQw9DmFJ6xnE">2</b><div data-page-node-id="ymGhDCXwnFwl56SgMGXlQD"><strong data-page-node-id="Lgs7qpIdIkv9H26Y7Z2BLI">Pick what to scan — then filter what you see</strong><span data-page-node-id="5yNBAdTzlmFw5Y3AZx84UU"><b>BUY · 1H · Auto</b> pills open <b>Scan setup</b>: <b>SCAN</b> = All 11 TFs, Swing (D/W/M) or just this TF (fastest) · <b>SIDE</b> = BUY above the EMA, SELL below it · <b>EMA</b> = Auto or one fixed period. <b>Filters</b> = market, min price, strategy, universe and auto-rescan.</span></div></div>
 <div class="gstep" data-page-node-id="y5EL1MeN4ysi7NL0a6QbSv"><b data-page-node-id="K4ArALSeL6UL0eIpm8ImdZ">3</b><div data-page-node-id="1icCDYAzGPeKDOa3rjRZTg"><strong data-page-node-id="FBni3rKv15iy2CHA9TzXpp">Open a coin, check the chart, track it</strong><span data-page-node-id="qTQsgGPZRsQJFrYX7wsGGl">Click a row = mini chart + checks · <b data-page-node-id="swf4miSYKYtPOYAHSsrmWL">Full Chart</b> = drawing tools, indicators, replay · <b data-page-node-id="TFKrnihInNMnYlgAbqFZ11">★</b> = watchlist · <b data-page-node-id="bsskzfp5JDCZcpuC7eSKJf">৳</b> = paper trading (no real orders).</span></div></div>
 </div>
 <div class="guide-cols" data-page-node-id="36EoL6e2qQEA815d8EghdS">
@@ -1312,6 +1467,45 @@ body.view-home #hmFoot{margin-top:auto}
 </div>
 </div>
 <div class="modal-actions" data-page-node-id="94Hl9SyW4uzssTZ2lIVGTX"><button class="btn-acc" onclick="dismissModal(document.getElementById('guideModal'));if(!window._ftyScanning)liveScan();" data-page-node-id="dODoc3iEfO3tXraI9mQVa9">🚀 Got it — Run scan</button><button class="btn-ghost" onclick="dismissModal(document.getElementById('guideModal'))" data-page-node-id="427G8KkZphc39t1EBMjrlT">Close</button></div>
+</div>
+</div>
+
+<!-- ═══ WORKSPACE SETUP — markets + tools chooser (first run + ⚙ anytime) ═══ -->
+<div class="modal-bg" id="wsModal" role="dialog" aria-modal="true" aria-label="Workspace setup" data-first="1" onclick="if(event.target===this)closeWorkspace()">
+<div class="modal ws-modal">
+<div class="ws-top">
+<div class="ws-top-tx">
+<span class="ws-eyebrow" id="wsEyebrow">FIRST RUN · 30 SECONDS</span>
+<h3 class="ws-title" id="wsTitle">Choose what you trade — and what you need</h3>
+<p class="ws-lead" id="wsLead">Pick your markets and tools. Only what you choose shows up on the dashboard, the side rail and the shortcuts — everything else is hidden, nothing is deleted, and you can change it anytime from <b>⚙ Workspace</b>.</p>
+</div>
+<button class="ws-x" onclick="closeWorkspace()" aria-label="Close workspace setup">✕</button>
+</div>
+<div class="ws-presets">
+<span class="ws-presets-l">QUICK</span>
+<button class="ws-preset" onclick="wsPreset('crypto')">Crypto only</button>
+<button class="ws-preset" onclick="wsPreset('stocks')">India + US</button>
+<button class="ws-preset" onclick="wsPreset('all')">Everything</button>
+</div>
+<div class="ws-sec">
+<div class="ws-sec-h"><b>01</b> MARKETS <em id="wsMkNote">choose one or more</em></div>
+<div class="ws-grid" id="wsMkGrid"></div>
+</div>
+<div class="ws-sec">
+<div class="ws-sec-h"><b>02</b> TOOLS <em>only these appear on the dashboard</em></div>
+<div class="ws-tools" id="wsToolGrid"></div>
+<div class="ws-lock"><span aria-hidden="true">📡</span><span><b>Scanner board is always on</b> — the markets above decide which scanners you get.</span></div>
+</div>
+<div class="ws-foot">
+<div>
+<div class="ws-sum" id="wsSum"></div>
+<div class="ws-err" id="wsErr"></div>
+</div>
+<div class="ws-actions">
+<button class="ws-skip" id="wsSkip" onclick="wsSkip()">Keep everything</button>
+<button class="btn-acc" id="wsSave" onclick="wsCommit()">Build my dashboard →</button>
+</div>
+</div>
 </div>
 </div>
 
@@ -1543,7 +1737,55 @@ const TF_META={
  M:{lbl:'M',icon:'<svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg>',interval:'1M',limit:300,hint:'🤖 Auto-detect EMA · MONTHLY'}
 };
 function cur(){return liveData[TF]||{}}
-function setTF(t){TF=t;try{localStorage.setItem('ftyCryptoTF',t);}catch(e){}activeFilter=null;syncFilterChips();batchPtr={};copiedBatches={};renderEMAButtons();renderOverview();renderTFTabs();renderScopeChips();render();}
+function setTF(t){TF=t;try{localStorage.setItem('ftyCryptoTF',t);}catch(e){}activeFilter=null;emaFilter=null;syncFilterChips();batchPtr={};copiedBatches={};renderEMAButtons();renderOverview();renderTFTabs();renderScopeChips();render();}
+// ── SCAN CONTROLS: one pill bar + two sheets, exactly like India / US ──
+let emaFilter=null;              // Auto view ke andar EMA-level filter
+let scanSide='BUY';              // BUY = price above EMA · SELL = price below EMA
+let _buyData=liveData;           // dono side EK hi pass me bharte hain (same klines)
+let _sellData={M5:{},M15:{},M30:{},M45:{},H1:{},H2:{},H3:{},H4:{},D:{},W:{},M:{}};
+function cbSheet(which){
+let sc=$('cbScrim'),sp=$('setupPanel'),fp=$('filterPanel');
+if(!which){cbSheetClose();return;}
+let open=(which==='setup')?sp:fp;
+if(!open)return;
+if(sp)sp.classList.toggle('show',open===sp);
+if(fp)fp.classList.toggle('show',open===fp);
+if(sc)sc.classList.add('show');
+if(open===fp)updateFilterSum();
+}
+function cbSheetClose(){
+let sc=$('cbScrim'),sp=$('setupPanel'),fp=$('filterPanel');
+if(sc)sc.classList.remove('show');
+if(sp)sp.classList.remove('show');
+if(fp)fp.classList.remove('show');
+filtersOpen=false;
+try{localStorage.setItem('ftyFiltersOpen','0');}catch(e){}
+}
+function renderTFSide(){document.querySelectorAll('#sideSeg .tf-card').forEach(function(b){b.classList.toggle('on',(b.getAttribute('data-side')||'BUY')===scanSide);});}
+function syncPills(){
+let s=$('cbSide'),t=$('cbTf'),e=$('cbEma');
+if(s){s.textContent=scanSide==='SELL'?'▼ SELL':'▲ BUY';s.classList.toggle('on',scanSide==='SELL');}
+if(t){let m=TF_META[TF];t.textContent=m?m.lbl:TF;}
+if(e){e.textContent=scanEMA==='AUTO'?'Auto':('EMA '+scanEMA);e.classList.toggle('on',scanEMA!=='AUTO');}
+renderTFSide();
+updateFilterSum();
+}
+// SIDE switch — dono datasets ek hi scan se bharte hain, isliye switch instant hai.
+function setSide(s){
+scanSide=(s==='SELL')?'SELL':'BUY';
+liveData=(scanSide==='SELL')?_sellData:_buyData;
+try{localStorage.setItem('ftyScanSide',scanSide);}catch(e){}
+activeFilter=null;emaFilter=null;
+try{syncFilterChips();}catch(e){}
+renderTFSide();renderEMAButtons();renderTFTabs();renderOverview();render();
+try{showToast(scanSide==='SELL'?'▼ SELL side — coins riding BELOW their EMA':'▲ BUY side — coins riding ABOVE their EMA');}catch(e){}
+}
+function isStrongSig(s){return s==='STRONG BUY'||s==='STRONG SELL';}
+// distance ka sign side se aata hai — SELL me price EMA ke NEECHE hota hai
+function distTxt(r){let d=Math.abs(+((r&&r.distPct)||0));return (r&&r.side==='SELL'?'-':'+')+d+'%';}
+function distLbl(r){return r&&r.side==='SELL'?'BELOW EMA':'ABOVE EMA';}
+function isActionSig(s){return s==='BUY'||s==='SELL';}
+function sigRankOf(s){return s==='STRONG BUY'||s==='STRONG SELL'?2:(s==='BUY'||s==='SELL')?1:0;}
 function renderTFTabs(){
 let tab=t=>{let m=TF_META[t];if(!m)return '';let b=liveData[t]||{};let n=(b[AUTO_KEY]||[]).length;
 let hasData=Object.keys(b).some(k=>(b[k]||[]).length>0);
@@ -1553,9 +1795,9 @@ let stale=!!(lastScopeTFs&&hasData&&lastScopeTFs.indexOf(t)<0);
 // has populated them (0s included, so a scanned-but-empty row still reads scanned)
 let showCnt=n>0||Array.isArray(lastScopeTFs);
 return '<button class="tf-card '+(t===TF?'on':'')+(stale?' stale':'')+'" aria-pressed="'+(t===TF)+'" title="'+m.hint+(stale?' · older data — not covered by the last scan':'')+'" onclick="setTF(\''+t+'\')"> '+m.icon+' '+m.lbl+(showCnt?'<span class="cnt">'+n+'</span>':'')+'</button>'};
-let a=$('tfTabsIntra'),b=$('tfTabsSwing');
-if(a)a.innerHTML=['M5','M15','M30','M45','H1','H2','H3','H4'].map(tab).join('');
-if(b)b.innerHTML=['D','W','M'].map(tab).join('');
+let a=$('tfTabs');
+if(a)a.innerHTML=TFS.map(tab).join('');
+syncPills();
 }
 let searchQuery='';
 let copiedBatches={};
@@ -1589,14 +1831,21 @@ const TFS=['M5','M15','M30','M45','H1','H2','H3','H4','D','W','M'];   // ONE sca
 // ── Persistence: each EMA's live finds survive page refresh (localStorage) ──
 const LS_KEY='ftyCryptoScannerV1';
 function saveLive(){
-try{localStorage.setItem(LS_KEY,JSON.stringify(liveData));}
-catch(e){console.warn('saveLive failed (storage full?)',e);}
+// dono side save hote hain — BUY apne purane slot me (backward compatible),
+// SELL alag slot me, taaki reload par side switch bhi instant rahe.
+try{localStorage.setItem(LS_KEY,JSON.stringify(_buyData));}catch(e){console.warn('saveLive failed (storage full?)',e);}
+try{localStorage.setItem(LS_KEY+'_sell',JSON.stringify(_sellData));}catch(e){}
 }
 function loadLive(){
 try{
 let raw=localStorage.getItem(LS_KEY);
-if(raw){let d=JSON.parse(raw)||{};TFS.forEach(t=>{if(d[t]&&typeof d[t]==='object')liveData[t]=d[t];});}
-else{let old=localStorage.getItem('emaScannerLiveV1');if(old){liveData.W=JSON.parse(old)||{};localStorage.removeItem('emaScannerLiveV1');}}
+if(raw){let d=JSON.parse(raw)||{};TFS.forEach(t=>{if(d[t]&&typeof d[t]==='object')_buyData[t]=d[t];});}
+else{let old=localStorage.getItem('emaScannerLiveV1');if(old){_buyData.W=JSON.parse(old)||{};localStorage.removeItem('emaScannerLiveV1');}}
+try{
+let rawS=localStorage.getItem(LS_KEY+'_sell');
+if(rawS){let ds=JSON.parse(rawS)||{};TFS.forEach(t=>{if(ds[t]&&typeof ds[t]==='object')_sellData[t]=ds[t];});}
+}catch(e){}
+liveData=(scanSide==='SELL')?_sellData:_buyData;
 let d=liveData[TF]||{};let n=0;
 for(let k in d){if(Array.isArray(d[k])&&d[k].length)n+=d[k].length;}
 return n;
@@ -1622,11 +1871,12 @@ fresh:rows.filter(r=>r.fresh).length
 function getAll(){
 let rows=getLive().slice();
 if(exFilter!=='ALL')rows=rows.filter(r=>r.ex===exFilter);
-if(activeFilter==='strong')rows=rows.filter(r=>r.signal==='STRONG BUY');
+if(activeFilter==='strong')rows=rows.filter(r=>isStrongSig(r.signal));
 else if(activeFilter==='followers')rows=rows.filter(r=>(r.score||0)>=70);
 else if(activeFilter==='fresh')rows=rows.filter(r=>r.fresh);
 else if(activeFilter==='setup')rows=rows.filter(r=>(r.patterns||[]).length>0);
 if(scanEMA!=='AUTO')rows=rows.filter(r=>r.lvl===scanEMA);
+if(emaFilter!=null)rows=rows.filter(r=>r.lvl===emaFilter);
 if(minPriceFilter!=null)rows=rows.filter(r=>r.price!=null&&isFinite(+r.price)&&+r.price>=minPriceFilter);
 if(searchQuery){
 let q=searchQuery.toLowerCase();
@@ -1645,6 +1895,8 @@ try{let _mp=+localStorage.getItem('ftyMinPrice');if(_mp>0){minPriceFilter=_mp;le
 try{let u=+localStorage.getItem('ftyUni');if(u===100||u===200||u===300)setUniverse(u);}catch(e){}
 try{if(localStorage.getItem('ftyAlerts')==='1')toggleAlerts(true);}catch(e){}
 try{let a=+localStorage.getItem('ftyAuto');if(a===5||a===15)setAuto(a);}catch(e){}
+try{let sd=localStorage.getItem('ftyScanSide');if(sd==='SELL')scanSide='SELL';}catch(e){}
+liveData=(scanSide==='SELL')?_sellData:_buyData;
 syncFilterChips();
 let restored=loadLive();
 try{
@@ -1657,27 +1909,54 @@ renderEMAButtons();
 renderScopeChips();
 renderOverview();
 render();
-try{if(localStorage.getItem('ftyFiltersOpen')==='1')toggleFilters(true);}catch(e){}
+
 updateFilterSum();
 bootExtras();
 if(restored>0)showToast('♻️ Restored '+restored+' finds from last session');
 }
 
 function renderEMAButtons(){
+let host=$('emaSeg');if(!host)return;
 let rows=cur()[AUTO_KEY]||[];
 let counts={};
 rows.forEach(r=>{if(r.lvl!=null)counts[r.lvl]=(counts[r.lvl]||0)+1;});
 let showCnt=rows.length>0||Array.isArray(lastScopeTFs); // no "· 0" badges until a pass has populated them
-// Fixed EMA options (Auto + candidate list) — selection NEXT scan par apply hota hai.
-let html=`<button class="btn-ema ${scanEMA==='AUTO'?'active':''}" onclick="setScanEMA('AUTO')" title="Auto-detect the best EMA for every coin — tests 16 EMAs, slower than a fixed EMA"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg> Auto ${showCnt?'<span style="font-size:11px;opacity:.7">· '+rows.length+'</span>':''}</button>`;
-AUTO_CANDIDATES.forEach(ema=>{
-html+=`<button class="btn-ema ${scanEMA===ema?'active':''}" onclick="setScanEMA(${ema})" title="Next scan finds only coins following the ${ema} EMA — fast single-EMA pass">${ema} EMA ${showCnt?'<span style="font-size:11px;opacity:.7">· '+(counts[ema]||0)+'</span>':''}</button>`;
+// ONE segmented control — Auto + the five EMAs people actually ride.
+// Selection NEXT scan par apply hota hai (scan target, view filter nahi).
+let html='<button class="tf-card'+(scanEMA==='AUTO'?' on':'')+'" onclick="setScanEMA(\'AUTO\')" title="Auto-detect the best EMA for every coin — tests 16 EMAs, slower than a fixed one">🤖 Auto'+(showCnt?'<span class="cnt">'+rows.length+'</span>':'')+'</button>';
+[10,20,50,100,200].forEach(P=>{
+html+='<button class="tf-card'+(scanEMA===P?' on':'')+'" onclick="setScanEMA('+P+')" title="Next scan finds only coins riding the '+P+' EMA — fast single-EMA pass">'+P+(showCnt?'<span class="cnt">'+(counts[P]||0)+'</span>':'')+'</button>';
 });
 // Custom EMA (typed into the little input) — show it as an active chip so the
 // scan target is never invisible.
-if(scanEMA!=='AUTO'&&AUTO_CANDIDATES.indexOf(+scanEMA)<0)html+='<button class="btn-ema active" onclick="setScanEMA('+(+scanEMA)+')" title="Custom EMA — next scan finds only coins following the '+scanEMA+' EMA">'+(+scanEMA)+' EMA '+(showCnt?'<span style="font-size:11px;opacity:.7">· '+(counts[scanEMA]||0)+'</span>':'')+'</button>';
-$('emaButtons').innerHTML=html;
+if(scanEMA!=='AUTO'&&[10,20,50,100,200].indexOf(+scanEMA)<0)html+='<button class="tf-card on" onclick="setScanEMA('+(+scanEMA)+')" title="Custom EMA — next scan finds only coins following the '+scanEMA+' EMA">'+(+scanEMA)+'<span class="cnt">'+(counts[scanEMA]||0)+'</span></button>';
+host.innerHTML=html;
+renderEmaSub();
+syncPills();
 }
+// Auto view ke andar ka EMA-level filter: scan ne jo EMAs detect kiye, unke chips.
+function renderEmaSub(){
+let sub=$('emaSubRow');if(!sub)return;
+if(scanEMA!=='AUTO'){
+sub.innerHTML='<span class="mode-note" style="font-size:10.5px;color:var(--faint)">🎯 Fixed '+scanEMA+' EMA view · scan sirf isi EMA ke liye chalta hai</span>';
+return;
+}
+let rows=cur()[AUTO_KEY]||[];
+let counts={};
+rows.forEach(r=>{if(r.lvl!=null)counts[r.lvl]=(counts[r.lvl]||0)+1;});
+let keys=Object.keys(counts).map(Number).sort((a,b)=>counts[b]-counts[a]||a-b);
+if(!keys.length){sub.innerHTML='';return;}
+let html='<button class="btn-ema sm '+(emaFilter==null?'active':'')+'" onclick="setEmaFilter(null)" title="Show all detected EMAs">All <span style="font-size:10px;opacity:.7">· '+rows.length+'</span></button>';
+keys.forEach(ema=>{
+html+='<button class="btn-ema sm '+(emaFilter===ema?'active':'')+'" onclick="setEmaFilter('+ema+')" title="Only coins following the '+ema+' EMA">'+ema+' EMA <span style="font-size:10px;opacity:.7">· '+counts[ema]+'</span></button>';
+});
+sub.innerHTML=html;
+}
+function setEmaFilter(ema){
+emaFilter=(ema==null)?null:+ema;
+renderEmaSub();render();
+}
+
 function setScanEMA(ema){
 if(ema==='AUTO'||ema==null){scanEMA='AUTO';}
 else{let v=Math.round(+ema||0);if(v<2||v>500){showToast('EMA period must be between 2 and 500');return;}scanEMA=v;}
@@ -1703,40 +1982,32 @@ let sel=scanSel();
 return sel.length<=3?sel.map(t=>TF_META[t].lbl).join(' · '):sel.length+' TFs';}
 function toggleScopeGrid(){scopeGridOpen=!scopeGridOpen;renderScopeChips();}
 function renderScopeChips(){
-let el=$('scopeChips');if(!el)return;
+// Scope ka UI ab ek segmented control hai (All / Swing / This TF) — chips nahi.
 let all=scanTFs==='ALL';
-let thisOn=(!all&&scanTFs.length===1&&scanTFs[0]===TF);
-let custom=!all&&!thisOn;
-// Compact row: All / ⚡ this-TF / custom picker — 11-TF list sirf tab dikhti hai jab
-// user khud "Pick TFs" kholta hai (hamesha dikhana = TIMEFRAME row ka duplicate lagta tha).
-let h='<button class="schip'+(all?' on':'')+'" onclick="setScanScope(\'ALL\')" title="Scan all 11 timeframes in one pass — the full sweep">All TFs</button>'
-+'<button class="schip'+(thisOn?' turbo on':'')+'" onclick="setScanScopeOnly()" title="Scan only the timeframe you are viewing ('+TF_META[TF].lbl+') — the fastest possible pass">⚡ '+TF_META[TF].lbl+' only</button>'
-+'<span class="schip-sep" aria-hidden="true"></span>'
-+'<button class="schip'+(custom?' on':'')+'" onclick="toggleScopeGrid()" aria-expanded="'+(scopeGridOpen?'true':'false')+'" title="Pick the exact timeframes the next scan should cover">'+(custom?scopeLabel():'Pick TFs')+' '+(scopeGridOpen?'▴':'▾')+'</button>';
-el.innerHTML=h;
-// Custom picker grid: sirf tab visible jab user ne khola ho
-let gr=$('scopeGrid'),grow=$('scopeGridRow');
-if(gr&&grow){
-if(scopeGridOpen){
-let g='';
-TFS.forEach(t=>{g+='<button class="schip'+(all||scanTFs.indexOf(t)>=0?' on':'')+'" onclick="setScanScope(\''+t+'\')" title="Toggle '+TF_META[t].lbl+' in the scan scope">'+TF_META[t].lbl+'</button>';});
-g+='<span class="schip-sep" aria-hidden="true"></span><button class="schip done" onclick="toggleScopeGrid()" title="Close the picker — your selection is saved">✓ Done</button>';
-gr.innerHTML=g;grow.hidden=false;
-}else{gr.innerHTML='';grow.hidden=true;}
-}
-let n=$('scopeNote');
-if(n){
+let swing=Array.isArray(scanTFs)&&scanTFs.length===3&&scanTFs.join()==='D,W,M';
+let one=Array.isArray(scanTFs)&&scanTFs.length===1;
+let mode=all?'all':swing?'swing':one?'one':'custom';
+document.querySelectorAll('#scopeSeg .tf-card').forEach(function(b){
+b.classList.toggle('on',b.getAttribute('data-scope')===mode);
+});
+// ETA + what the pass will fetch — lives on the Scan button's tooltip.
 let sel=scanSel(),bases=scanBases(sel);
 let fetches=bases.length*Math.max(1,+universeSize||300);
 let calls=fetches>=1000?((fetches/1000).toFixed(1)+'k'):String(fetches);
-// Rough ETA from measured runs: fixed overhead + ~45ms per kline fetch.
 let secs=Math.round(8+fetches*0.045);
 let eta=secs<90?(Math.round(secs/5)*5)+'s':Math.round(secs/60)+'m';
-let ema=scanEMA==='AUTO'?'EMA auto':'EMA '+scanEMA+' only';
-n.textContent=(all?'Full sweep · '+bases.length+' fetches/coin':'⚡ '+sel.length+' TF'+(sel.length>1?'s':'')+' · '+bases.length+' fetch'+(bases.length>1?'es':'')+'/coin')+' · ≈'+eta+' · '+ema;
-n.title='≈'+calls+' API calls · Top '+universeSize+' coins · '+(all?'all 11 timeframes':sel.map(t=>TF_META[t].lbl).join(' · ')+' only');
-let sb=$('satSyncBtn');if(sb)sb.title='Scan '+(all?'all timeframes':sel.map(t=>TF_META[t].lbl).join('/')+' only')+' · Top '+universeSize+' coins · ETA ≈'+eta;
+let sb=$('satSyncBtn');
+if(sb)sb.title='Scan '+(all?'all timeframes':sel.map(t=>TF_META[t].lbl).join('/')+' only')+' · Top '+universeSize+' coins · ≈'+calls+' API calls · ETA ≈'+eta;
+syncPills();
 }
+// Segmented scope → the scanTFs state the engine already understands.
+function setScanScopeMode(mode){
+if(mode==='all')setScanScope('ALL');
+else if(mode==='swing'){scanTFs=['D','W','M'];scopeGridOpen=false;
+try{localStorage.setItem('ftyScanTFs3',JSON.stringify(scanTFs));}catch(e){}
+renderScopeChips();updateFilterSum();
+try{showToast('📆 Swing scan — Daily · Weekly · Monthly only'+(window._ftyScanning?' · next scan':''));}catch(e){}}
+else if(mode==='one')setScanScopeOnly();
 }
 function setScanScope(v){
 if(v==='ALL'){scanTFs='ALL';scopeGridOpen=false;}
@@ -1855,7 +2126,7 @@ function renderHero(){
 let g=$('heroGreet'),s=$('heroSub'),m=$('hmMood'),cs=$('hmChips');if(!m)return;
 let rows=(typeof __ftyRows!=='undefined'&&Array.isArray(__ftyRows))?__ftyRows:[];
 let n=rows.length,btc=_heroTk.btc,eth=_heroTk.eth;
-let fol=rows.filter(r=>(r.score||0)>=70).length,strong=rows.filter(r=>r.signal==='STRONG BUY').length;
+let fol=rows.filter(r=>(r.score||0)>=70).length,strong=rows.filter(r=>isStrongSig(r.signal)).length;
 let folPct=n?Math.round(fol/n*100):0;
 let mood='',lbl='';
 if(n){
@@ -1899,7 +2170,7 @@ try{hmWlRender();}catch(e){}
 let live=[];try{live=(typeof getLive==='function')?(getLive()||[]):[];}catch(e){}
 let rows=live.length?live:((Array.isArray(__ftyRows))?__ftyRows:[]);
 let st=null;try{st=getStats();}catch(e){}
-let fol=rows.filter(r=>(r.score||0)>=70).length,strong=rows.filter(r=>r.signal==='STRONG BUY').length;
+let fol=rows.filter(r=>(r.score||0)>=70).length,strong=rows.filter(r=>isStrongSig(r.signal)).length;
 let ls=hmLastScan();
 let hSig=[_heroTk.at,_heroTk.bp,_heroTk.ep,rows.length,st?st.total:'',st?st.neverBroke:'',st?st.fresh:'',fol,strong,(Array.isArray(lastScopeTFs)?lastScopeTFs.join(','):''),lastScanAt,universeSize,ls?ls.ts:0,(typeof dkWL!=='undefined'?dkWL.map(s=>s.sym).join(','):''),(typeof _cspwQ!=='undefined'?Object.keys(_cspwQ).length:0)].join('|');
 if(hSig===_homeSig)return;_homeSig=hSig;
@@ -1988,22 +2259,21 @@ return rows;
 let filtersOpen=false;
 function toggleFilters(force){
 filtersOpen=(typeof force==='boolean')?force:!filtersOpen;
-let p=$('filterPanel'),b=$('filterDropBtn');
-if(p)p.classList.toggle('open',filtersOpen);
-if(b)b.classList.toggle('open',filtersOpen);
-try{localStorage.setItem('ftyFiltersOpen',filtersOpen?'1':'0');}catch(e){}
+cbSheet(filtersOpen?'filters':null,true);
 }
 function updateFilterSum(){
-let el=$('filterSum');if(!el)return;
-let parts=[];
-if(exFilter!=='ALL')parts.push(exFilter);
-if(universeSize!==300)parts.push('Top '+universeSize+' coins');
+let n=0,parts=[];
+if(exFilter!=='ALL'){parts.push(exFilter);n++;}
+if(universeSize!==300){parts.push('Top '+universeSize+' coins');n++;}
 let lbl={followers:'EMA Followers',fresh:'Fresh Setup',strong:'Strong Buy',setup:'Setup'}[activeFilter];
-if(lbl)parts.push(lbl);
-if(scanEMA!=='AUTO')parts.push('Scan: '+scanEMA+' EMA');
-if(scanTFs!=='ALL'&&Array.isArray(scanTFs))parts.push('Scope: '+scanTFs.map(t=>TF_META[t].lbl).join('/'));
-if(minPriceFilter!=null)parts.push('≥ $'+minPriceFilter);
-el.textContent=parts.length?('· '+parts.join(' · ')):'';
+if(lbl){parts.push(lbl);n++;}
+if(scanEMA!=='AUTO'){parts.push('Scan: '+scanEMA+' EMA');n++;}
+if(scanTFs!=='ALL'&&Array.isArray(scanTFs)){parts.push('Scope: '+scanTFs.map(t=>TF_META[t].lbl).join('/'));n++;}
+if(minPriceFilter!=null){parts.push('≥ $'+minPriceFilter);n++;}
+if(emaFilter!=null){parts.push(emaFilter+' EMA only');n++;}
+let pill=$('cbFiltN');if(pill)pill.textContent=n?String(n):'';
+let fd=$('filterDropBtn');if(fd)fd.title=n?('View filters · '+parts.join(' · ')):'View filters — market, price, strategy, universe';
+let sh=$('cbShowN');if(sh)sh.textContent=String((typeof getFiltered==='function'?getFiltered().length:0));
 }
 function render(){
 renderTFTabs();
@@ -2013,7 +2283,7 @@ renderHome();
 if(!contentVisible){
 $('content').innerHTML='<div class="empty"><div class="empty-art">📡</div><div class="empty-title">Ready — run a market scan</div><div class="empty-sub">'
 +'<b>1.</b> Hit <b>Scan Market</b> below — it finds coins whose price respects their EMA<br>'
-+'<b>2.</b> Pick <b>SCAN SCOPE</b> + <b>MODE</b> above (⚡ one TF = fastest scan), then tighten the list with <b>FILTERS</b><br>'
++'<b>2.</b> Tap <b>BUY / 1H / Auto</b> in the bar above to open <b>Scan setup</b> (scope · side · timeframe · EMA), then tighten the list with <b>Filters</b><br>'
 +'<b>3.</b> Click any coin → mini chart · <b>Full Chart</b> · ★ watchlist · ৳ paper trade'
 +'<div class="empty-cta"><button class="btn-ghost" onclick="openGuide()">📖 Full guide — how to use</button><span style="color:var(--faint);font-size:11.5px;display:block;margin-top:10px">New here? The guide suggests starting with <b>Top 100</b> · shortcut: <b>s</b></span></div>'
 +'</div></div>';
@@ -2029,7 +2299,7 @@ function fmtJoin(rows){return rows.map(r=>r.symbol).join(',')}
 function distColor(d){return d<=5?'#5fd6a2':d<=10?'#e8c064':'#f87171'}
 function tvLink(r){return 'https://www.tradingview.com/chart/?symbol=BINANCE:'+encodeURIComponent(r.symbol)}
 function gradeCls(g){return g==='PERFECT'?'perfect':g==='STRONG'?'strong':g==='GOOD'?'good':g==='MODERATE'?'moderate':'weak'}
-function sigCls(v){return v==='STRONG BUY'?'sb':v==='BUY'?'b':v==='WATCH'?'w':'n'}
+function sigCls(v){return v==='STRONG BUY'?'sb':v==='BUY'?'b':v==='STRONG SELL'?'ss':v==='SELL'?'s':v==='WATCH'?'w':'n'}
 // Exchange tag colour: Binance gets the brand lime, not the leftover NSE blue.
 function exCls(ex){return ex==='BINANCE'?'bin':(ex==='BSE'?'bse':'nse');}
 // ═══ BINANCE DATA LAYER (crypto) ═══
@@ -2249,7 +2519,7 @@ let chartCtx=chart.getContext('2d');chartCtx.fillStyle='#060b16';chartCtx.fillRe
 drawStockChart(chart,data.ts,data.q,(currentEMA===AUTO_KEY?(row.lvl||50):currentEMA),false);
 ctx.fillStyle='#060b16';ctx.fillRect(70,156,1780,760);ctx.drawImage(chart,70,156);
 // headline numbers under the chart — the share image should carry the verdict
-let stats=[['EMA LEVEL',(row.lvl||'—')+' EMA'],['FOLLOWER SCORE',(row.score||0)+'/100'],['GRADE',row.grade||'—'],['ABOVE EMA','+'+row.distPct+'%'],['SIGNAL',row.signal||'—']];
+let stats=[['EMA LEVEL',(row.lvl||'—')+' EMA'],['FOLLOWER SCORE',(row.score||0)+'/100'],['GRADE',row.grade||'—'],[distLbl(row),distTxt(row)],['SIGNAL',row.signal||'—']];
 stats.forEach((st,i)=>{let x=70+i*352;
 ctx.fillStyle='#64748f';ctx.font='700 19px Segoe UI';ctx.fillText(st[0],x,968);
 ctx.fillStyle=i===1?'#c9f24b':(i===4?(String(st[1]).indexOf('STRONG')===0?'#c9f24b':'#dbeafe'):'#dbeafe');
@@ -2263,7 +2533,7 @@ if(!row)return;
 let m=document.getElementById('stockModal');
 shareChartData=null;document.getElementById('downloadChartBtn').disabled=true;
 document.getElementById('stockTitle').textContent=sym+' — '+(row.name||'');
-document.getElementById('stockSub').textContent=TF_META[TF].lbl+' · '+(currentEMA===AUTO_KEY?('Auto '+row.lvl+' EMA'):(currentEMA+' EMA'))+' · $'+row.price+' · EMA $'+row.ema+' · +'+row.distPct+'% · '+ex;
+document.getElementById('stockSub').textContent=TF_META[TF].lbl+' · '+(currentEMA===AUTO_KEY?('Auto '+row.lvl+' EMA'):(currentEMA+' EMA'))+' · $'+row.price+' · EMA $'+row.ema+' · '+distTxt(row)+' · '+ex;
 document.getElementById('stockChecks').innerHTML=[
 (row.patterns&&row.patterns.length?'<div style="margin-bottom:4px">'+row.patterns.map(p=>'<span class="pat '+p.type+'">'+p.label+'</span>').join(' ')+'</div>':''),
 row.neverBroke?'✓ Perfect support for last '+(row.respectBars||'all available')+' bars on '+(currentEMA===AUTO_KEY?('Auto '+(row.lvl||'')):(currentEMA))+' EMA':'✓ High-respect trend: '+(row.breaks||0)+' breaks in '+(row.respectBars||'the checked')+' bars',
@@ -2298,7 +2568,7 @@ else if(sortDir===first){sortDir=-first;}
 else {sortKey='rank';sortDir=-1;}
 render();
 }
-function sigRank(r){return r.signal==='STRONG BUY'?3:r.signal==='BUY'?2:r.signal==='WATCH'?1:0;}
+function sigRank(r){return isStrongSig(r.signal)?3:isActionSig(r.signal)?2:r.signal==='WATCH'?1:0;}
 function colCmp(k){
 if(k==='sym')return (a,b)=>String(a.symbol).localeCompare(String(b.symbol));
 if(k==='price')return (a,b)=>(parseFloat(b.price)||0)-(parseFloat(a.price)||0);
@@ -2315,7 +2585,7 @@ let cmp=colCmp(sortKey);
 if(cmp)return rows.slice().sort((a,b)=>sortDir*cmp(a,b)||String(a.symbol).localeCompare(String(b.symbol)));
 }
 return rows.slice().sort((a,b)=>{
-let sa=(a.signal==='STRONG BUY'?2:a.signal==='BUY'?1:0),sb=(b.signal==='STRONG BUY'?2:b.signal==='BUY'?1:0);
+let sa=sigRankOf(a.signal),sb=sigRankOf(b.signal);
 // Perfect zero-break EMA followers always lead; the rest follow by quality score.
 return ((b.neverBroke?1:0)-(a.neverBroke?1:0))||((b.score||0)-(a.score||0))||sb-sa||((b.fresh?1:0)-(a.fresh?1:0))||a.distPct-b.distPct;});
 }
@@ -2335,7 +2605,7 @@ return `<tr onclick="stockRowClick('${r.symbol}','${r.ex}')">
 <td><div class="c-sym"><a href="${tvLink(r)}" onclick="event.stopPropagation()" target="_blank">${r.symbol}</a><span class="ex-tag ${exCls(r.ex)}">${r.ex}</span></div><div class="c-name">${r.name||''}</div></td>
 <td class="mono dim">${r.lvl||'—'}</td>
 <td class="mono">$${r.price}</td><td class="mono" style="color:${(r.chg24||0)>=0?'#5fd6a2':'#f87171'}">${r.chg24!=null?((r.chg24>=0?'+':'')+r.chg24.toFixed(2)+'%'):'—'}</td>
-<td class="mono" style="color:${distColor(r.distPct)}">+${r.distPct}%</td>
+<td class="mono" style="color:${distColor(r.distPct)}">${distTxt(r)}</td>
 <td><div class="score-cell"><span class="dialwrap"><svg class="dial" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" class="dial-bg"/><circle cx="18" cy="18" r="15.5" class="dial-fg ${sc>=90?'hi':sc>=70?'mid':''}" pathLength="100" stroke-dasharray="${Math.min(100,sc)} 100"/></svg><b class="dial-num">${sc}</b></span><span class="grade ${gradeCls(r.grade)}">${r.grade}</span></div></td>
 <td><span class="nb-pill ${r.neverBroke?'yes':'no'}">${r.neverBroke?'YES':'NO'}</span></td>
 <td><div class="setup-cell">${(r.patterns||[]).map(p=>`<span class="pat ${p.type}" title="${p.detail||''}">${p.label}</span>`).join('')}<span class="setup-txt">${r.setup||'—'}</span>${r.fresh?'<span class="fresh-tag"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>':''}</div></td>
@@ -2362,7 +2632,7 @@ let topHtml=top.length?top.map((r,i)=>`<div class="top5-row" onclick="stockRowCl
 <span class="top5-rank">#${i+1}</span>
 <span class="top5-sym">${r.symbol}<span class="ex-tag ${exCls(r.ex)}">${r.ex}</span><span class="grade ${gradeCls(r.grade)}">${r.grade}</span></span>
 <span class="top5-score" style="color:${(r.score||0)>=90?'var(--gold)':'var(--violet)'}">${r.score||0}</span>
-<span class="top5-dist" style="color:${distColor(r.distPct)}">+${r.distPct}%</span>
+<span class="top5-dist" style="color:${distColor(r.distPct)}">${distTxt(r)}</span>
 </div>`).join(''):'<div class="dash-mut">No coins yet — hit Scan Market</div>';
 let freshHtml=freshRows.length?freshRows.map(r=>`<div class="top5-row" onclick="stockRowClick('${r.symbol}','${r.ex}')">
 <span class="top5-sym">${r.symbol}<span class="ex-tag ${exCls(r.ex)}">${r.ex}</span></span>
@@ -2673,6 +2943,124 @@ let breakdown=[
 return {last:last,ema:Math.round(ema*100)/100,distPct:+distPct.toFixed(2),neverBroke:neverBroke,respectBars:respectBars,breaks:breaks,score:score,grade:grade,tests:tests,rejections:rejections,failed:failed,slope:slope,setup:setup,fresh:fresh,signal:signal,breakdown:breakdown,emaS:emaS,patterns:pats};
 }
 
+// SELL MIRROR — the same 100-point maths with resistance instead of support.
+// A coin qualifies when price rides BELOW the EMA and never closes above it;
+// tests are rallies INTO the EMA from below, structure is lower highs/lows and
+// the EMA has to slope down. Same weights, so scores are comparable across sides.
+function analyzeShort(closes,lows,highs,P,t){
+if(!t)t=TF;
+let n=closes.length;
+if(n<P+10)return null;
+let emaS=computeEMASeries(closes,P);
+let last=closes[n-1],ema=emaS[n-1];
+if(!(last<ema))return null;                       // must be BELOW the EMA
+let distPct=(ema-last)/ema*100;                   // positive = how far below
+let respectStart=cleanRespectStart(n,P,t);
+let respectBars=n-respectStart,breaks=0;
+for(let i=respectStart;i<n;i++)if(closes[i]>emaS[i])breaks++;   // close above = break
+let neverBroke=breaks===0,isDailyShort=(t==='M5'||t==='M15'||t==='D')&&(P===21||P===11);
+if(!neverBroke&&(!isDailyShort||breaks/respectBars>0.30))return null;
+let look=Math.min(60,n-P);
+let s0=n-look;
+// 1. Resistance respect 20
+let pRespect=Math.round(20*(respectBars-breaks)/respectBars);
+// 2+3. Interactions 15 / Rejections 15 — rallies into the EMA that failed
+let tests=0,rejections=0,failed=0,lastRejIdx=-1;
+let testBand=Math.min(4,Math.max(1.5,distPct*0.8));
+for(let i=s0;i<n;i++){
+if(highs[i]>=emaS[i]*(1-testBand/100)){
+tests++;
+if(closes[i]<emaS[i]){rejections++;lastRejIdx=i;}else failed++;
+}
+}
+let pInteract=Math.round(15*Math.min(1,tests/4));
+let pReject=Math.round(15*Math.min(1,rejections/3));
+// 4. Proximity 10
+let pProx=distPct<=1.5?10:distPct<=3?7:distPct<=5?4:Math.max(0,6-distPct*0.15);
+pProx=Math.round(Math.max(0,Math.min(10,pProx)));
+// 5. Slope 10 — a falling EMA is what a short wants
+let ref=Math.max(0,n-11);let slopePct=(emaS[n-1]-emaS[ref])/emaS[ref]*100;
+let slope=slopePct<-2?'Strong Falling':slopePct<-0.3?'Falling':slopePct<0.3?'Flat':'Rising';
+let pSlope=slope==='Strong Falling'?10:slope==='Falling'?7:slope==='Flat'?4:0;
+// 6. Structure 10 — lower highs + lower lows
+let lh=0,ll=0;for(let i=s0+1;i<n;i++){if(highs[i]<highs[i-1])lh++;if(lows[i]<lows[i-1])ll++;}
+let pStruct=Math.round(10*Math.min(1,(lh+ll)/(2*(look-1))*1.6));
+// 7. Continuation 10 — price extended lower after the most recent rejection
+let pCont=0;
+if(lastRejIdx>=0){let drop=(closes[lastRejIdx]-last)/closes[lastRejIdx]*100;pCont=drop>2?10:drop>0.5?6:last<closes[lastRejIdx]?3:0;}else pCont=distPct<=5?5:0;
+// 8. Failed-test control 10
+let pFail=tests?Math.round(10*(1-failed/tests)):10;
+if(!neverBroke)pFail=Math.min(pFail,Math.round(10*(1-breaks/respectBars)));
+let score=Math.max(0,Math.min(100,pRespect+pInteract+pReject+pProx+pSlope+pStruct+pCont+pFail));
+let grade=neverBroke&&score>=90?'PERFECT':score>=80?'STRONG':score>=70?'GOOD':score>=60?'MODERATE':'WEAK';
+// Fresh setup detection — same windows as the bullish side
+let win={M5:24,M15:16,M30:12,M45:12,H1:10,H2:8,H3:6,H4:6,D:6,W:5,M:4}[t]||8;
+let w0=n-win;let setup='';
+let nearLast=false;for(let i=Math.max(s0,w0);i<n;i++)if(highs[i]>=emaS[i]*(1-testBand/100))nearLast=true;
+let consTight=true;for(let i=n-5;i<n;i++)if(Math.abs(closes[i]-emaS[i])/emaS[i]>0.03)consTight=false;
+if(nearLast&&last<closes[n-2])setup='EMA Rejection';
+else if(nearLast)setup='EMA Retest';
+else if(consTight)setup='Consolidation Near EMA';
+else if(last<=Math.min.apply(null,closes.slice(-20)))setup='Bearish Continuation';
+else if(distPct<=2)setup='EMA Resistance';
+let fresh=!!setup;
+let signal='NO SIGNAL';
+if(neverBroke&&score>=90&&fresh&&(slope==='Strong Falling'||slope==='Falling'))signal='STRONG SELL';
+else if(score>=80&&fresh)signal='SELL';
+else if(score>=70)signal='WATCH';
+// Bearish candle patterns = the bullish detector run on mirrored prices
+let nc=new Array(n),nl=new Array(n),nh=new Array(n);
+for(let i=0;i<n;i++){nc[i]=-closes[i];nl[i]=-highs[i];nh[i]=-lows[i];}
+let negEma=new Array(n);for(let i=0;i<n;i++)negEma[i]=-emaS[i];
+let pats=[];
+try{
+pats=(detectPatterns(nc,nl,nh,negEma,P)||[]).map(function(p){
+let base={'Hammer':'Shooting Star','Pin Bar':'Bearish Pin Bar','Bullish':'Bearish'}[p.type]||p.label;
+let prev=String(p.label||'').indexOf('prev')>=0;
+return {type:p.type,label:base+(prev?' (prev)':''),detail:String(p.detail||'').replace(/bullish/ig,'bearish').replace(/support/ig,'resistance')};
+});
+}catch(e){pats=[];}
+let breakdown=[
+{lbl:'Historical Respect',got:pRespect,max:20},
+{lbl:'Interactions',got:pInteract,max:15},
+{lbl:'Rejections',got:pReject,max:15},
+{lbl:'Proximity',got:pProx,max:10},
+{lbl:'EMA Slope',got:pSlope,max:10},
+{lbl:'Price Structure',got:pStruct,max:10},
+{lbl:'Continuation',got:pCont,max:10},
+{lbl:'Failure Control',got:pFail,max:10}
+];
+return {last:last,ema:Math.round(ema*100)/100,distPct:+distPct.toFixed(2),neverBroke:neverBroke,respectBars:respectBars,breaks:breaks,score:score,grade:grade,tests:tests,rejections:rejections,failed:failed,slope:slope,setup:setup,fresh:fresh,signal:signal,breakdown:breakdown,emaS:emaS,patterns:pats,side:'SELL'};
+}
+// One SELL row for a symbol on one timeframe (provisional fallback included).
+function buildSellRow(d,STF,sym,it,chg){
+let closes=d.q.close,lows=d.q.low,highs=d.q.high;
+if(!closes||closes.length<10)return null;
+let n=closes.length,lastClose=closes[n-1];
+let P=null,best=null,a=null;
+if(scanEMA!=='AUTO'){
+P=+scanEMA;
+try{a=analyzeShort(closes,lows,highs,P,STF);}catch(e){a=null;}
+if(!a)return null;
+}else{
+// Auto-detect the EMA a coin respects as RESISTANCE — mirrored prices, same picker
+let nc=new Array(n),nl=new Array(n),nh=new Array(n);
+for(let i=0;i<n;i++){nc[i]=-closes[i];nl[i]=-highs[i];nh[i]=-lows[i];}
+best=pickAutoEMA(nc,STF);
+if(!best)return null;
+P=best.P;
+try{a=analyzeShort(closes,lows,highs,P,STF);}catch(e){a=null;}
+}
+let today=new Date().toISOString().split('T')[0];
+if(a){
+return {symbol:sym,name:(it.name||sym),ex:'BINANCE',price:a.last,ema:a.ema,distPct:a.distPct,neverBroke:a.neverBroke,respectBars:a.respectBars,breaks:a.breaks,patterns:a.patterns||[],streak:Math.min(99,a.tests),score:a.score,signal:a.signal,grade:a.grade,tests:a.tests,rejections:a.rejections,slope:a.slope,setup:a.setup,fresh:a.fresh,breakdown:a.breakdown,respect:a.score,reasons:[(a.neverBroke?('Perfect '+a.respectBars+'-bar resistance on '+P+' EMA'):('High-respect '+P+' EMA downtrend ('+a.breaks+' breaks)')),a.rejections+' EMA rejections from below',a.slope+' EMA'],weekDate:today,hasSignal:true,lvl:P,lvlTF:STF,needsOHLC:false,chg24:chg,side:'SELL'};
+}
+// Closes qualified but full OHLC said no → keep a provisional row
+let dist=Math.abs(+best.distPct||0);
+let sc=Math.max(40,Math.min(90,Math.round(best.score-2*dist)));
+return {symbol:sym,name:(it.name||sym),ex:'BINANCE',price:lastClose,ema:Math.abs(best.ema),distPct:+dist.toFixed(2),neverBroke:true,respectBars:best.respectBars,breaks:0,patterns:[],streak:0,score:sc,signal:sc>=80?'STRONG SELL':sc>=70?'SELL':'WATCH',grade:sc>=90?'PERFECT':sc>=80?'STRONG':sc>=70?'GOOD':sc>=60?'MODERATE':'WEAK',tests:0,rejections:0,slope:'—',setup:'',fresh:false,breakdown:null,reasons:['Below '+P+' EMA · 100% resistance respect over '+best.respectBars+' bars','Provisional score — OHLC said no'],weekDate:today,hasSignal:true,respect:sc,lvl:P,lvlTF:STF,needsOHLC:false,chg24:chg,side:'SELL'};
+}
+
 // Live scan — one pass over the Binance spot universe fills all 11 timeframes
 async function liveScan(){
 if(window._ftyScanning){try{showToast('⏳ Scan already running — hit Stop to end it');}catch(e){}return;}
@@ -2681,7 +3069,7 @@ showStopBtn();
 try{await _liveScan();}
 catch(e){try{console.warn('scan failed',e);showToast('⚠️ Scan stopped — try again');}catch(_){}}
 finally{
-window._ftyScanning=false;setScanBtnLabel('Scan Market');hideStopBtn();
+window._ftyScanning=false;setScanBtnLabel('Scan');hideStopBtn();
 // The scan button is disabled for the whole pass. If the pass threw before its
 // own re-enable, it stayed dead until a page reload — always hand it back.
 let b=$('satSyncBtn');if(b)b.disabled=false;
@@ -2727,7 +3115,7 @@ if(!force)showToast(alertOn?'🔔 Alerts on — a new Strong Buy pings you':'�
 }
 function diffAlerts(rows){
 let now={},news=[];
-(rows||[]).forEach(r=>{if(r.signal==='STRONG BUY'){now[r.symbol]=1;if(alertOn&&!lastStrong[r.symbol])news.push(r);}});
+(rows||[]).forEach(r=>{if(isStrongSig(r.signal)){now[r.symbol]=1;if(alertOn&&!lastStrong[r.symbol])news.push(r);}});
 lastStrong=now;
 if(!alertOn||!news.length)return;
 let txt=news.slice(0,5).map(r=>r.symbol+' · '+(r.lvl||'?')+' EMA').join(', ')+(news.length>5?' +'+(news.length-5)+' more':'');
@@ -2785,7 +3173,7 @@ let universeSrc=_uni.src;
 $('scanMsg').textContent='📊 Universe ready: '+universeSrc;
 // FRESH SCAN: clear the scoped timeframes, then rebuild. Timeframes outside
 // the scope keep their previous results — the pass simply does not touch them.
-_sel.forEach(t=>{liveData[t]={};});
+_sel.forEach(t=>{_buyData[t]={};_sellData[t]={};});
 $('scanMsg').textContent='🛰️ '+(scanTFs==='ALL'?'All timeframes (5m → 1M)':('Scope: '+_sel.map(t=>TF_META[t].lbl).join(' · ')))+' — Universe: '+universeSrc+' — scanning...';
 let foundBy={},total=candidates.length;
 let done=0;
@@ -2823,6 +3211,14 @@ for(let STF of _sel){
 let d=data[STF];if(!d)continue;
 let closes=d.q.close,lows=d.q.low,highs=d.q.high;
 if(closes.length<10)continue;
+// SELL side — same klines, mirrored maths, so switching side needs no rescan
+try{
+let bs=_sellData[STF];if(!bs[AUTO_KEY])bs[AUTO_KEY]=[];
+if(!bs[AUTO_KEY].some(r=>r.symbol===sym)){
+let rs=buildSellRow(d,STF,sym,it,CHG24[sym]);
+if(rs)bs[AUTO_KEY].push(rs);
+}
+}catch(e){}
 let lastClose=closes[closes.length-1];
 // EMA mode: 'AUTO' = har coin ka cleanest EMA detect; specific number = sirf wahi EMA
 let P,best=null,a=null;
@@ -2836,7 +3232,7 @@ if(!best)continue;
 P=best.P;
 try{a=analyzeFollower(closes,lows,highs,P,STF);}catch(e){a=null;}
 }
-let bucket=liveData[STF];if(!bucket[AUTO_KEY])bucket[AUTO_KEY]=[];
+let bucket=_buyData[STF];if(!bucket[AUTO_KEY])bucket[AUTO_KEY]=[];
 if(bucket[AUTO_KEY].find(r=>r.symbol===sym))continue;
 let row;
 if(a){
@@ -2871,19 +3267,18 @@ await Promise.allSettled(bw);
 // ── STAGE 2: not needed — Binance klines already gave full OHLC, so every
 // row above carries the complete analyzeFollower score from the first pass.
 $('scanProgress').style.transform='scaleX(1)';
-// Rank every bucket: STRONG BUY first, then fresh setups, then follower score.
+// Rank every bucket: STRONG signal first, then fresh setups, then follower score.
 // MTF PRIORITY: coins strong on MORE timeframes float to the top (small boost
 // per extra timeframe where the same coin qualified on the same level).
-for(let t of _sel){for(let P of autoLevelKeys()){
-let arr=liveData[t][P];if(!arr)continue;
+// Both sides are ranked — the inactive one is already warm when you flip SIDE.
+[_buyData,_sellData].forEach(function(DATA){for(let t of _sel){for(let P of autoLevelKeys()){
+let arr=DATA[t][P];if(!arr)continue;
 let mtfCount={};
 arr.forEach(r=>{mtfCount[r.symbol]=0;});
-_sel.forEach(t2=>{(liveData[t2][P]||[]).forEach(x=>{if(mtfCount[x.symbol]!=null)mtfCount[x.symbol]++;});});
+_sel.forEach(t2=>{(DATA[t2][P]||[]).forEach(x=>{if(mtfCount[x.symbol]!=null)mtfCount[x.symbol]++;});});
 arr.forEach(r=>{r.mtf=mtfCount[r.symbol]||1;});
-arr.sort((a,b)=>{
-let sa=(a.signal==='STRONG BUY'?2:a.signal==='BUY'?1:0),sb=(b.signal==='STRONG BUY'?2:b.signal==='BUY'?1:0);
-return sb-sa||((b.fresh?1:0)-(a.fresh?1:0))||((b.mtf||1)-(a.mtf||1))||((b.score||0)-(a.score||0))||((b.neverBroke?1:0)-(a.neverBroke?1:0))||a.distPct-b.distPct;});
-}}
+arr.sort((a,b)=>sigRankOf(b.signal)-sigRankOf(a.signal)||((b.fresh?1:0)-(a.fresh?1:0))||((b.mtf||1)-(a.mtf||1))||((b.score||0)-(a.score||0))||((b.neverBroke?1:0)-(a.neverBroke?1:0))||a.distPct-b.distPct);
+}}});
 let found=(foundBy[AUTO_KEY]||0);
 let totalScanned=Math.min(done,total);
 let qual2=_sel.reduce((a,t)=>a+((liveData[t][AUTO_KEY]||[]).length),0);
@@ -2996,8 +3391,8 @@ try{
 let now=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
 let p=n=>String(n).padStart(2,'0');
 let c=$('istClock');if(c)c.textContent=p(now.getHours())+':'+p(now.getMinutes())+':'+p(now.getSeconds())+' IST';
-let m=$('mktTxt');if(m)m.textContent='BINANCE · 24/7';
-let ms=$('mktStatus');if(ms)ms.classList.add('live');
+let m=$('mktTxt');if(m)m.textContent=wsSessionLabel();
+let ms=$('mktStatus');if(ms)ms.classList.toggle('live',wsHasMk('crypto'));
 }catch(e){}
 }
 tick();setInterval(tick,1000);
@@ -3091,7 +3486,7 @@ if(!rows||!rows.length){
 if(_lastTapeSig==='empty')return;
 _lastTapeSig='empty';
 tr.style.animation='none';
-tr.innerHTML='<div class="tape-half"><span class="tape-item dim">\uD83D\uDD2C Hit Scan Market — qualified coins stream here live</span></div>';
+tr.innerHTML='<div class="tape-half"><span class="tape-item dim">\uD83D\uDD2C Hit Scan — qualified coins stream here live</span></div>';
 return;
 }
 // Rebuilding the marquee restarts its animation, so only do it when the list changed.
@@ -3112,7 +3507,7 @@ return '<div class="deal" style="animation-delay:'+Math.min(i*30,600)+'ms" oncli
 +'<div class="deal-sym">'+r.symbol+'</div><div class="deal-name">'+(r.name||'')+'</div>'
 +'<div class="deal-dial"><svg class="dial lg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" class="dial-bg"/><circle cx="18" cy="18" r="15.5" class="dial-fg '+(sc>=90?'hi':sc>=70?'mid':'')+'" pathLength="100" stroke-dasharray="'+Math.min(100,sc)+' 100"/></svg><b class="dial-num">'+sc+'</b></div>'
 +'<div class="deal-meta"><span class="sig '+sigCls(r.signal)+'">'+r.signal+'</span></div>'
-+'<div class="deal-foot"><span class="nb-pill '+(r.neverBroke?'yes':'no')+'">'+(r.neverBroke?'NEVER BROKE':'broke')+'</span><span class="mono dim">+'+r.distPct+'%</span>'+(r.lvl?'<span class="mono dim">'+r.lvl+' EMA</span>':'')+(r.fresh?'<span class="fresh-tag">\uD83D\uDD25</span>':'')+'</div>'
++'<div class="deal-foot"><span class="nb-pill '+(r.neverBroke?'yes':'no')+'">'+(r.neverBroke?'NEVER BROKE':'broke')+'</span><span class="mono dim">'+distTxt(r)+'</span>'+(r.lvl?'<span class="mono dim">'+r.lvl+' EMA</span>':'')+(r.fresh?'<span class="fresh-tag">\uD83D\uDD25</span>':'')+'</div>'
 +'</div>';
 }).join('')+(rows&&rows.length>60?'<div class="deal more">+'+(rows.length-60)+' more — switch to table view to see them</div>':'');
 }
@@ -3132,12 +3527,15 @@ document.querySelectorAll('#content .tbl-scroll').forEach(t=>{t.style.display=ca
 function palCommands(){
 return [
 {t:'\uD83C\uDFE0 Home dashboard',h:'greeting + mood',fn:()=>showView('home')},
-{t:'\uD83D\uDD2C Scan Market',h:'run scan',fn:()=>liveScan()},
+{t:'\u2699\uFE0F Workspace \u2014 markets & tools',h:'choose what you use',fn:()=>openWorkspace()},
+{t:'\uD83C\uDDEE\uD83C\uDDF3 India scanner',h:'NSE + BSE',gate:'india',fn:()=>showView('india')},
+{t:'\uD83C\uDDFA\uD83C\uDDF8 US scanner',h:'NYSE + NASDAQ',gate:'us',fn:()=>showView('us')},
+{t:'\uD83D\uDD2C Scan Market',h:'run scan',gate:'crypto',fn:()=>liveScan()},
 {t:'\u23F9 Stop scan',h:'interrupt',fn:()=>stopScan()},
-{t:'\uD83D\uDCC8 Chart workspace',h:'full screen',fn:()=>{let r=(getLive()||[])[0];openChart(r?r.symbol:'BTCUSDT',r?r.ex:'BINANCE',r?r.lvl:0,r);}},
+{t:'\uD83D\uDCC8 Chart workspace',h:'full screen',gate:'chart',fn:()=>{let r=(getLive()||[])[0];openChart(r?r.symbol:'BTCUSDT',r?r.ex:'BINANCE',r?r.lvl:0,r);}},
 {t:'\u2753 Quick Guide \u2014 how to use',h:'help / new user',fn:()=>openGuide()},
-{t:'\u2B50 Watchlist / Terminal',h:'paper trading',fn:()=>dockToggle()},
-{t:'\uD83D\uDD14 Alerts: new Strong Buy',h:'toggle alerts',fn:()=>toggleAlerts()},
+{t:'\u2B50 Watchlist / Terminal',h:'paper trading',gate:'dock',fn:()=>dockToggle()},
+{t:'\uD83D\uDD14 Alerts: new Strong Buy',h:'toggle alerts',gate:'alerts',fn:()=>toggleAlerts()},
 {t:'\uD83C\uDCCF Toggle Cards / Table',h:'switch view',fn:()=>toggleCardsView()},
 {t:'\uD83C\uDFAF Focus mode',h:'dim UI',fn:()=>toggleFocus()},
 {t:'\uD83D\uDCCB Copy next 30',h:'clipboard',fn:()=>copyNext30()},
@@ -3154,12 +3552,14 @@ let inp=document.getElementById('palInput');
 setTimeout(()=>{if(inp)inp.focus();},40);
 }
 function closePal(){let p=document.getElementById('pal');if(p)p.hidden=true;}
+// only commands that belong to a market/tool the user kept in the workspace
+function palVisible(){return palCommands().filter(c=>!c.gate||wsAllows(c.gate));}
 function palRender(q){
 q=(q||'').trim().toUpperCase();
 // Keep each command's index into the FULL list. The old code re-indexed the
 // FILTERED list, so typing "theme" and hitting the first row ran "Scan Market"
 // (index 0 of the unfiltered list) instead of the theme you were looking at.
-let all=palCommands();
+let all=palVisible();   // sirf woh commands jo workspace me on hain
 let cmds=all.map((c,i)=>({c:c,i:i})).filter(o=>!q||o.c.t.toUpperCase().indexOf(q)>=0);
 let syms=(__ftyRows||[]).filter(r=>!q||String(r.symbol).toUpperCase().indexOf(q)>=0).slice(0,8);
 let list=document.getElementById('palList');if(!list)return;
@@ -3174,7 +3574,7 @@ el.addEventListener('keydown',ev=>{if(ev.key==='Enter')palActivate(el);});
 function palActivate(el){
 let cmd=el.getAttribute('data-cmd'),sym=el.getAttribute('data-sym');
 closePal();
-if(cmd!==null&&cmd!==''){let c=palCommands()[+cmd];if(c&&c.fn)c.fn();}
+if(cmd!==null&&cmd!==''){let c=palVisible()[+cmd];if(c&&c.fn)c.fn();}
 else if(sym){stockRowClick(sym,el.getAttribute('data-ex'));}
 }
 // ═══════════════════════════════════════════════════════════════════════
@@ -4417,6 +4817,8 @@ let _lastView='scan';   // last non-chart tab (home/scan) — chart ✕ / Esc is
 function lastViewSaved(){try{let v=localStorage.getItem('ftyLastPlain');return (v==='scan'||v==='home'||v==='india'||v==='us')?v:'scan';}catch(e){return 'scan';}}
 function showView(v){
 if(v!=='chart'&&v!=='home'&&v!=='scan'&&v!=='india'&&v!=='us')v='scan';
+// workspace gate — a market or tool the user switched off is simply not there
+if(typeof wsAllows==='function'&&!wsAllows(v))return wsBlocked(v);
 if(v==='chart'){
 document.body.classList.add('view-chart');
 document.body.classList.remove('view-scan','view-home','view-india','view-us');
@@ -4465,7 +4867,7 @@ el.classList.add('show');
 // Scan results panel ko chart ke saath dikhao (full list visible rahe) — desktop par hi side-by-side
 try{
 let dk=dkQ('dock');
-if(window.innerWidth>=900&&dk&&!dk.classList.contains('show')&&getFiltered().length){DK_TAB='sc';dockOpen();}
+if(window.innerWidth>=900&&dk&&!dk.classList.contains('show')&&getFiltered().length&&wsAllows('dock')){DK_TAB='sc';dockOpen();}
 }catch(e){}
 // unified watchlist pass: dock tabs + ☰ Results button follow the chart state
 // (dock's WL tab → single redirect button; never a second watchlist beside the panel)
@@ -5668,7 +6070,223 @@ start(onReady);   // quiet background load — no spinner, only shown when the u
 }
 return {open:open,warm:warm};
 })();
+// ═══════════════════════════════════════════════════════════════════════
+// WORKSPACE — which markets + tools this user actually uses.
+// The dashboard, the side rail and the shortcuts are driven by this one
+// saved choice. Nothing is deleted when something is switched off: the
+// whole app keeps its state and one click brings the tab back.
+// ═══════════════════════════════════════════════════════════════════════
+const WS_LS='ftyWorkspaceV1';
+const WS_MARKETS=[
+{id:'crypto',nm:'Crypto',ico:'🔬',sub:'Binance spot · USDT pairs',tag:'24 / 7 · no close'},
+{id:'india',nm:'India',ico:'🇮🇳',sub:'NSE + BSE cash · ₹',tag:'9:15 – 15:30 IST'},
+{id:'us',nm:'US',ico:'🇺🇸',sub:'NYSE + NASDAQ + AMEX',tag:'21:30 – 04:00 IST'}
+];
+const WS_TOOLS=[
+{id:'chart',nm:'Chart workspace',sub:'Drawing, indicators, replay',svg:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'},
+{id:'dock',nm:'Results & watchlist',sub:'Watchlist + paper terminal',svg:'<path d="M12 17.75 18.2 21l-1.2-6.88L22 9.24l-6.9-.96L12 2 8.9 8.28 2 9.24l5 4.88L5.8 21z"/>'},
+{id:'alerts',nm:'Strong-buy alerts',sub:'Ping when a setup fires',svg:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'},
+{id:'ai',nm:'AI analysis',sub:'Sarvam AI read on results',svg:'<path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/>'}
+];
+const WS_PRESETS={
+crypto:{markets:['crypto'],tools:['chart','dock','alerts','ai']},
+stocks:{markets:['india','us'],tools:['chart','dock']},
+all:{markets:['crypto','india','us'],tools:['chart','dock','alerts','ai']}
+};
+let WS={markets:['crypto','india','us'],tools:['chart','dock','alerts','ai'],done:false};
+let wsDraft=null;
+
+function wsLoad(){
+let raw=null;try{raw=localStorage.getItem(WS_LS);}catch(e){}
+let d=null;try{d=raw?JSON.parse(raw):null;}catch(e){}
+let m,t;
+if(!d||typeof d!=='object'){                 // kuch saved nahi — poora app pehle jaisa
+m=['crypto','india','us'];t=['chart','dock','alerts','ai'];
+}else{
+m=Array.isArray(d.markets)?d.markets.filter(x=>WS_MARKETS.some(k=>k.id===x)):[];
+t=Array.isArray(d.tools)?d.tools.filter(x=>WS_TOOLS.some(k=>k.id===x)):[];
+if(!m.length)m=['crypto'];                   // market ke bina dashboard khaali rehta hai
+}
+WS={markets:m,tools:t,done:!!(d&&d.done)};
+return WS;
+}
+function wsSave(){try{localStorage.setItem(WS_LS,JSON.stringify(WS));}catch(e){}}
+function wsHasMk(id){return WS.markets.indexOf(id)>=0;}
+function wsHasTool(id){return WS.tools.indexOf(id)>=0;}
+function wsMarketOf(v){return v==='scan'?'crypto':(v==='india'||v==='us')?v:null;}
+function wsAllows(v){
+if(v==='home')return true;
+if(v==='chart')return wsHasTool('chart');
+if(v==='dock')return wsHasTool('dock');
+if(v==='alerts')return wsHasTool('alerts');
+if(v==='ai')return wsHasTool('ai');
+if(v==='crypto')return wsHasMk('crypto');
+let mk=wsMarketOf(v);
+return mk?wsHasMk(mk):true;
+}
+function wsStartView(){
+let f=WS.markets[0]||'crypto';
+return f==='crypto'?'scan':f;
+}
+// header status pill — speaks the language of the market the user kept
+function wsSessionLabel(){
+let mk=WS.markets[0];
+if(mk==='india')return 'NSE + BSE · 09:15 – 15:30 IST';
+if(mk==='us')return 'NYSE + NASDAQ · 21:30 – 04:00 IST';
+return 'BINANCE · 24/7';
+}
+function wsBlocked(v){
+let mk=wsMarketOf(v),need='';
+if(mk){let m=WS_MARKETS.filter(x=>x.id===mk)[0];need=(m?m.nm:'That')+' scanner';}
+else if(v==='chart')need='Chart workspace';
+else if(v==='dock')need='Results & watchlist';
+else need='That tool';
+try{showToast(need+' is off — turn it on from ⚙ Workspace');}catch(e){}
+return false;
+}
+// apply the saved choice to the live UI (classes do the hiding)
+function wsApply(){
+let b=document.body;
+WS_MARKETS.forEach(m=>b.classList.toggle('ws-no-'+m.id,!wsHasMk(m.id)));
+WS_TOOLS.forEach(t=>b.classList.toggle('ws-no-'+t.id,!wsHasTool(t.id)));
+let hm=document.getElementById('hmMarkets');
+if(hm)hm.setAttribute('data-count',String(WS.markets.length));
+let bs=document.querySelector('.brand-sub');
+if(bs)bs.textContent=WS.markets.map(id=>{let m=WS_MARKETS.filter(x=>x.id===id)[0];return m?m.nm.toUpperCase():id;}).join(' · ')+' · EMA SCANNER';
+// an off tool must not keep running in the background
+if(!wsHasTool('alerts')&&typeof alertOn!=='undefined'&&alertOn){try{toggleAlerts(false);}catch(e){}}
+if(!wsHasTool('dock')){let d=document.getElementById('dock');if(d&&d.classList.contains('show')){try{dockClose();}catch(e){}}}
+if(!wsHasTool('ai')){let a=document.getElementById('aiAnalysisSection');if(a)a.style.display='none';}
+try{_homeSig='';}catch(e){}
+wsRenumber();
+}
+// home cards are numbered 01,02,03… — renumber so the hidden ones leave no gap
+function wsRenumber(){
+let i=0;
+document.querySelectorAll('#homeView .home-card').forEach(function(c){
+if(c.hidden||c.offsetParent===null)return;
+let b=c.querySelector('.hc-idx');if(b)b.textContent=('0'+(++i)).slice(-2);
+});
+}
+function wsRender(){
+if(!wsDraft)return;
+let m=document.getElementById('wsModal');
+let first=!!(m&&m.dataset.first==='1');
+let eb=document.getElementById('wsEyebrow');if(eb)eb.textContent=first?'FIRST RUN · 30 SECONDS':'WORKSPACE · SETTINGS';
+let tt=document.getElementById('wsTitle');if(tt)tt.textContent=first?'Choose what you trade — and what you need':'Your workspace';
+let ld=document.getElementById('wsLead');if(ld)ld.innerHTML=first
+?'Pick your markets and tools. Only what you choose shows up on the dashboard, the side rail and the shortcuts — everything else is hidden, nothing is deleted, and you can change it anytime from <b>⚙ Workspace</b>.'
+:'Change your markets or tools any time. Turning something off only hides it — your watchlist, paper terminal, filters and scan history stay exactly where they are.';
+let sv=document.getElementById('wsSave');if(sv)sv.textContent=first?'Build my dashboard →':'Save workspace';
+let sk=document.getElementById('wsSkip');if(sk)sk.style.display=first?'':'none';
+let g=document.getElementById('wsMkGrid');
+if(g)g.innerHTML=WS_MARKETS.map(function(x){
+let on=wsDraft.markets.indexOf(x.id)>=0;
+return '<button type="button" class="ws-mk'+(on?' on':'')+'" data-wsmk="'+x.id+'" onclick="wsPick(\'market\',\''+x.id+'\')" aria-pressed="'+on+'">'
++'<span class="ws-ck" aria-hidden="true">✓</span>'
++'<span class="ws-ico" aria-hidden="true">'+x.ico+'</span>'
++'<span class="ws-nm">'+x.nm+'</span>'
++'<span class="ws-sub">'+x.sub+'</span>'
++'<span class="ws-tag">'+x.tag+'</span>'
++'</button>';
+}).join('');
+let tg=document.getElementById('wsToolGrid');
+if(tg)tg.innerHTML=WS_TOOLS.map(function(x){
+let on=wsDraft.tools.indexOf(x.id)>=0;
+return '<button type="button" class="ws-tool'+(on?' on':'')+'" data-wstool="'+x.id+'" onclick="wsPick(\'tool\',\''+x.id+'\')" aria-pressed="'+on+'">'
++'<span class="ws-t-ico" aria-hidden="true"><svg viewBox="0 0 24 24">'+x.svg+'</svg></span>'
++'<span class="ws-t-tx"><span class="ws-t-nm">'+x.nm+'</span><span class="ws-t-sub">'+x.sub+'</span></span>'
++'<span class="ws-sw" aria-hidden="true"><i></i></span>'
++'</button>';
+}).join('');
+let sum=document.getElementById('wsSum');
+if(sum){
+let names=wsDraft.markets.map(function(id){let x=WS_MARKETS.filter(k=>k.id===id)[0];return x?x.nm:id;});
+sum.innerHTML='<b>'+(names.length?names.join(' · '):'no market yet')+'</b><br>'
++(wsDraft.tools.length?wsDraft.tools.length+' tool'+(wsDraft.tools.length>1?'s':'')+' on':'no extra tool')+' · scanner board always on';
+}
+let er=document.getElementById('wsErr');if(er)er.textContent='';
+}
+function wsPick(kind,id){
+if(!wsDraft)return;
+let arr=kind==='market'?wsDraft.markets:wsDraft.tools;
+let i=arr.indexOf(id);
+if(i>=0)arr.splice(i,1);else arr.push(id);
+let order=(kind==='market'?WS_MARKETS:WS_TOOLS).map(function(x){return x.id;});
+arr.sort(function(a,b){return order.indexOf(a)-order.indexOf(b);});
+wsRender();
+}
+function wsPreset(k){
+let p=WS_PRESETS[k];if(!p)return;
+wsDraft={markets:p.markets.slice(),tools:p.tools.slice()};
+wsRender();
+}
+function openWorkspace(){
+let m=document.getElementById('wsModal');if(!m)return;
+wsDraft={markets:WS.markets.slice(),tools:WS.tools.slice()};
+m.dataset.first='0';
+wsRender();
+m.classList.add('show');
+}
+function wsFirstOpen(){
+let m=document.getElementById('wsModal');if(!m)return;
+wsDraft={markets:WS.markets.slice(),tools:WS.tools.slice()};
+m.dataset.first='1';
+wsRender();
+m.classList.add('show');
+}
+function closeWorkspace(){
+let m=document.getElementById('wsModal');if(!m)return;
+dismissModal(m);
+// first run dismissed without a choice → treat as "keep everything", so the
+// modal never comes back on every reload
+if(!WS.done){WS.done=true;wsSave();}
+}
+function wsSkip(){
+wsDraft={markets:['crypto','india','us'],tools:['chart','dock','alerts','ai']};
+wsCommit(true);
+}
+function wsCommit(quiet){
+if(!wsDraft)return;
+let er=document.getElementById('wsErr');
+if(!wsDraft.markets.length){if(er)er.textContent='Pick at least one market — the dashboard needs a market to show.';return;}
+WS.markets=wsDraft.markets.slice();
+WS.tools=wsDraft.tools.slice();
+WS.done=true;
+wsSave();
+wsApply();
+let m=document.getElementById('wsModal');if(m)dismissModal(m);
+// the view you were on may have just been switched off → move somewhere real
+let cur=document.body.classList.contains('view-home')?'home'
+:document.body.classList.contains('view-chart')?'chart'
+:document.body.classList.contains('view-india')?'india'
+:document.body.classList.contains('view-us')?'us':'scan';
+if(!wsAllows(cur)){try{showView(wsStartView());}catch(e){}}
+else if(cur==='home'){try{renderHome();}catch(e){}}
+if(!quiet){try{showToast('✅ Workspace saved — '+WS.markets.length+' market'+(WS.markets.length>1?'s':'')+' · '+(WS.tools.length+1)+' tools');}catch(e){}}
+}
+function wsInit(){
+try{wsLoad();}catch(e){}
+try{wsApply();}catch(e){}
+if(WS.done)return;
+// first run — wait for the boot animation, and never fight the licence gate
+// (gate ke baad activate hote hi ye apne aap khul jaata hai)
+let tries=0;
+(function arm(){
+setTimeout(function(){
+try{
+if(WS.done)return;
+let g=document.getElementById('licGate');
+if(g&&!g.hidden){if(tries++<20)arm();return;}
+if(document.querySelector('.modal-bg.show')){if(tries++<20)arm();return;}
+wsFirstOpen();
+}catch(e){}
+},tries?1800:2100);
+})();
+}
+
 function directorInit(){
+try{wsInit();}catch(e){}   // markets + tools pehle — baaki sab isi ke hisaab se dikhta hai
 initTheme();bootSeq();
 // Home tab — greeting + market mood first, dashboard as soon as the ticker lands.
 try{renderHome();}catch(e){}
@@ -5687,13 +6305,14 @@ else if(n>60)clearInterval(t);   // stop watching after a minute
 },1000);
 }
 setTimeout(function(){
-_pwPoll('indiaFrame',USApp);    // India settles → warm US
-_pwPoll('usFrame',IndiaApp);    // US settles → warm India
+let wantI=wsHasMk('india'),wantU=wsHasMk('us');
+if(wantI&&wantU){_pwPoll('indiaFrame',USApp);_pwPoll('usFrame',IndiaApp);}
 let busy=document.body.classList.contains('view-india')||document.body.classList.contains('view-us');
-if(!busy)try{IndiaApp.warm();}catch(e){}   // nothing is loading yet → kick off India
+if(!busy&&wantI)try{IndiaApp.warm();}catch(e){}   // nothing is loading yet → kick off India
 },1900);
-// Safety net — warms anything still cold (both warm() calls no-op if already ready)
-setTimeout(function(){try{IndiaApp.warm();}catch(e){}try{USApp.warm();}catch(e){}},11500);
+// Safety net — warms anything still cold (both warm() calls no-op if already ready).
+// Only the markets the user actually keeps warm up: a hidden scanner never downloads.
+setTimeout(function(){if(wsHasMk('india'))try{IndiaApp.warm();}catch(e){}if(wsHasMk('us'))try{USApp.warm();}catch(e){}},11500);
 // Restore the tab you were last on (first ever load → Home). Chart users still
 // land straight on their chart, exactly like the old auto-open did — but now it
 // never steals the screen if you were on Home or the scanner.
@@ -5702,7 +6321,9 @@ if(window._ftyScanning)showView('scan');
 else{
 let lv='home';try{lv=localStorage.getItem('ftyLastView')||'home';}catch(e){}
 if(lv!=='home'&&lv!=='scan'&&lv!=='chart'&&lv!=='india'&&lv!=='us')lv='home';
+if(!wsAllows(lv))lv='home';   // workspace me jo band hai, wahan wapas mat jaao
 _lastView=lastViewSaved();
+if(!wsAllows(_lastView))_lastView=wsStartView();
 showView(lv);
 }
 }catch(e){}
@@ -5720,7 +6341,9 @@ let k=e.key||'';
 // Enter/Space on a focused sortable header sorts by that column (mouse-free use)
 if(e.target&&e.target.dataset&&e.target.dataset.sk&&(k==='Enter'||k===' ')){e.preventDefault();sortBy(e.target.dataset.sk);return;}
 if((e.metaKey||e.ctrlKey)&&k.toLowerCase()==='k'){e.preventDefault();openPal();return;}
-if(k==='Escape'){let p=document.getElementById('pal');if(p&&!p.hidden)closePal();return;}
+if(k==='Escape'){let p=document.getElementById('pal');if(p&&!p.hidden){closePal();return;}
+let w=document.getElementById('wsModal');if(w&&w.classList.contains('show')){closeWorkspace();return;}
+return;}
 // Single-key shortcuts, but never while the user is typing in a field
 let tag=((e.target&&e.target.tagName)||'').toLowerCase();
 if(tag==='input'||tag==='textarea'||tag==='select')return;
@@ -5735,14 +6358,14 @@ if(k==='Tab'){e.preventDefault();toggleView();return;}
 if(k==='h'||k==='H'||k==='0'){e.preventDefault();showView('home');return;}
 if(k==='1'){e.preventDefault();showView('scan');return;}
 if(k==='2'){e.preventDefault();showView('chart');return;}
-if(k==='3'){e.preventDefault();dockToggle();return;}
+if(k==='3'){e.preventDefault();if(!wsAllows('dock')){wsBlocked('dock');return;}dockToggle();return;}
 if(k==='4'){e.preventDefault();showView('india');return;}
 if(k==='5'){e.preventDefault();showView('us');return;}
 let cs=document.getElementById('chartSpace');
 if(cs&&!cs.hidden)return;   // chart workspace khula hai — baaki single-key shortcuts band
 if(k==='/'){e.preventDefault();let s=document.getElementById('symSearch');if(s){s.focus();s.select();}}
 else if(k==='c'){copyNext30();}
-else if(k==='s'){if(window._ftyScanning)stopScan();else{showView('scan');liveScan();}}
+else if(k==='s'){if(window._ftyScanning)stopScan();else{if(!wsAllows('scan')){wsBlocked('scan');}else{showView('scan');liveScan();}}}
 else if(k==='k'){toggleCardsView();}
 });
 // View restore ab directorInit ke shuru me hota hai (Home/Scan/Chart).
