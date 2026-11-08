@@ -1257,6 +1257,37 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 .frow .bar i{display:block;height:100%}
 .frow .amt{font-family:var(--fm);text-align:right;font-weight:800;font-size:11px}
 .fv-note{font-size:10px;color:var(--faint);line-height:1.6;margin-top:10px}
+
+/* multi-timeframe sector heatmap */
+.sv-tfrow{display:flex;gap:4px;flex-wrap:wrap;margin:-1px 0 9px}
+.tf-chip{background:rgba(10,16,30,.9);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:4px 10px;font-size:10px;font-weight:800;font-family:var(--fm);cursor:pointer;transition:color .12s,border-color .12s,background .12s}
+.tf-chip:hover{color:var(--txt);border-color:var(--line2)}
+.tf-chip.on{background:var(--lime);color:var(--lime-ink);border-color:transparent}
+.hmrow{--hmw:38px;display:grid;gap:3px;align-items:center;padding:4px;border-radius:9px;cursor:pointer;transition:background .12s}
+.hmrow:hover{background:rgba(148,163,184,.07)}
+.hmrow.on{background:color-mix(in srgb,var(--lime) 9%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lime) 28%,transparent)}
+.hm-head{cursor:default;padding:2px 4px}
+.hm-head:hover{background:transparent}
+.hm-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:3px}
+.hm-head .hm-name{font-size:8.5px;letter-spacing:1.3px;color:var(--faint);font-weight:800}
+.hm-th{font-family:var(--fm);font-size:8.5px;letter-spacing:.3px;color:var(--faint);text-align:center;font-weight:800}
+.hm-th.on{color:var(--lime)}
+.hm-cell{font-family:var(--fm);font-size:9.5px;font-weight:700;text-align:center;border-radius:5px;padding:4px 1px;color:var(--txt)}
+.hm-cell.na{background:transparent;color:var(--faint);opacity:.35}
+.hm-cell.cur{box-shadow:inset 0 0 0 1px rgba(255,255,255,.42)}
+.hm-align{font-family:var(--fm);font-size:9px;text-align:right;color:var(--faint);padding-right:3px}
+.hm-align.hi{color:var(--up)}
+.hm-align.lo{color:var(--down)}
+.sv-legend{font-size:10px;line-height:1.65;color:var(--faint);margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+.sv-legend b{color:var(--dim)}
+.sv-legend i{font-style:normal;color:var(--dim)}
+@media(max-width:700px){
+.hmrow{grid-template-columns:repeat(var(--hmn,7),minmax(0,1fr))!important;row-gap:3px}
+.hm-name{grid-column:1/-1;font-size:11.5px;padding-left:0}
+.hm-align{grid-column:1/-1;text-align:left;padding:1px 0 3px;font-size:9px}
+.hm-head{display:none}
+.hm-cell{font-size:9px;padding:5px 0}
+}
 </style>
 </head>
 <body data-page-node-id="M3jVaqQUz6sm9ZXCcMDC3s">
@@ -1777,7 +1808,9 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <div class="sv-body">
 <div class="sv-panel">
 <div class="sv-ph"><b>SECTOR RANKING</b><span class="sub" id="secRankNote"></span><span class="r" id="secRankCount"></span></div>
+<div class="sv-tfrow" id="secTfRow"></div>
 <div id="secList"><div class="sv-empty">Loading market data…</div></div>
+<div class="sv-legend">Cell = that sector's average move on that timeframe · <b>ALIGN</b> = how many timeframes are green (a sector trending on 5m <i>and</i> 1D <i>and</i> 1W is a real rotation, not noise) · click a column header to re-rank</div>
 </div>
 <div class="sv-panel">
 <div class="sv-ph"><b id="secSelName">CONSTITUENTS</b><span class="r" id="secSelMeta"></span></div>
@@ -6219,13 +6252,19 @@ return {open:open,warm:warm};
 })();
 // ═══════════════════════════════════════════════════════════════════════
 // SECTOR ROTATION + ORDER FLOW
-// Sector view: one TradingView scan per market (India / US) or Binance's
-// 24h ticker (crypto) → group by sector → rank by how the constituents are
-// actually moving. Order flow: real taker buy/sell for crypto, turnover ×
-// move for stocks (labelled as a proxy, because there is no free feed).
+// Sector view: one TradingView scan per market (India / US) or Binance
+// ticker + klines (crypto) → every symbol carries a change for EACH
+// timeframe, so the panel is a heatmap: which sector is trending on which
+// timeframe, at a glance. Order flow: real taker buy/sell for crypto,
+// turnover × move for stocks (labelled as a proxy — no free tick feed).
 // ═══════════════════════════════════════════════════════════════════════
 const TV_SCAN={india:'https://scanner.tradingview.com/india/scan',us:'https://scanner.tradingview.com/america/scan'};
 const SEC_TTL=4*60*1000;
+const TF_LABEL={m5:'5m',m15:'15m',h1:'1H',h4:'4H',d:'1D',w:'1W',m1:'1M'};
+const STOCK_TFS=['m5','m15','h1','h4','d','w','m1'];
+const CRYPTO_TFS=['h1','h4','d','w','m1'];
+// TV columns: change|N is in PERCENT already; Perf.W / Perf.1M are the week/month.
+const TV_COLS=['name','close','change','change|5','change|15','change|60','change|240','Perf.W','Perf.1M','Value.Traded','sector'];
 
 // TradingView's Morningstar industries → the 11 buckets people rotate between
 const TV_SECTOR_MAP={
@@ -6242,10 +6281,7 @@ const TV_SECTOR_MAP={
 'Real Estate':'Real Estate','Miscellaneous':'Other','Health Care':'Health Care','Industrials':'Industrials',
 'Energy':'Energy','Financials':'Financials'
 };
-function mapTvSector(s){
-if(!s)return 'Other';
-return TV_SECTOR_MAP[s]||s;
-}
+function mapTvSector(s){return s?(TV_SECTOR_MAP[s]||s):'Other';}
 // Crypto: base asset → sector. Curated for the Binance USDT majors.
 const CRYPTO_SECTORS=(function(){
 const g={
@@ -6266,11 +6302,12 @@ Object.keys(g).forEach(function(k){g[k].split(' ').forEach(function(sym){out[sym
 return out;
 })();
 const SEC_META={
-india:{lbl:'India',cur:'₹',src:'NSE · TradingView'},
-us:{lbl:'US',cur:'$',src:'NYSE + NASDAQ + AMEX · TradingView'},
-crypto:{lbl:'Crypto',cur:'$',src:'Binance USDT spot · 24h'}
+india:{lbl:'India',cur:'₹',src:'NSE · TradingView',tfs:STOCK_TFS},
+us:{lbl:'US',cur:'$',src:'NYSE + NASDAQ + AMEX · TradingView',tfs:STOCK_TFS},
+crypto:{lbl:'Crypto',cur:'$',src:'Binance USDT spot',tfs:CRYPTO_TFS}
 };
 let secMkt='india',secData={},secSel=null,secPtr=0,secLoading=false;
+let secTf='d';                      // which timeframe the ranking is sorted by
 let flowMkt='crypto',flowData={},flowLoading=false;
 
 function fmtMoney(v,cur){
@@ -6285,14 +6322,14 @@ if(a>=1e6)return (v<0?'-':'')+'$'+(a/1e6).toFixed(2)+'M';
 if(a>=1e3)return (v<0?'-':'')+'$'+(a/1e3).toFixed(1)+'K';
 return (v<0?'-':'')+'$'+a.toFixed(2);
 }
-function pctTxt(v){return (v>=0?'+':'')+v.toFixed(2)+'%';}
-function chgCls(v){return v>0?'up':v<0?'dn':'fl';}
+function pctTxt(v){return v==null?'—':((v>=0?'+':'')+v.toFixed(2)+'%');}
+function chgCls(v){return v==null?'fl':v>0?'up':v<0?'dn':'fl';}
 
 // ── data ────────────────────────────────────────────────────────────────
 async function tvScanMarket(mkt){
 const body={filter:[{left:'market_cap_basic',operation:'greater',right:10000000}],
 options:{lang:'en'},markets:[mkt==='us'?'america':'india'],
-columns:['name','close','change','Value.Traded','sector'],
+columns:TV_COLS,
 sort:{sortBy:'market_cap_basic',sortOrder:'desc'},range:[0,3000]};
 const r=await fetch(TV_SCAN[mkt],{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body)});
 if(!r.ok)throw new Error('TradingView '+r.status);
@@ -6303,9 +6340,12 @@ const s=String(x.s||'');
 if(mkt==='india'&&s.indexOf('NSE:')!==0)return;          // one listing per stock
 if(mkt==='us'&&!/^(NASDAQ|NYSE|AMEX):/.test(s))return;    // the app's own universe
 const d=x.d||[];
-const close=+d[1],chg=+d[2];
-if(!(close>0)||!isFinite(chg))return;
-rows.push({sym:s.split(':').pop(),sector:mapTvSector(d[4]),raw:d[4]||'',price:close,chg:chg,val:+d[3]||0});
+const close=+d[1];
+if(!(close>0))return;
+const num=function(v){return (v==null||v==='')?null:(isFinite(+v)?+v:null);};
+rows.push({sym:s.split(':').pop(),sector:mapTvSector(d[10]),raw:d[10]||'',price:close,
+chg:num(d[2])||0,val:+d[9]||0,
+tf:{m5:num(d[3]),m15:num(d[4]),h1:num(d[5]),h4:num(d[6]),d:num(d[2]),w:num(d[7]),m1:num(d[8])}});
 });
 if(!rows.length)throw new Error('empty scan');
 return rows;
@@ -6314,7 +6354,7 @@ async function cryptoRows(){
 const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
 if(!r.ok)throw new Error('Binance '+r.status);
 const arr=await r.json();
-const rows=[];
+const cand=[];
 arr.forEach(function(t){
 if(!/USDT$/.test(t.symbol))return;
 const base=t.symbol.slice(0,-4);
@@ -6322,27 +6362,62 @@ const sec=CRYPTO_SECTORS[base];
 if(!sec)return;
 const px=+t.lastPrice,chg=+t.priceChangePercent,val=+t.quoteVolume;
 if(!(px>0)||!isFinite(chg))return;
-rows.push({sym:t.symbol,sector:sec,raw:sec,price:px,chg:chg,val:val||0});
+cand.push({sym:t.symbol,sector:sec,raw:sec,price:px,chg:chg,val:val||0,tf:null});
 });
-if(!rows.length)throw new Error('no mapped pairs');
-return rows;
+cand.sort(function(a,b){return b.val-a.val;});
+// Top 80 by turnover get the multi-timeframe pass: one 1h kline request each
+// (720 bars = 30 days) yields 1H / 4H / 1D / 1W / 1M in a single call.
+const list=cand.slice(0,80);
+let i=0;
+async function worker(){
+while(i<list.length){
+const it=list[i++];
+try{
+const k=await fetch('https://api.binance.com/api/v3/klines?symbol='+it.sym+'&interval=1h&limit=720');
+if(!k.ok)continue;
+const kl=await k.json();
+const c=kl.map(function(x){return +x[4];});
+const last=c[c.length-1];
+const back=function(n){const p=c[c.length-1-n];return (p&&last)?(last-p)/p*100:null;};
+it.tf={h1:back(1),h4:back(4),d:back(24),w:back(168),m1:back(719)};
+}catch(e){}
 }
-function aggSectors(rows){
+}
+const ws=[];for(let j=0;j<8;j++)ws.push(worker());
+await Promise.allSettled(ws);
+const ok=list.filter(function(x){return x.tf&&x.tf.d!=null;});
+if(!ok.length)throw new Error('no mapped pairs');
+return ok;
+}
+function aggSectors(rows,tfs){
 const map={};
 rows.forEach(function(r){
 const k=r.sector||'Other';
-if(!map[k])map[k]={key:k,n:0,up:0,sum:0,val:0};
+if(!map[k]){map[k]={key:k,n:0,up:0,val:0,tf:{}};tfs.forEach(function(t){map[k].tf[t]={sum:0,cnt:0,up:0};});}
 const s=map[k];
-s.n++;s.sum+=r.chg;s.val+=r.val;
-if(r.chg>0)s.up++;
+s.n++;s.val+=r.val;
+if((r.chg||0)>0)s.up++;
+tfs.forEach(function(t){
+const v=r.tf?r.tf[t]:null;
+if(v==null||!isFinite(v))return;
+const b=s.tf[t];b.sum+=v;b.cnt++;if(v>0)b.up++;
+});
 });
 return Object.keys(map).map(function(k){
-const s=map[k];
-return {key:k,n:s.n,up:s.up,avg:s.sum/s.n,breadth:s.n?s.up/s.n:0,val:s.val};
+const s=map[k],out={key:s.key,n:s.n,up:s.up,val:s.val,tf:{},align:0,avail:0};
+tfs.forEach(function(t){
+const b=s.tf[t];
+out.tf[t]=b.cnt?b.sum/b.cnt:null;
+if(b.cnt){out.avail++;if(out.tf[t]>0)out.align++;}
+});
+out.avg=out.tf['d']!=null?out.tf['d']:(out.tf[tfs[0]]||0);
+out.breadth=s.n?s.up/s.n:0;
+return out;
 }).filter(function(s){return s.n>=3;}).sort(function(a,b){
-if(a.key==='Other')return 1;      // unclassified always sits at the bottom
+if(a.key==='Other')return 1;
 if(b.key==='Other')return -1;
-return b.avg-a.avg;
+const av=a.tf[secTf],bv=b.tf[secTf];
+return (bv==null?-999:bv)-(av==null?-999:av);
 });
 }
 
@@ -6353,11 +6428,13 @@ if(!force&&d&&Date.now()-d.ts<SEC_TTL){secRender();return;}
 const tok=++secTok;               // switching market mid-load: the newest click wins
 secLoading=true;
 let lb=$('secReloadBtn');if(lb){lb.disabled=true;lb.textContent='⟳ Loading…';}
-let host=$('secList');if(host)host.innerHTML='<div class="sv-empty"><b>Reading '+SEC_META[mkt].lbl+' market…</b><br>one scan, then sectors are grouped and ranked.</div>';
+let host=$('secList');
+if(host)host.innerHTML='<div class="sv-empty"><b>Reading '+SEC_META[mkt].lbl+' market…</b><br>'+(mkt==='crypto'?'24h tickers + 30 days of hourly candles for 80 pairs.':'one scan, every timeframe, then sectors are grouped.')+'</div>';
 try{
 const rows=mkt==='crypto'?await cryptoRows():await tvScanMarket(mkt);
-const sectors=aggSectors(rows);
-secData[mkt]={ts:Date.now(),rows:rows,sectors:sectors};
+const tfs=SEC_META[mkt].tfs;
+const sectors=aggSectors(rows,tfs);
+secData[mkt]={ts:Date.now(),rows:rows,sectors:sectors,tfs:tfs};
 if(tok!==secTok)return;
 if(!secSel||!sectors.some(function(s){return s.key===secSel;}))secSel=sectors[0]?sectors[0].key:null;
 secPtr=0;
@@ -6377,6 +6454,12 @@ secMkt=m;secSel=null;secPtr=0;
 document.querySelectorAll('#secMktSeg button').forEach(function(b){b.classList.toggle('active',b.dataset.mkt===m);});
 secLoad(m);
 }
+function secSetTf(t){
+secTf=t;
+const d=secData[secMkt];
+if(d)d.sectors=aggSectors(d.rows,d.tfs);
+secRender();
+}
 function secReload(){secLoad(secMkt,true);}
 function secOpen(){
 if(!secData[secMkt]&&!secLoading)secLoad(secMkt);
@@ -6385,43 +6468,75 @@ else secRender();
 function secRows(){
 const d=secData[secMkt];
 if(!d||!secSel)return[];
-return d.rows.filter(function(r){return r.sector===secSel;}).sort(function(a,b){return b.chg-a.chg;});
+return d.rows.filter(function(r){return r.sector===secSel;}).sort(function(a,b){
+const av=(a.tf&&a.tf[secTf]!=null)?a.tf[secTf]:-999,bv=(b.tf&&b.tf[secTf]!=null)?b.tf[secTf]:-999;
+return bv-av;
+});
 }
 function secRender(){
 const d=secData[secMkt];
+if(!d)return;
 const list=$('secList'),stk=$('secStocks');
 const asOf=$('secAsOf'),rankN=$('secRankCount'),rankNote=$('secRankNote');
-const meta=SEC_META[secMkt];
-if(!d){return;}
+const meta=SEC_META[secMkt],tfs=d.tfs;
 if(asOf)asOf.textContent=meta.lbl+' · '+meta.src+' · '+d.rows.length+' symbols · updated '+new Date(d.ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-if(rankNote)rankNote.textContent='avg move · breadth';
+// is the cash market actually trading? (intraday columns read 0 when closed)
+let live=false;
+if(secMkt!=='crypto'){
+live=d.rows.some(function(r){return r.tf&&r.tf.m5;});
+}
+if(rankNote)rankNote.textContent=(secMkt!=='crypto'&&!live)?'market closed · intraday fills at the open':'sorted by '+TF_LABEL[secTf]+' · click a column';
 if(rankN)rankN.textContent=d.sectors.length+' sectors';
-const maxAbs=Math.max.apply(null,d.sectors.map(function(s){return Math.abs(s.avg);}).concat([0.5]));
+// timeframe chips
+const tfRow=$('secTfRow');
+if(tfRow){
+tfRow.innerHTML=tfs.map(function(t){
+return '<button class="tf-chip'+(t===secTf?' on':'')+'" onclick="secSetTf(\''+t+'\')" title="Sort sectors by the '+TF_LABEL[t]+' move">'+TF_LABEL[t]+'</button>';
+}).join('');
+}
+// Colour scale is PER COLUMN: +0.1% is huge on 5m and noise on 1M, so each
+// timeframe gets its own scale (floor 0.35% keeps dead columns pale).
+const colMax={};
+tfs.forEach(function(t){let mx=0.35;d.sectors.forEach(function(s){const v=s.tf[t];if(v!=null)mx=Math.max(mx,Math.abs(v));});colMax[t]=mx;});
+const cols='minmax(0,1fr) '+tfs.map(function(){return '38px';}).join(' ')+' 44px';
 if(list){
-list.innerHTML=d.sectors.map(function(s,i){
-const w=Math.max(3,Math.round(Math.abs(s.avg)/maxAbs*100));
-const col=s.avg>=0?'var(--up)':'var(--down)';
-return '<div class="srow'+(s.key===secSel?' on':'')+'" onclick="secPick(\''+s.key.replace(/'/g,"\\'")+'\')" title="'+s.n+' stocks · '+Math.round(s.breadth*100)+'% up · turnover '+fmtMoney(s.val,meta.cur)+'">'
-+'<span class="rk">'+(i+1)+'</span>'
-+'<span class="nm"><b>'+s.key+'</b><span class="bar"><i style="width:'+w+'%;background:'+col+'"></i></span></span>'
-+'<span class="ch '+chgCls(s.avg)+'">'+pctTxt(s.avg)+'</span>'
-+'<span class="br">'+Math.round(s.breadth*100)+'% up<br>'+s.n+'</span>'
+list.style.setProperty('--hmn',tfs.length);
+let h='<div class="hmrow hm-head" style="grid-template-columns:'+cols+'"><span class="hm-name">SECTOR</span>'
++tfs.map(function(t){return '<span class="hm-th'+(t===secTf?' on':'')+'">'+TF_LABEL[t]+'</span>';}).join('')
++'<span class="hm-th" title="How many timeframes are green — trend alignment">ALIGN</span></div>';
+h+=d.sectors.map(function(s,i){
+const cells=tfs.map(function(t){
+const v=s.tf[t];
+if(v==null)return '<span class="hm-cell na">·</span>';
+const rr=Math.min(1,Math.abs(v)/colMax[t]);
+if(Math.abs(v)<0.05)return '<span class="hm-cell na'+(t===secTf?' cur':'')+'">0.0</span>';
+const a=Math.min(.72,.11+rr*.60);
+const bg=v>=0?('rgba(74,222,128,'+a.toFixed(2)+')'):('rgba(248,113,113,'+a.toFixed(2)+')');
+const txt=Math.abs(v)<0.05?'0.0':((v>0?'+':'')+v.toFixed(1));
+return '<span class="hm-cell'+(t===secTf?' cur':'')+'" style="background:'+bg+';'+(rr>0.72?'color:#fff;':'')+'">'+txt+'</span>';
+}).join('');
+const al=s.align+'/'+s.avail;
+return '<div class="hmrow'+(s.key===secSel?' on':'')+'" style="grid-template-columns:'+cols+'" onclick="secPick(\''+s.key.replace(/'/g,"\\'")+'\')" title="'+s.n+' stocks · turnover '+fmtMoney(s.val,meta.cur)+'">'
++'<span class="hm-name">'+s.key+'</span>'+cells
++'<span class="hm-align '+(s.avail&&s.align/s.avail>=0.7?'hi':s.align===0?'lo':'')+'">'+al+'</span>'
 +'</div>';
 }).join('');
+list.innerHTML=h;
 }
 if(!secSel){if(stk)stk.innerHTML='<div class="sv-empty">No sector data.</div>';return;}
 const rows=secRows();
 const sel=d.sectors.filter(function(s){return s.key===secSel;})[0];
 const nm=$('secSelName'),sm=$('secSelMeta');
 if(nm)nm.textContent=secSel.toUpperCase();
-if(sm)sm.textContent=rows.length+' stocks · avg '+pctTxt(sel?sel.avg:0)+' · '+Math.round((sel?sel.breadth:0)*100)+'% up';
+if(sm)sm.textContent=rows.length+' stocks · '+TF_LABEL[secTf]+' '+pctTxt(sel?sel.tf[secTf]:0)+' · '+Math.round((sel?sel.breadth:0)*100)+'% up';
 if(stk){
-let h='<div class="stk stk-h"><span>SYMBOL</span><span style="text-align:right">PRICE</span><span style="text-align:right">CHG</span><span style="text-align:right">TURNOVER</span></div>';
+let h='<div class="stk stk-h"><span>SYMBOL</span><span style="text-align:right">PRICE</span><span style="text-align:right">'+TF_LABEL[secTf]+'</span><span style="text-align:right">TURNOVER</span></div>';
 h+=rows.map(function(r){
+const v=r.tf?r.tf[secTf]:null;
 return '<div class="stk" onclick="secCopySym(\''+r.sym+'\')" title="Click to copy '+r.sym+'">'
 +'<span class="sy">'+r.sym+'</span>'
 +'<span class="px">'+(r.price>=1000?r.price.toLocaleString('en-IN',{maximumFractionDigits:0}):r.price.toPrecision(4))+'</span>'
-+'<span class="ch '+chgCls(r.chg)+'">'+pctTxt(r.chg)+'</span>'
++'<span class="ch '+chgCls(v)+'">'+pctTxt(v)+'</span>'
 +'<span class="cv">'+fmtMoney(r.val,meta.cur)+'</span>'
 +'</div>';
 }).join('');
@@ -6497,8 +6612,8 @@ async function stockFlow(mkt){
 let d=secData[mkt];
 if(!d||Date.now()-d.ts>SEC_TTL){
 const rows=mkt==='crypto'?await cryptoRows():await tvScanMarket(mkt);
-secData[mkt]={ts:Date.now(),rows:rows,sectors:aggSectors(rows)};
-d=secData[mkt];
+d={ts:Date.now(),rows:rows,sectors:aggSectors(rows,SEC_META[mkt].tfs),tfs:SEC_META[mkt].tfs};
+secData[mkt]=d;
 }
 const out=d.rows.filter(function(r){return r.val>0;}).map(function(r){
 return {sym:r.sym,sector:r.sector,net:r.val*(r.chg/100),buy:r.chg>0?r.val*(r.chg/100):0,sell:r.chg<0?-r.val*(r.chg/100):0,chg:r.chg,val:r.val};
@@ -6552,7 +6667,7 @@ if(!bySec[r.sector])bySec[r.sector]={k:r.sector,net:0,n:0};
 bySec[r.sector].net+=r.net;bySec[r.sector].n++;
 });
 const secs=Object.keys(bySec).map(function(k){return bySec[k];}).sort(function(a,b){return b.net-a.net;});
-const hot=secs[0],cold=secs[secs.length-1];
+const hot=secs[0];
 const asOf=$('flowAsOf');
 if(asOf)asOf.textContent=meta.lbl+' · '+(d.real?'Binance taker buy vs sell · last 24h':'TradingView turnover × move (proxy)')+' · updated '+new Date(d.ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 const cards=$('flowCards');
