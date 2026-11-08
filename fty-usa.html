@@ -190,7 +190,7 @@ body.view-chart .wrap{display:none}
 .mini-dist .dots{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
 .mini-dist b{color:var(--dim);font-family:var(--fm)}
 .tbl-scroll{overflow:auto;max-height:580px;border:1px solid var(--line);border-radius:var(--r-md)}
-.rtbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:880px}
+.rtbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:960px}
 .rtbl thead th{position:sticky;top:0;text-align:left;font-size:9.5px;letter-spacing:1.8px;color:var(--faint);font-weight:700;padding:11px 13px;border-bottom:1px solid var(--line2);background:color-mix(in srgb,var(--bg1) 94%,transparent);cursor:pointer;white-space:nowrap;z-index:2;transition:color .12s var(--ease-out);box-shadow:0 8px 16px -14px rgba(0,0,0,.55)}
 .rtbl thead th:hover{color:var(--lime)}
 .rtbl thead th.on{color:var(--lime)}
@@ -1132,7 +1132,7 @@ body.ws-no-india #navIndia,body.ws-no-india [data-mk="india"],body.ws-no-india [
 body.ws-no-us #navUS,body.ws-no-us [data-mk="us"],body.ws-no-us [data-act="us"]{display:none!important}
 body.ws-no-sectors #navSectors,body.ws-no-sectors [data-act="sectors"]{display:none!important}
 body.ws-no-flow #navFlow,body.ws-no-flow [data-act="flow"]{display:none!important}
-body.ws-no-dock #navDock,body.ws-no-dock #dockBtn,body.ws-no-dock [data-act="dock"]{display:none!important}
+body.ws-no-dock #navDock,body.ws-no-dock #dockBtn,body.ws-no-dock #dockTopBtn,body.ws-no-dock [data-act="dock"]{display:none!important}
 body.ws-no-alerts #alertBtn{display:none!important}
 body.ws-no-ai #aiAnalysisSection{display:none!important}
 /* the market cards re-flow to the number of markets actually chosen */
@@ -1258,6 +1258,27 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 .frow .amt{font-family:var(--fm);text-align:right;font-weight:800;font-size:11px}
 .fv-note{font-size:10px;color:var(--faint);line-height:1.6;margin-top:10px}
 
+/* market mood strip — same component as the India / US scanners */
+.mood-strip{display:flex;align-items:center;gap:20px;padding:10px 18px;margin:10px 0 0;background:var(--panel);box-shadow:var(--ring);border-radius:var(--r-lg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.mood-strip[hidden]{display:none}
+.mood-lead{display:flex;align-items:center;gap:12px;flex:none}
+.mood-lbl{font-size:9.5px;font-weight:800;letter-spacing:.14em;color:var(--faint);line-height:1.5}
+.mood-ema{font-size:23px;font-weight:800;color:var(--lime);font-family:var(--fu);line-height:1}
+.mood-ema small{font-size:12px;font-weight:700;color:var(--dim)}
+.mood-sub{font-size:10.5px;color:var(--dim);margin-top:3px}
+.mood-hist{display:flex;align-items:flex-end;gap:4px;flex:1;min-width:0;overflow-x:auto;padding:2px}
+.mood-bar{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;cursor:pointer;padding:4px 3px;border-radius:8px;transition:background-color .15s var(--ease-out),transform .15s var(--ease-out)}
+.mood-bar:hover{background:var(--lime-soft)}
+.mood-bar:active{transform:scale(.94)}
+.mood-bar i{width:13px;border-radius:4px;background:var(--violet);opacity:.75;display:block;transition:background-color .15s var(--ease-out)}
+.mood-bar.on i{background:var(--lime);opacity:1}
+.mood-bar span{font-size:9px;color:var(--faint);font-family:var(--fm)}
+.mood-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none}
+.mood-regime{font-size:12.5px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
+.mood-stat{font-size:10.5px;color:var(--dim);white-space:nowrap}
+.mood-stat b{color:var(--txt)}
+@media(max-width:768px){.mood-strip{flex-wrap:wrap;gap:12px}.mood-hist{order:3;flex-basis:100%}}
+
 /* multi-timeframe sector heatmap */
 .sv-tfrow{display:flex;gap:4px;flex-wrap:wrap;margin:-1px 0 9px}
 .tf-chip{background:rgba(10,16,30,.9);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:4px 10px;font-size:10px;font-weight:800;font-family:var(--fm);cursor:pointer;transition:color .12s,border-color .12s,background .12s}
@@ -1288,6 +1309,61 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 .hm-head{display:none}
 .hm-cell{font-size:9px;padding:5px 0}
 }
+/* ═══════════════════════════════════════════════════════════════════════
+   LEARN — the manual, inside the app. Two columns: a sticky contents rail
+   and the guide itself. No JS: it is plain markup, so it can never break.
+   ═══════════════════════════════════════════════════════════════════════ */
+#learnView{position:fixed;top:52px;left:64px;right:0;bottom:0;z-index:115;display:none;background:var(--bg0);overflow-y:auto;overscroll-behavior:contain}
+body.view-learn #learnView{display:block}
+body.view-learn .wrap{display:none}
+@media(max-width:700px){#learnView{left:50px}}
+.lv-wrap{max-width:1180px;margin:0 auto;padding:26px 22px 90px;display:grid;grid-template-columns:196px minmax(0,1fr);gap:34px;align-items:start}
+@media(max-width:900px){.lv-wrap{grid-template-columns:1fr;gap:16px}}
+.lv-toc{position:sticky;top:16px;font-size:11.5px;line-height:1.5}
+@media(max-width:900px){.lv-toc{position:static;display:none}}
+.lv-toc-t{font-family:var(--fm);font-size:9px;letter-spacing:1.8px;color:var(--faint);font-weight:800;margin-bottom:9px}
+.lv-toc a{display:block;padding:5px 9px;border-radius:8px;color:var(--dim);text-decoration:none;border-left:2px solid transparent;transition:color .12s,background .12s,border-color .12s}
+.lv-toc a:hover{color:var(--txt);background:rgba(148,163,184,.07);border-left-color:color-mix(in srgb,var(--lime) 50%,transparent)}
+.lv-h1{font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.15;margin:0}
+.lv-h1 em{font-style:normal;color:var(--lime)}
+.lv-sub{font-size:13px;color:var(--dim);line-height:1.65;margin:9px 0 0;max-width:64ch}
+.lv-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.lv-tag{font-family:var(--fm);font-size:9.5px;letter-spacing:.6px;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:4px 10px}
+.lv-sec{margin-top:34px;scroll-margin-top:14px}
+.lv-sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.lv-num{font-family:var(--fm);font-size:10px;font-weight:800;color:var(--lime);letter-spacing:1px}
+.lv-sec-h h2{font-size:15.5px;font-weight:800;margin:0;letter-spacing:-.2px}
+.lv-sec-h>span:last-child{margin-left:auto;font-size:10.5px;color:var(--faint);font-family:var(--fm)}
+.lv-sec p{font-size:12.5px;line-height:1.75;color:var(--dim);margin:0 0 11px}
+.lv-sec p b,.lv-sec li b{color:var(--txt);font-weight:700}
+.lv-sec code{font-family:var(--fm);font-size:11px;background:rgba(148,163,184,.12);border-radius:5px;padding:1px 6px;color:var(--lime)}
+.lv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0}
+.lv-card{background:var(--panel);box-shadow:var(--ring);border-radius:13px;padding:12px 13px}
+.lv-card .ic{font-size:15px;line-height:1}
+.lv-card b{display:block;font-size:12.5px;margin-top:6px}
+.lv-card span{display:block;font-size:11px;color:var(--faint);line-height:1.55;margin-top:3px}
+.lv-steps{counter-reset:s;margin:12px 0;padding:0;list-style:none}
+.lv-steps li{position:relative;padding:0 0 0 34px;margin-bottom:14px;font-size:12.5px;line-height:1.7;color:var(--dim)}
+.lv-steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:23px;height:23px;border-radius:50%;background:var(--lime);color:var(--lime-ink);font-family:var(--fm);font-size:11px;font-weight:800;display:grid;place-items:center}
+.lv-steps li b{color:var(--txt)}
+.lv-kv{margin:10px 0;border-top:1px solid var(--line)}
+.lv-kv div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:12px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.65}
+.lv-kv dt{font-family:var(--fm);font-size:10.5px;color:var(--lime);letter-spacing:.3px;padding-top:1px}
+.lv-kv dd{margin:0;color:var(--dim)}
+.lv-kv dd b{color:var(--txt)}
+@media(max-width:700px){.lv-kv div{grid-template-columns:1fr;gap:2px}}
+.lv-keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:7px;margin:12px 0}
+.lv-key{display:flex;align-items:center;gap:9px;background:var(--panel);box-shadow:var(--ring);border-radius:10px;padding:8px 11px;font-size:11.5px;color:var(--dim)}
+.lv-key kbd{font-family:var(--fm);font-size:10.5px;background:rgba(148,163,184,.14);border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--txt);min-width:24px;text-align:center;flex:none}
+.lv-tip{background:color-mix(in srgb,var(--lime) 7%,transparent);border-left:2px solid var(--lime);border-radius:0 10px 10px 0;padding:10px 13px;font-size:11.5px;line-height:1.7;color:var(--dim);margin:12px 0}
+.lv-tip b{color:var(--lime)}
+.lv-warn{background:color-mix(in srgb,var(--down) 7%,transparent);border-left:2px solid var(--down);border-radius:0 10px 10px 0;padding:10px 13px;font-size:11.5px;line-height:1.7;color:var(--dim);margin:12px 0}
+.lv-warn b{color:#fca5a5}
+.lv-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.lv-cta button{background:linear-gradient(135deg,var(--lime),#9ede2b);color:var(--lime-ink);border:none;border-radius:10px;padding:10px 16px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.lv-cta button.ghost{background:rgba(148,163,184,.1);color:var(--txt);border:1px solid var(--line2)}
+.lv-foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint);line-height:1.7}
+
 </style>
 </head>
 <body data-page-node-id="M3jVaqQUz6sm9ZXCcMDC3s">
@@ -1313,6 +1389,7 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <header class="topbar" data-page-node-id="ivubypl9P6umpPLss5r1YN">
 <div class="topbar-brand" data-page-node-id="bbEB06M5h46orkZNyMsJoh">⚡ FTY <span data-page-node-id="RHuMGSvYqZ3aYAvrVtN8MQ">SCANNER</span></div>
 <div class="topbar-side" data-page-node-id="dXtlEn7UEm8XPpnTjxRQey">
+<button class="icon-btn" id="dockTopBtn" onclick="dockToggle()" title="Watchlist + paper terminal" aria-pressed="false" aria-label="Watchlist and paper terminal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.75 18.2 21l-1.2-6.88L22 9.24l-6.9-.96L12 2 8.9 8.28 2 9.24l5 4.88L5.8 21z"/></svg></button>
 <button class="icon-btn" id="wsBtn" onclick="openWorkspace()" title="Workspace — choose which markets and tools you use" aria-label="Workspace setup" aria-haspopup="dialog"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
 <button class="icon-btn" id="guideBtn" onclick="openGuide()" title="Quick guide — new users start here" aria-label="Open quick guide" data-page-node-id="kNAunaycZN6AqXD26cjLC9"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-page-node-id="dWFKIGfGA6o4gQeZiwBFb8"><circle cx="12" cy="12" r="10" data-page-node-id="GZEZehHzgEFe5xDDu1Iv0N"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" data-page-node-id="pGS5DTdWByIB1cBAVjhQim"/><line x1="12" y1="17" x2="12.01" y2="17" data-page-node-id="wCGKfazzwcYMxLnsAjKzRg"/></svg></button>
 <div class="theme-dots" id="themeDots" title="Theme" data-page-node-id="FGrYDXacI38QnR5Q03l7zF"><button class="tdot on" data-th="midnight" style="--dot:#c9f24b" aria-label="Midnight Lime" data-page-node-id="TL5d4XFSPmCQjrtcSVmmfP"></button><button class="tdot" data-th="arctic" style="--dot:#7dd3fc" aria-label="Arctic Ice" data-page-node-id="KP8XZB2cLGCGLd6NJoLP82"></button><button class="tdot" data-th="sunset" style="--dot:#ff9e5e" aria-label="Sunset Copper" data-page-node-id="r4n2XuByFtbIh5bUDw6aKQ"></button></div>
@@ -1325,7 +1402,7 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <button class="nav-tab on" id="navScan" onclick="showView('scan')" aria-pressed="true" title="Crypto scan — Binance spot — shortcut 1" data-page-node-id="CrHztzdZxqI4ijzGEAwjRs"><span class="rt-ico" aria-hidden="true" data-page-node-id="RiyN2flfZddlPE8RElK3jg">🔬</span><span data-page-node-id="XroFTzyxwgpaPD4bYGwaEl">Crypto</span></button>
 <button class="nav-tab" id="navSectors" onclick="showView('sectors')" aria-pressed="false" title="Sector rotation — India · US · Crypto — shortcut 2"><span class="rt-ico" aria-hidden="true">🧭</span><span>Sectors</span></button>
 <button class="nav-tab" id="navFlow" onclick="showView('flow')" aria-pressed="false" title="Order flow — where the money is going — shortcut 6"><span class="rt-ico" aria-hidden="true">💰</span><span>Flow</span></button>
-<button class="nav-tab" id="navDock" onclick="dockToggle()" aria-pressed="false" title="Watchlist + paper terminal panel — shortcut 3" data-page-node-id="u72GuAcEhsBhCN724hX2Hw"><span class="rt-ico" aria-hidden="true" data-page-node-id="L9qvLblpwFaqpSpBgBfSVG">☰</span><span data-page-node-id="T65mjFMSJDyBQE0kNy5v4l">Results</span></button>
+<button class="nav-tab" id="navLearn" onclick="showView('learn')" aria-pressed="false" title="How to use FTY Scanner — shortcut 3"><span class="rt-ico" aria-hidden="true">📖</span><span>Learn</span></button>
 <button class="nav-tab ws-rail" id="navSetup" onclick="openWorkspace()" title="Workspace — choose your markets and tools" aria-haspopup="dialog"><span class="rt-ico" aria-hidden="true">⚙</span><span>Setup</span></button>
 </nav>
 <div class="wrap" data-page-node-id="t6edpAm4jXbM13fjWucgv4">
@@ -1381,6 +1458,7 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <button class="hc-btn" onclick="showView('sectors')" data-act="sectors">🧭 Sector rotation</button>
 <button class="hc-btn" onclick="showView('flow')" data-act="flow">💰 Order flow</button>
 <button class="hc-btn" onclick="showView('chart')" data-act="chart" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Open full chart</button>
+<button class="hc-btn" onclick="showView('learn')">📖 How to use this</button>
 <button class="hc-btn" onclick="dockToggle()" data-act="dock" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Results &amp; watchlist</button>
 <button class="hc-btn ws-open" onclick="openWorkspace()" title="Choose markets and tools — the dashboard follows">⚙ Workspace setup</button>
 </div>
@@ -1404,6 +1482,7 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 </div>
 </section>
 
+<div class="mood-strip scan-only" id="moodStrip" hidden></div>
 <div class="tape scan-only" id="tape" title="Live qualifiers" data-page-node-id="oEd4Zbdc8d2E9rRZFp29cQ"><div class="tape-track" id="tapeTrack" data-page-node-id="dJY6dwEDN8mnlLKumMBQDv"><div class="tape-half" data-page-node-id="jBLSMhmFXPx9OCjKkI90TE"><span class="tape-item dim" data-page-node-id="N1TMdTIfLnH2CC0oI9PYqn">🔬 Hit Scan Market — qualified coins will stream here live</span></div></div></div>
 
 <div class="controls-bar scan-only" id="controlsBar" data-page-node-id="pvrJeAORIxAA8EiWsLl848">
@@ -1551,7 +1630,7 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <div class="gcard" data-page-node-id="4vxDuaDm90DgWWwbhbukIR">
 <div class="gt" data-page-node-id="mKRHI4qzWV4xZA1zWWrfGM">⌨️ KEYBOARD</div>
 <ul data-page-node-id="4PA06zUR363yjw243ijRkb">
-<li data-page-node-id="xDCshtE08M08bhKxalRZxE"><kbd data-page-node-id="D5hjuh5uB6PBYlvXU4cZDr">1</kbd> Scan · <kbd>2</kbd> Sectors · <kbd>6</kbd> Flow · <kbd data-page-node-id="2BNyQBQnOs1Zko8nENFGb4">3</kbd> Results</li>
+<li data-page-node-id="xDCshtE08M08bhKxalRZxE"><kbd data-page-node-id="D5hjuh5uB6PBYlvXU4cZDr">1</kbd> Scan · <kbd>2</kbd> Sectors · <kbd>6</kbd> Flow · <kbd>3</kbd> Learn</li>
 <li data-page-node-id="0eRFo70077AJqchqvjgGWY"><kbd data-page-node-id="0xkElXp4ZGBvYeBRRWIcZh">s</kbd> scan start/stop · <kbd data-page-node-id="GOzxHeCAFA4rDupfsMZ5Rp">/</kbd> search coin</li>
 <li data-page-node-id="yjH79KezF8pb43vB1ZRpOh"><kbd data-page-node-id="eYO0vGgyK6c4iTZcvrAnEy">c</kbd> copy next 30 · <kbd data-page-node-id="WtIEIUh8Ezr4cqKnXC3r9q">k</kbd> cards/table view</li>
 <li data-page-node-id="4LHm7EYGBx1j2m8xxwfn4z"><kbd data-page-node-id="0dwGpPN6rd5nffwwFzFRkY">⌘K</kbd> command palette · <kbd data-page-node-id="pyDJF4l442FqymWxszQnHH">Esc</kbd> to close</li>
@@ -1850,6 +1929,177 @@ body.view-sectors .wrap,body.view-flow .wrap{display:none}
 <div id="flowSec"><div class="sv-empty">Loading…</div></div>
 <div class="fv-note" id="flowNote"></div>
 </div>
+</div>
+</div>
+
+<!-- ═══ LEARN — the manual, in the app ═══ -->
+<div id="learnView" aria-label="How to use FTY Scanner">
+<div class="lv-wrap">
+<aside class="lv-toc">
+<div class="lv-toc-t">ON THIS PAGE</div>
+<a href="#l-start">60-second version</a>
+<a href="#l-tabs">The tabs</a>
+<a href="#l-table">Reading the table</a>
+<a href="#l-setup">Scan setup</a>
+<a href="#l-filters">Filters</a>
+<a href="#l-sectors">Sector rotation</a>
+<a href="#l-flow">Order flow</a>
+<a href="#l-chart">Chart</a>
+<a href="#l-workspace">Workspace</a>
+<a href="#l-keys">Shortcuts</a>
+<a href="#l-habits">Three habits</a>
+</aside>
+
+<main class="lv-main">
+<header>
+<h1 class="lv-h1">How to use <em>FTY Scanner</em></h1>
+<p class="lv-sub">This is the actual workflow, not theory. Read the first section and you can already run a scan; the rest explains what the numbers mean so you stop guessing.</p>
+<div class="lv-meta">
+<span class="lv-tag">EMA FOLLOWER ENGINE</span>
+<span class="lv-tag">INDIA · US · CRYPTO</span>
+<span class="lv-tag">11 TIMEFRAMES</span>
+<span class="lv-tag">UPDATED 2026</span>
+</div>
+<div class="lv-cta">
+<button onclick="showView('scan')">🔬 Run a scan</button>
+<button class="ghost" onclick="showView('sectors')">🧭 See sectors</button>
+<button class="ghost" onclick="openGuide()">❓ Quick guide</button>
+</div>
+</header>
+
+<section class="lv-sec" id="l-start">
+<div class="lv-sec-h"><span class="lv-num">01</span><h2>The 60-second version</h2><span>start here</span></div>
+<ol class="lv-steps">
+<li><b>Pick your market</b> in the left rail — 🇮🇳 India, 🇺🇸 US or 🔬 Crypto. Each one is a full scanner with its own universe.</li>
+<li><b>Hit the yellow <code>Scan</code> button</b> in the bar at the top of the results. First run: leave the scope on <b>This TF</b> and the universe on <b>Top 100</b> — it finishes in under a minute instead of several.</li>
+<li><b>Click any row</b> to see the mini chart and the full check list. Hit <b>Full Chart</b> when you want to draw, replay or measure.</li>
+</ol>
+<div class="lv-tip"><b>That's the whole loop.</b> Everything else on this page is detail: what the score means, which timeframe to trust, and where the money is rotating.</div>
+</section>
+
+<section class="lv-sec" id="l-tabs">
+<div class="lv-sec-h"><span class="lv-num">02</span><h2>What each tab does</h2><span>the rail</span></div>
+<div class="lv-grid">
+<div class="lv-card"><div class="ic">🏠</div><b>Home</b><span>One screen: your markets, the last scan, top qualifiers, watchlist glance.</span></div>
+<div class="lv-card"><div class="ic">🇮🇳</div><b>India</b><span>NSE + BSE scanner. All listed stocks, 11 timeframes, BUY and SELL side.</span></div>
+<div class="lv-card"><div class="ic">🇺🇸</div><b>US</b><span>NYSE + NASDAQ + AMEX scanner, same engine as India.</span></div>
+<div class="lv-card"><div class="ic">🔬</div><b>Crypto</b><span>Binance USDT spot. Runs 24/7, so intraday timeframes are always live.</span></div>
+<div class="lv-card"><div class="ic">🧭</div><b>Sectors</b><span>Which sector is trending on which timeframe — a heatmap, not a list.</span></div>
+<div class="lv-card"><div class="ic">💰</div><b>Flow</b><span>Where the money is going: inflow, outflow, by symbol and by sector.</span></div>
+<div class="lv-card"><div class="ic">⭐</div><b>Results</b><span>Top-right star in the header — watchlist + paper trading terminal.</span></div>
+<div class="lv-card"><div class="ic">⚙</div><b>Setup</b><span>Choose the markets and tools you actually use. Nothing is deleted.</span></div>
+</div>
+</section>
+
+<section class="lv-sec" id="l-table">
+<div class="lv-sec-h"><span class="lv-num">03</span><h2>Reading the table</h2><span>the numbers</span></div>
+<p>The engine asks one question: <b>has this price been respecting its EMA?</b> Every column is an answer to that, from a different angle.</p>
+<dl class="lv-kv">
+<div><dt>SCORE 0–100</dt><dd>Eight components added up: respect, interactions, rejections, proximity, EMA slope, structure, continuation, failure control. <b>70+</b> is a clean follower, <b>90+</b> is near-perfect.</dd></div>
+<div><dt>NEVER BROKE</dt><dd>The price never closed on the wrong side of the EMA in the whole respect window. <b>YES</b> is the strongest single flag on the board.</dd></div>
+<div><dt>DISTANCE</dt><dd>How far price sits from the EMA, in %. Small = entry is still close. <b>Under 2%</b> is the sweet spot; over 10% means you are chasing.</dd></div>
+<div><dt>EMA</dt><dd>Which period the coin is riding. Auto-detected by default, or fixed by you in Scan setup.</dd></div>
+<div><dt>SETUP</dt><dd>Candle behaviour right at the EMA — Hammer, Pin Bar, Bullish candle, Retest, Rejection. <b>Fresh</b> means it happened on the latest candles.</dd></div>
+<div><dt>SIGNAL</dt><dd><b>STRONG BUY</b> = never broke + score 90+ + fresh + rising EMA. <b>BUY</b> = score 80+ and fresh. <b>WATCH</b> = score 70+. On the SELL side the same ladder reads STRONG SELL / SELL.</dd></div>
+<div><dt>24h %</dt><dd>Crypto only — the last 24 hours. On stocks the daily move is already inside the distance and the score.</dd></div>
+<div><dt>SECTOR</dt><dd>Which bucket the symbol belongs to, so you can see when five rows are really one trade.</dd></div>
+</dl>
+<div class="lv-warn"><b>A score is a description, not a promise.</b> It says "this price respected this EMA" — it does not say the trend continues tomorrow. Size positions as if every scan can be wrong.</div>
+</section>
+
+<section class="lv-sec" id="l-setup">
+<div class="lv-sec-h"><span class="lv-num">04</span><h2>Scan setup</h2><span>tap BUY · 1H · Auto</span></div>
+<p>These three pills open the setup drawer. It controls what the <b>next</b> scan does — nothing changes until you press Scan again.</p>
+<dl class="lv-kv">
+<div><dt>SCAN</dt><dd><b>All 11 TFs</b> fills every timeframe board in one pass (slowest, most complete). <b>Swing · D/W/M</b> is daily/weekly/monthly only. <b>This TF · fast</b> scans just the timeframe you are looking at — use this when you want a quick read.</dd></div>
+<div><dt>SIDE</dt><dd><b>▲ BUY</b> finds price riding <i>above</i> the EMA (support). <b>▼ SELL</b> finds price riding <i>below</i> it (resistance). One scan fills both sides, so switching is instant.</dd></div>
+<div><dt>TIMEFRAME</dt><dd>5m → 1M. Lower = faster decisions, more noise. Higher = slower, more reliable. Most people should live on <b>1H and 1D</b>.</dd></div>
+<div><dt>EMA</dt><dd><b>Auto</b> tests 16 periods per coin and keeps the cleanest. Or fix one (10/20/50/100/200, or type any period) for a faster, narrower pass.</dd></div>
+</dl>
+<div class="lv-tip"><b>Fastest useful scan:</b> This TF + Auto + Top 100. It answers "what is clean on my timeframe right now" in under a minute.</div>
+</section>
+
+<section class="lv-sec" id="l-filters">
+<div class="lv-sec-h"><span class="lv-num">05</span><h2>Filters</h2><span>the Filters pill</span></div>
+<p>Filters never change the scan — they only trim what you are looking at. The scan counts stay honest, the list gets shorter.</p>
+<dl class="lv-kv">
+<div><dt>MARKET</dt><dd>All / a single exchange (NSE, BSE, NASDAQ, NYSE, AMEX, Binance).</dd></div>
+<div><dt>MIN PRICE</dt><dd>Hide everything below a price — useful to drop sub-paisa coins and penny stocks.</dd></div>
+<div><dt>STRATEGY</dt><dd>EMA Followers (score 70+), Fresh Setup, Strong Buy, Setup (a candle pattern is present).</dd></div>
+<div><dt>UNIVERSE</dt><dd>Crypto only: Top 100 / 200 / 300 pairs by turnover. Fewer pairs = shorter scan.</dd></div>
+<div><dt>AUTO RESCAN</dt><dd>Re-runs the pass every 5 or 15 minutes so the board stays warm while the tab is open.</dd></div>
+</dl>
+</section>
+
+<section class="lv-sec" id="l-sectors">
+<div class="lv-sec-h"><span class="lv-num">06</span><h2>Sector rotation</h2><span>the heatmap</span></div>
+<p>One row per sector, one column per timeframe, and the cell is that sector's <b>average move</b> on that timeframe. Colour scale is per column, because +0.1% is a big move on 5m and noise on 1M.</p>
+<dl class="lv-kv">
+<div><dt>ALIGN</dt><dd>The number that matters: how many timeframes are green. <b>5/7 or better</b> means the sector is trending everywhere — that is rotation. <b>1/7</b> means one timeframe had a good hour.</dd></div>
+<div><dt>SORT</dt><dd>Click any timeframe chip (or the column header) to re-rank the sectors by that timeframe. Instant — the data is already loaded.</dd></div>
+<div><dt>CONSTITUENTS</dt><dd>Click a sector to see every stock inside it, sorted by the selected timeframe.</dd></div>
+<div><dt>COPY 30</dt><dd>Copies the next 30 symbols to your clipboard, one per line, ready for your broker or chart. Click again for 31–60, and so on.</dd></div>
+</dl>
+<div class="lv-tip"><b>How to actually use it:</b> find a sector with high ALIGN, open its constituents, and pick the names that also score well in the scanner. Sector tailwind + clean EMA = the setup worth taking.</div>
+</section>
+
+<section class="lv-sec" id="l-flow">
+<div class="lv-sec-h"><span class="lv-num">07</span><h2>Order flow</h2><span>where the money is going</span></div>
+<p>Inflow and outflow, ranked, plus a by-sector breakdown. Two different measurements depending on the market:</p>
+<dl class="lv-kv">
+<div><dt>CRYPTO</dt><dd><b>Real order flow.</b> Binance publishes taker buy volume separately, so this is aggressive buying minus aggressive selling, in dollars, over the last 24 hourly candles.</dd></div>
+<div><dt>INDIA / US</dt><dd><b>Proxy.</b> No free tick-level feed for cash equities, so it is turnover × move: a stock up 3% on ₹500 Cr turnover reads +₹15 Cr. Direction is reliable, the absolute number is an estimate.</dd></div>
+</dl>
+<div class="lv-tip"><b>Read it as a filter, not a signal.</b> Money leaving a sector you were about to buy is a reason to wait. Money piling into a sector with high ALIGN is confirmation, not a trigger.</div>
+</section>
+
+<section class="lv-sec" id="l-chart">
+<div class="lv-sec-h"><span class="lv-num">08</span><h2>Chart workspace</h2><span>click a row</span></div>
+<p>Clicking any row opens the mini chart with the full check list and the 100-point breakdown. From there:</p>
+<dl class="lv-kv">
+<div><dt>FULL CHART</dt><dd>Full-screen candles with drawing tools (trend, ray, fib), indicators (EMA, Vol, RSI, MACD, BB), bar-by-bar replay and a measuring tool.</dd></div>
+<div><dt>WATCHLIST</dt><dd>The ★ on any row adds it to your watchlist — the star in the header opens it, along with the paper trading terminal.</dd></div>
+<div><dt>CLOSE</dt><dd><code>Esc</code> or the ✕ returns you to the tab you came from.</dd></div>
+</dl>
+</section>
+
+<section class="lv-sec" id="l-workspace">
+<div class="lv-sec-h"><span class="lv-num">09</span><h2>Workspace</h2><span>⚙ in the header</span></div>
+<p>You do not have to use all three markets. Open <b>⚙ Setup</b> and pick only what you trade — the rail, the dashboard and the shortcuts all follow. Turning something off only hides it: your watchlist, paper trades, filters and scan history stay exactly where they are.</p>
+</section>
+
+<section class="lv-sec" id="l-keys">
+<div class="lv-sec-h"><span class="lv-num">10</span><h2>Keyboard</h2><span>no mouse needed</span></div>
+<div class="lv-keys">
+<div class="lv-key"><kbd>1</kbd> Crypto scanner</div>
+<div class="lv-key"><kbd>2</kbd> Sector rotation</div>
+<div class="lv-key"><kbd>3</kbd> Learn</div>
+<div class="lv-key"><kbd>4</kbd> India</div>
+<div class="lv-key"><kbd>5</kbd> US</div>
+<div class="lv-key"><kbd>6</kbd> Order flow</div>
+<div class="lv-key"><kbd>H</kbd> Home</div>
+<div class="lv-key"><kbd>S</kbd> Start / stop scan</div>
+<div class="lv-key"><kbd>/</kbd> Search symbol</div>
+<div class="lv-key"><kbd>K</kbd> Cards / table view</div>
+<div class="lv-key"><kbd>C</kbd> Copy next 30</div>
+<div class="lv-key"><kbd>⌘K</kbd> Command palette</div>
+<div class="lv-key"><kbd>Tab</kbd> Toggle chart</div>
+<div class="lv-key"><kbd>Esc</kbd> Close anything</div>
+</div>
+</section>
+
+<section class="lv-sec" id="l-habits">
+<div class="lv-sec-h"><span class="lv-num">11</span><h2>Three habits</h2><span>before you risk money</span></div>
+<ol class="lv-steps">
+<li><b>Check the higher timeframe first.</b> A 5m STRONG BUY inside a daily downtrend is a scalp, not a position. Look at 1D before you act on 15m.</li>
+<li><b>Never chase distance.</b> If price is already 12–15% above its EMA, the entry has been and gone. The best rows on this board are the ones at 1–3%.</li>
+<li><b>One scan is one opinion.</b> Run it again after a few hours. If the same names keep showing up, that is a trend. If the list churns completely, the market is chopping and cash is a position.</li>
+</ol>
+<div class="lv-warn"><b>This tool scans, it does not advise.</b> No score, signal or flow number here is a recommendation to buy or sell. Verify on the chart, size the position so a wrong call is survivable, and use the paper terminal until the workflow is muscle memory.</div>
+</section>
+
+<div class="lv-foot">FTY Scanner · EMA follower engine · India (NSE+BSE) · US (NYSE+NASDAQ+AMEX) · Crypto (Binance USDT spot). Data: TradingView, Binance, Yahoo. Everything runs in this page — no account, no server.</div>
+</main>
 </div>
 </div>
 
@@ -2220,12 +2470,18 @@ let ls=hmLastScan();
 let cards=null,topEma='—',topEmaLbl='TOP EMA',ageLine='';
 if(live||(!ls&&Array.isArray(lastScopeTFs))){
 let avg=rows.length?Math.round(rows.reduce((a,r)=>a+(r.score||0),0)/rows.length):0;
+// Same five cards as the India / US scanners: three named picks + two zones.
+let top=null;rows.forEach(r=>{if(!top||(r.score||0)>(top.score||0))top=r;});
+let rider=null;rows.forEach(r=>{if(!rider||(r.respectBars||0)>(rider.respectBars||0))rider=r;});
+let _secs={};rows.forEach(r=>{let k=cryptoSector(r.symbol);if(k&&k!=='Other')_secs[k]=(_secs[k]||0)+1;});
+let _ts=Object.keys(_secs).sort((a,b)=>_secs[b]-_secs[a])[0]||null;
+let buyN=0,coilN=0;rows.forEach(r=>{let d=Math.abs(+r.distPct||0);if(d<=3)buyN++;if(d<1)coilN++;});
 cards=[
-{num:s.total,lbl:'QUALIFIED',color:'var(--txt)',tip:'Coins above their auto-detected EMA — clean support, never closed below it'},
-{num:s.neverBroke,lbl:'NEVER BROKE',color:'var(--up)',tip:'Every historical close stayed above the EMA'},
-{num:avg,lbl:'AVG SCORE',color:'var(--lime)',tip:'Average follower score across qualified coins'},
-{num:s.fresh,lbl:'FRESH SETUPS',color:'var(--cyan)',tip:'Recent EMA retest / rejection / continuation'}];
-// 5th card: the EMA level MOST qualified coins are following right now.
+{num:top?top.symbol:'—',txt:1,lbl:'🔥 TOP PICK',color:'var(--gold)',tip:top?('Highest follower score '+top.score+' · '+top.lvl+' EMA · click to open'):'No scan data yet',click:top?("stockRowClick('"+top.symbol+"','BINANCE')"):null},
+{num:rider?rider.symbol:'—',txt:1,lbl:'👑 LONGEST RIDER',color:'var(--violet)',tip:rider?((rider.respectBars||0)+' bars riding '+rider.lvl+' EMA · click to open'):'No scan data yet',click:rider?("stockRowClick('"+rider.symbol+"','BINANCE')"):null},
+{num:_ts||'—',txt:1,lbl:'🏭 TOP SECTOR',color:'var(--lime)',tip:_ts?(_secs[_ts]+' qualified coins in '+_ts):'No scan data yet',click:null},
+{num:buyN,lbl:(scanSide==='SELL'?'🔻 SELL ZONE':'🎯 BUY ZONE'),color:'var(--up)',tip:(scanSide==='SELL'?'0–3% below EMA — short-ready, no chasing':'0–3% above EMA — entry-ready, no chasing')},
+{num:coilN,lbl:'🌀 COILED',color:'var(--lime)',tip:'<1% from EMA — breakout watch'}];
 let _lvl={};rows.forEach(r=>{if(r.lvl!=null)_lvl[r.lvl]=(_lvl[r.lvl]||0)+1;});
 let _top=Object.keys(_lvl).sort((a,b)=>_lvl[b]-_lvl[a])[0];
 topEma=_top?(_top+' EMA'):'—';
@@ -2236,6 +2492,8 @@ cards=[
 {num:(typeof ls.neverBroke==='number'?ls.neverBroke:'—'),lbl:'NEVER BROKE',color:'var(--up)',tip:'Every historical close stayed above the EMA (last pass)'},
 {num:(typeof ls.avgScore==='number'?ls.avgScore:'—'),lbl:'AVG SCORE',color:'var(--lime)',tip:'Average follower score across qualified coins (last pass)'},
 {num:ls.fresh,lbl:'FRESH SETUPS',color:'var(--cyan)',tip:'Recent EMA retest / rejection / continuation (last pass)'}];
+cards.push({num:(ls.topEma?ls.topEma+' EMA':'—'),txt:1,lbl:'TOP EMA',color:'var(--gold)',tip:'The EMA most qualified coins were riding (last pass)'});
+if(ls.top&&ls.top[0])cards.push({num:ls.top[0].sym,txt:1,lbl:'🔥 TOP PICK',color:'var(--gold)',tip:'Best score from the last saved pass'});
 topEma=ls.topEma?(ls.topEma+' EMA'):'—';
 topEmaLbl=ls.topEma?('TOP EMA · '+(ls.topEmaN||0)+' COINS'):'TOP EMA';
 ageLine='<div class="ov-hint">Last pass '+hmAgo(ls.ts)+' · '+(ls.universe||0)+' coins · '+hmTfLbl(ls.tf)+(hmStale(ls.ts)?' — stale':'')+'</div>';
@@ -2250,8 +2508,9 @@ clearTimeout(_ovSkTimer);
 _ovSkTimer=setTimeout(function(){_ovDead=true;let e2=$('overview');if(e2)e2.innerHTML=_ovDeadHtml();},6000);
 return;}
 _ovDead=false;clearTimeout(_ovSkTimer);
-el.innerHTML=cards.map(c=>'<div class="pstat" title="'+c.tip+'"><div class="num" style="color:'+c.color+'"'+(typeof c.num==='number'?' data-count="'+c.num+'"':'')+'>'+c.num+'</div><div class="lbl">'+c.lbl+'</div></div>').join('')+
-'<div class="pstat txt" title="The EMA level most qualified coins are following right now"><div class="num" style="color:var(--gold)">'+topEma+'</div><div class="lbl">'+topEmaLbl+'</div></div>'+ageLine;
+el.innerHTML=cards.map(function(c){
+return '<div class="pstat'+(c.txt?' txt':'')+(c.click?' click':'')+'" title="'+c.tip+'"'+(c.click?' onclick="'+c.click+'"':'')+'><div class="num" style="color:'+c.color+'"'+(typeof c.num==='number'?' data-count="'+c.num+'"':'')+'>'+c.num+'</div><div class="lbl">'+c.lbl+'</div></div>';
+}).join('')+ageLine;
 try{
 let stats=el.querySelectorAll('.pstat');
 if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -2286,6 +2545,36 @@ fetch(hosts[i]+'/'+q).then(r=>{if(!r.ok)throw 0;return r.json();}).then(j=>{
 try{(Array.isArray(j)?j:[]).forEach(o=>{let v=parseFloat(o.priceChangePercent),p=parseFloat(o.lastPrice);if(o.symbol==='BTCUSDT'){_heroTk.btc=v;_heroTk.bp=p;}if(o.symbol==='ETHUSDT'){_heroTk.eth=v;_heroTk.ep=p;}});}catch(e){}
 _heroTk.at=Date.now();_heroSig='';try{renderHome();}catch(e){}}).catch(()=>tryNext(i+1));};
 tryNext(0);}
+// ── MARKET MOOD: which EMA the tape is actually riding, from scan data only ──
+function renderMood(){
+let el=$('moodStrip');if(!el)return;
+let rows=getLive();
+if(!contentVisible||!rows.length){el.hidden=true;el.innerHTML='';return;}
+let counts={};rows.forEach(r=>{if(r.lvl!=null)counts[r.lvl]=(counts[r.lvl]||0)+1;});
+let keys=Object.keys(counts).map(Number).sort((a,b)=>a-b);
+if(!keys.length){el.hidden=true;return;}
+let dom=keys.reduce((a,k)=>counts[k]>counts[a]?k:a,keys[0]);
+let avgD=rows.reduce((a,r)=>a+(+r.distPct||0),0)/rows.length;
+let avgS=rows.reduce((a,r)=>a+(r.score||0),0)/rows.length;
+let nb=rows.filter(r=>r.neverBroke).length/rows.length*100;
+let regime,rc;
+if(avgD>12){regime='⚠️ EXTENDED';rc='var(--gold)';}
+else if(avgS>=70&&nb>=60){regime='🔥 HEALTHY TREND';rc='var(--up)';}
+else if(avgS>=60){regime='↗️ BUILDING';rc='var(--cyan)';}
+else{regime='🌧️ WEAK';rc='var(--dim)';}
+let maxC=counts[dom];
+let bars=keys.slice(0,10).map(function(k){
+let h=Math.max(6,Math.round(counts[k]/maxC*34));
+return '<button class="mood-bar '+(emaFilter===k?'on':'')+'" onclick="setEmaFilter('+k+')" title="'+counts[k]+' coins riding the '+k+' EMA — click to filter"><i style="height:'+h+'px"></i><span>'+k+'</span></button>';
+}).join('');
+el.innerHTML='<div class="mood-lead"><span class="mood-lbl">📊 MARKET<br>MOOD</span>'
++'<div><div class="mood-ema">'+dom+' <small>EMA</small></div>'
++'<div class="mood-sub">'+counts[dom]+' of '+rows.length+' coins · '+TF_META[TF].lbl+'</div></div></div>'
++'<div class="mood-hist">'+bars+'</div>'
++'<div class="mood-meta"><span class="mood-regime" style="color:'+rc+'">'+regime+'</span>'
++'<span class="mood-stat">avg <b>'+(avgD>=0?'+':'')+avgD.toFixed(1)+'%</b> '+(scanSide==='SELL'?'below EMA':'above EMA')+'</span></div>';
+el.hidden=false;
+}
 function renderHero(){
 let g=$('heroGreet'),s=$('heroSub'),m=$('hmMood'),cs=$('hmChips');if(!m)return;
 let rows=(typeof __ftyRows!=='undefined'&&Array.isArray(__ftyRows))?__ftyRows:[];
@@ -2441,6 +2730,7 @@ let sh=$('cbShowN');if(sh)sh.textContent=String((typeof getFiltered==='function'
 }
 function render(){
 renderTFTabs();
+try{renderMood();}catch(e){}
 let sq=$('symSearch');if(sq){sq.value=searchQuery;searchQuery=sq.value;}
 renderOverview();
 renderHome();
@@ -2756,6 +3046,7 @@ return ((b.neverBroke?1:0)-(a.neverBroke?1:0))||((b.score||0)-(a.score||0))||sb-
 function theadHtml(){
 let th=(k,lbl,tip)=>'<th scope="col" data-sk="'+k+'" class="'+(sortKey===k?'on':'')+'"'+(tip?' title="'+tip+'"':'')+' tabindex="0" aria-sort="'+(sortKey===k?(sortDir===1?'ascending':'descending'):'none')+'" onclick="sortBy(\''+k+'\')">'+lbl+(sortKey===k?(sortDir===1?' ▲':' ▼'):'')+'</th>';
 return '<th scope="col">#</th>'+th('sym','Coin','Sort A→Z / Z→A')
++'<th scope="col">Sector</th>'
 +'<th scope="col">EMA</th>'+th('price','Price','Highest price first')
 +'<th scope="col">24h %</th>'+th('dist','Distance','1st click: closest to its EMA first')
 +th('score','Score','Highest follower score first')+th('nb','Never Broke','Zero-break followers first')
@@ -2767,6 +3058,7 @@ let sc=r.score||0;
 return `<tr onclick="stockRowClick('${r.symbol}','${r.ex}')">
 <td class="c-rank">${i+1}</td>
 <td><div class="c-sym"><a href="${tvLink(r)}" onclick="event.stopPropagation()" target="_blank">${r.symbol}</a><span class="ex-tag ${exCls(r.ex)}">${r.ex}</span></div><div class="c-name">${r.name||''}</div></td>
+<td class="mono dim">${cryptoSector(r.symbol)}</td>
 <td class="mono dim">${r.lvl||'—'}</td>
 <td class="mono">$${r.price}</td><td class="mono" style="color:${(r.chg24||0)>=0?'#5fd6a2':'#f87171'}">${r.chg24!=null?((r.chg24>=0?'+':'')+r.chg24.toFixed(2)+'%'):'—'}</td>
 <td class="mono" style="color:${distColor(r.distPct)}">${distTxt(r)}</td>
@@ -3700,6 +3992,7 @@ return [
 {t:'\uD83D\uDCB0 Order flow',h:'where money moves',gate:'flow',fn:()=>showView('flow')},
 {t:'\uD83D\uDCC8 Chart workspace',h:'full screen',gate:'chart',fn:()=>{let r=(getLive()||[])[0];openChart(r?r.symbol:'BTCUSDT',r?r.ex:'BINANCE',r?r.lvl:0,r);}},
 {t:'\u2753 Quick Guide \u2014 how to use',h:'help / new user',fn:()=>openGuide()},
+{t:'\uD83D\uDCD6 Learn \u2014 how to use this',h:'manual',fn:()=>showView('learn')},
 {t:'\u2B50 Watchlist / Terminal',h:'paper trading',gate:'dock',fn:()=>dockToggle()},
 {t:'\uD83D\uDD14 Alerts: new Strong Buy',h:'toggle alerts',gate:'alerts',fn:()=>toggleAlerts()},
 {t:'\uD83C\uDCCF Toggle Cards / Table',h:'switch view',fn:()=>toggleCardsView()},
@@ -4958,7 +5251,7 @@ if(v.charAt(0)==='#')return v;
 try{let m=v.match(/\d+/g);if(!m||m.length<3)return v;return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join('');}catch(e){return v;}}
 // ── top-level navigation: Chart / Scan / Results ──
 function setNavTab(v){
-const map={home:'navHome',scan:'navScan',india:'navIndia',us:'navUS',sectors:'navSectors',flow:'navFlow'};
+const map={home:'navHome',scan:'navScan',india:'navIndia',us:'navUS',sectors:'navSectors',flow:'navFlow',learn:'navLearn'};
 Object.keys(map).forEach(function(k){
 let b=document.getElementById(map[k]);
 if(!b)return;
@@ -4968,10 +5261,10 @@ b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));
 navDockSync();
 }
 function navDockSync(){
-let d=document.getElementById('dock'),b=document.getElementById('navDock');
-if(!b)return;
+let d=document.getElementById('dock'),b=document.getElementById('navDock'),t=document.getElementById('dockTopBtn');
 let on=!!(d&&d.classList.contains('show'));
-b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));}
+if(b){b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));}
+if(t){t.classList.toggle('on',on);t.setAttribute('aria-pressed',String(on));}}
 function toggleView(){
 let cs=document.getElementById('chartSpace');
 showView((cs&&!cs.hidden)?_lastView:'chart');}
@@ -4982,13 +5275,13 @@ return 'BTCUSDT';
 }
 let _lastView='scan';   // last non-chart tab (home/scan) — chart ✕ / Esc isi pe wapas laate hain
 function lastViewSaved(){try{let v=localStorage.getItem('ftyLastPlain');return (v==='scan'||v==='home'||v==='india'||v==='us')?v:'scan';}catch(e){return 'scan';}}
-const ALL_VIEWS=['view-chart','view-scan','view-home','view-india','view-us','view-sectors','view-flow'];
+const ALL_VIEWS=['view-chart','view-scan','view-home','view-india','view-us','view-sectors','view-flow','view-learn'];
 function setViewClass(v){
 document.body.classList.remove.apply(document.body.classList,ALL_VIEWS);
 document.body.classList.add('view-'+v);
 }
 function showView(v){
-if(['chart','home','scan','india','us','sectors','flow'].indexOf(v)<0)v='scan';
+if(['chart','home','scan','india','us','sectors','flow','learn'].indexOf(v)<0)v='scan';
 // workspace gate — a market or tool the user switched off is simply not there
 if(typeof wsAllows==='function'&&!wsAllows(v))return wsBlocked(v);
 if(v==='chart'){
@@ -5014,6 +5307,10 @@ _lastView=v;
 setViewClass('flow');
 closeChart(true);
 try{flowOpen();}catch(e){}
+}else if(v==='learn'){
+_lastView=v;
+setViewClass('learn');
+closeChart(true);
 }else{
 _lastView=v;
 setViewClass(v);
@@ -6285,14 +6582,14 @@ function mapTvSector(s){return s?(TV_SECTOR_MAP[s]||s):'Other';}
 // Crypto: base asset → sector. Curated for the Binance USDT majors.
 const CRYPTO_SECTORS=(function(){
 const g={
-'Layer 1':'BTC ETH SOL BNB ADA AVAX TRX TON SUI APT NEAR ICP DOT ATOM ALGO EGLD SEI KAS HBAR ETC FTM S RON TIA KAVA OSMO ZIL ONE IOTA VET QTUM XEC CKB KSM ASTR GLMR METIS MANTA LUNC LUNA XTZ NEO EOS WAVES ICX ONT RVN DGB LSK STEEM HIVE ARK',
-'Layer 2':'ARB OP MATIC POL STRK ZK MNT BLAST LRC IMX BOBA CTSI SKL',
-'DeFi':'UNI AAVE MKR CRV LDO SNX COMP SUSHI 1INCH CAKE DYDX GMX PENDLE ENA JUP RAY BAL YFI RPL FXS GNO MLN LQTY RDNT AERO ORCA KMNO',
-'Meme':'DOGE SHIB PEPE WIF BONK FLOKI MEME BOME MOG BRETT TRUMP PNUT NEIRO POPCAT TURBO DOGS',
-'AI':'FET AGIX OCEAN RNDR RENDER TAO WLD ARKM GRT NMR PHB AI VIRTUAL GOAT',
-'Gaming':'SAND MANA AXS GALA ENJ ILV APE PRIME BEAM YGG PIXEL PORTAL NOT CATI MAVIA BIGTIME GHST',
-'RWA':'ONDO POLYX CFG TRU OM MPL',
-'Infra':'FIL AR HNT IOTX THETA AKT NOS STORJ SC LINK PYTH BAND API3 TRB QNT ANKR LPT',
+'Layer 1':'BTC ETH SOL BNB ADA AVAX TRX TON SUI APT NEAR ICP DOT ATOM ALGO EGLD SEI KAS HBAR ETC FTM S RON TIA KAVA OSMO ZIL ONE IOTA VET QTUM XEC CKB KSM ASTR GLMR METIS LUNC LUNA XTZ NEO EOS WAVES ICX ONT RVN DGB LSK STEEM HIVE ARK INJ XDC CFX BTG NULS WAN WTC ELA FIRO KMD XVG CORE SAGA DYM JASMY FLOW',
+'Layer 2':'ARB OP MATIC POL STRK ZK MNT BLAST LRC BOBA CTSI SKL MANTA MOVE STX IMX',
+'DeFi':'UNI AAVE MKR CRV LDO SNX COMP SUSHI 1INCH CAKE DYDX GMX PENDLE ENA JUP RAY BAL YFI RPL FXS GNO MLN LQTY RDNT AERO ORCA KMNO ETHFI EIGEN JTO REZ BB AEVO USUAL ALEX STG RSR',
+'Meme':'DOGE SHIB PEPE WIF BONK FLOKI MEME BOME MOG BRETT TRUMP PNUT NEIRO POPCAT TURBO DOGS BABYDOGE ELON SATS 1000SATS RATS ORDI PENGU FARTCOIN',
+'AI':'FET AGIX OCEAN RNDR RENDER TAO WLD ARKM GRT NMR PHB AI VIRTUAL GOAT IO ATH GRASS LPT SWARMS GRIFFAIN ZEREBRO ACT',
+'Gaming':'SAND MANA AXS GALA ENJ ILV APE PRIME BEAM YGG PIXEL PORTAL NOT CATI MAVIA BIGTIME GHST MAGIC ALICE HMSTR MAJOR BLUR',
+'RWA':'ONDO POLYX CFG TRU OM MPL XAUT PAXG',
+'Infra':'FIL AR HNT IOTX THETA AKT NOS STORJ SC LINK PYTH BAND API3 TRB QNT ANKR ZRO W ALT OMNI GAL',
 'Exchange':'CRO OKB LEO KCS GT WOO',
 'Payments':'XRP XLM LTC BCH DCR',
 'Privacy':'XMR ZEC DASH SCRT ROSE ZEN'
@@ -6301,6 +6598,11 @@ const out={};
 Object.keys(g).forEach(function(k){g[k].split(' ').forEach(function(sym){out[sym]=k;});});
 return out;
 })();
+function cryptoSector(sym){
+if(!sym)return '';
+const base=String(sym).replace(/USDT$/,'').replace(/BUSD$/,'').replace(/FDUSD$/,'');
+return (typeof CRYPTO_SECTORS!=='undefined'&&CRYPTO_SECTORS[base])||'Other';
+}
 const SEC_META={
 india:{lbl:'India',cur:'₹',src:'NSE · TradingView',tfs:STOCK_TFS},
 us:{lbl:'US',cur:'$',src:'NYSE + NASDAQ + AMEX · TradingView',tfs:STOCK_TFS},
@@ -6756,6 +7058,7 @@ function wsMarketOf(v){return v==='scan'?'crypto':(v==='india'||v==='us')?v:null
 function wsAllows(v){
 if(v==='home')return true;
 if(v==='chart')return true;
+if(v==='learn')return true;
 if(v==='sectors')return wsHasTool('sectors');
 if(v==='flow')return wsHasTool('flow');
 if(v==='dock')return wsHasTool('dock');
@@ -7002,7 +7305,7 @@ if(k==='h'||k==='H'||k==='0'){e.preventDefault();showView('home');return;}
 if(k==='1'){e.preventDefault();showView('scan');return;}
 if(k==='2'){e.preventDefault();showView('sectors');return;}
 if(k==='6'){e.preventDefault();showView('flow');return;}
-if(k==='3'){e.preventDefault();if(!wsAllows('dock')){wsBlocked('dock');return;}dockToggle();return;}
+if(k==='3'){e.preventDefault();showView('learn');return;}
 if(k==='4'){e.preventDefault();showView('india');return;}
 if(k==='5'){e.preventDefault();showView('us');return;}
 let cs=document.getElementById('chartSpace');
