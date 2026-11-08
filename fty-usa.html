@@ -1130,7 +1130,8 @@ body.view-home #hmFoot{margin-top:auto}
 body.ws-no-crypto #navScan,body.ws-no-crypto [data-mk="crypto"],body.ws-no-crypto [data-act="crypto"],body.ws-no-crypto [data-hm="crypto"]{display:none!important}
 body.ws-no-india #navIndia,body.ws-no-india [data-mk="india"],body.ws-no-india [data-act="india"]{display:none!important}
 body.ws-no-us #navUS,body.ws-no-us [data-mk="us"],body.ws-no-us [data-act="us"]{display:none!important}
-body.ws-no-chart #navChart,body.ws-no-chart [data-act="chart"]{display:none!important}
+body.ws-no-sectors #navSectors,body.ws-no-sectors [data-act="sectors"]{display:none!important}
+body.ws-no-flow #navFlow,body.ws-no-flow [data-act="flow"]{display:none!important}
 body.ws-no-dock #navDock,body.ws-no-dock #dockBtn,body.ws-no-dock [data-act="dock"]{display:none!important}
 body.ws-no-alerts #alertBtn{display:none!important}
 body.ws-no-ai #aiAnalysisSection{display:none!important}
@@ -1189,6 +1190,73 @@ body.ws-no-ai #aiAnalysisSection{display:none!important}
 .cb-sheet-h::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:38px;height:4px;border-radius:99px;background:var(--line2)}
 .cb-sheet-b .lv-lbl{width:100%}
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SECTOR ROTATION + ORDER FLOW — two full-screen views in the chart tab's
+   old slot. Same design language as the scanners: dark panels, mono
+   figures, one accent. Data: TradingView scan (India/US) + Binance (crypto).
+   ═══════════════════════════════════════════════════════════════════════ */
+#sectorView,#flowView{position:fixed;top:52px;left:64px;right:0;bottom:0;z-index:115;display:none;background:var(--bg0);overflow-y:auto;overscroll-behavior:contain}
+body.view-sectors #sectorView,body.view-flow #flowView{display:block}
+body.view-sectors .wrap,body.view-flow .wrap{display:none}
+@media(max-width:700px){#sectorView,#flowView{left:50px}}
+.sv-wrap{max-width:1420px;margin:0 auto;padding:20px 20px 70px}
+.sv-head{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sv-title{font-size:19px;font-weight:800;letter-spacing:-.3px;line-height:1.2}
+.sv-title small{display:block;font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.1px;margin-top:4px}
+.sv-ctrl{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sv-body{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:12px;align-items:start}
+@media(max-width:1020px){.sv-body{grid-template-columns:1fr}}
+.sv-panel{background:var(--panel);box-shadow:var(--ring),var(--lift);border-radius:var(--r-lg);padding:13px 15px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.sv-ph{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+.sv-ph b{font-size:10px;letter-spacing:1.9px;font-weight:800;color:var(--faint)}
+.sv-ph .r{margin-left:auto;font-family:var(--fm);font-size:10px;color:var(--faint)}
+.sv-ph .sub{font-size:10.5px;color:var(--faint);font-family:var(--fm)}
+/* sector ranking rows */
+.srow{display:grid;grid-template-columns:18px minmax(0,1fr) 66px 58px;gap:8px;align-items:center;padding:8px;border-radius:10px;cursor:pointer;transition:background .12s var(--ease-out),box-shadow .12s}
+.srow:hover{background:rgba(148,163,184,.07)}
+.srow.on{background:color-mix(in srgb,var(--lime) 9%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lime) 30%,transparent)}
+.srow .rk{font-family:var(--fm);font-size:10px;color:var(--faint);text-align:right}
+.srow .nm{min-width:0}
+.srow .nm b{display:block;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .bar{height:3px;border-radius:99px;background:rgba(148,163,184,.14);margin-top:5px;overflow:hidden}
+.srow .bar i{display:block;height:100%;border-radius:99px}
+.srow .ch{font-family:var(--fm);font-size:12px;font-weight:800;text-align:right}
+.srow .br{font-family:var(--fm);font-size:9.5px;color:var(--faint);text-align:right;white-space:nowrap}
+.up{color:var(--up)}.dn{color:var(--down)}.fl{color:var(--dim)}
+/* constituent rows */
+.stk{display:grid;grid-template-columns:minmax(0,1fr) 78px 62px 74px;gap:8px;align-items:center;padding:7px 8px;border-radius:9px;font-size:12px;cursor:pointer;transition:background .12s}
+.stk:hover{background:rgba(148,163,184,.07)}
+.stk .sy{font-family:var(--fm);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stk .px,.stk .cv{font-family:var(--fm);text-align:right;font-size:11.5px;color:var(--dim)}
+.stk .ch{font-family:var(--fm);text-align:right;font-weight:800;font-size:11.5px}
+.stk-h{position:sticky;top:0;background:color-mix(in srgb,var(--bg1) 92%,transparent);font-size:9px;letter-spacing:1.5px;color:var(--faint);font-weight:800;padding:5px 8px;cursor:default;backdrop-filter:blur(6px)}
+.stk-h:hover{background:color-mix(in srgb,var(--bg1) 92%,transparent)}
+.stk-list{max-height:min(58vh,540px);overflow-y:auto;margin:0 -4px}
+.sv-copy{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.sv-prog{font-family:var(--fm);font-size:10px;color:var(--faint)}
+.sv-empty{padding:26px 8px;text-align:center;color:var(--faint);font-size:12px;line-height:1.7}
+.sv-empty b{color:var(--dim)}
+/* order flow */
+.fv-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px;margin-bottom:12px}
+.fv-card{background:var(--panel);box-shadow:var(--ring),var(--lift);border-radius:var(--r-lg);padding:13px 15px;position:relative;overflow:hidden}
+.fv-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--lime);opacity:.85}
+.fv-card.in::after{background:var(--up)}
+.fv-card.out::after{background:var(--down)}
+.fv-card .k{font-size:9px;letter-spacing:1.8px;color:var(--faint);font-weight:800}
+.fv-card .v{font-family:var(--fm);font-size:21px;font-weight:800;margin-top:5px;letter-spacing:-.4px}
+.fv-card .s{font-size:10px;color:var(--faint);margin-top:3px;font-family:var(--fm)}
+.fv-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.fv-two{grid-template-columns:1fr}}
+.frow{display:grid;grid-template-columns:16px minmax(0,1fr) 84px;gap:8px;align-items:center;padding:6px 4px;border-radius:8px;font-size:11.5px}
+.frow:hover{background:rgba(148,163,184,.06)}
+.frow .rk{font-family:var(--fm);font-size:9.5px;color:var(--faint);text-align:right}
+.frow .nm b{font-family:var(--fm);font-weight:700}
+.frow .nm span{display:block;font-size:9px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frow .bar{height:3px;border-radius:99px;margin-top:4px;background:rgba(148,163,184,.12);overflow:hidden}
+.frow .bar i{display:block;height:100%}
+.frow .amt{font-family:var(--fm);text-align:right;font-weight:800;font-size:11px}
+.fv-note{font-size:10px;color:var(--faint);line-height:1.6;margin-top:10px}
 </style>
 </head>
 <body data-page-node-id="M3jVaqQUz6sm9ZXCcMDC3s">
@@ -1224,7 +1292,8 @@ body.ws-no-ai #aiAnalysisSection{display:none!important}
 <button class="nav-tab" id="navIndia" onclick="showView('india')" aria-pressed="false" title="India scan — NSE + BSE — shortcut 4" data-page-node-id="5f8xn5HWB6a3an2YqzEO2k"><span class="rt-ico" aria-hidden="true" data-page-node-id="ZCMbECZsTTohjV9v7SEZ85">🇮🇳</span><span data-page-node-id="1SLDIH7pIn4UuDUejoPZmX">India</span></button>
 <button class="nav-tab" id="navUS" onclick="showView('us')" aria-pressed="false" title="US scan — NYSE + NASDAQ + AMEX — shortcut 5"><span class="rt-ico" aria-hidden="true">🇺🇸</span><span>US</span></button>
 <button class="nav-tab on" id="navScan" onclick="showView('scan')" aria-pressed="true" title="Crypto scan — Binance spot — shortcut 1" data-page-node-id="CrHztzdZxqI4ijzGEAwjRs"><span class="rt-ico" aria-hidden="true" data-page-node-id="RiyN2flfZddlPE8RElK3jg">🔬</span><span data-page-node-id="XroFTzyxwgpaPD4bYGwaEl">Crypto</span></button>
-<button class="nav-tab" id="navChart" onclick="showView('chart')" aria-pressed="false" title="Chart workspace — shortcut 2" data-page-node-id="MbT7P4V9kuHJ6SwCGAQ4yF"><span class="rt-ico" aria-hidden="true" data-page-node-id="QOBQU07Qg2uRN3FK42itXH">📈</span><span data-page-node-id="zjsEaa85VD1kRmnCvCnIiA">Chart</span></button>
+<button class="nav-tab" id="navSectors" onclick="showView('sectors')" aria-pressed="false" title="Sector rotation — India · US · Crypto — shortcut 2"><span class="rt-ico" aria-hidden="true">🧭</span><span>Sectors</span></button>
+<button class="nav-tab" id="navFlow" onclick="showView('flow')" aria-pressed="false" title="Order flow — where the money is going — shortcut 6"><span class="rt-ico" aria-hidden="true">💰</span><span>Flow</span></button>
 <button class="nav-tab" id="navDock" onclick="dockToggle()" aria-pressed="false" title="Watchlist + paper terminal panel — shortcut 3" data-page-node-id="u72GuAcEhsBhCN724hX2Hw"><span class="rt-ico" aria-hidden="true" data-page-node-id="L9qvLblpwFaqpSpBgBfSVG">☰</span><span data-page-node-id="T65mjFMSJDyBQE0kNy5v4l">Results</span></button>
 <button class="nav-tab ws-rail" id="navSetup" onclick="openWorkspace()" title="Workspace — choose your markets and tools" aria-haspopup="dialog"><span class="rt-ico" aria-hidden="true">⚙</span><span>Setup</span></button>
 </nav>
@@ -1278,6 +1347,8 @@ body.ws-no-ai #aiAnalysisSection{display:none!important}
 <button class="hc-btn primary" onclick="showView('scan')" data-act="crypto" data-page-node-id="1UmekbUvmEFDz7CjO249vO">📡 Crypto scanner</button>
 <button class="hc-btn" onclick="showView('india')" data-act="india">🇮🇳 India scanner</button>
 <button class="hc-btn" onclick="showView('us')" data-act="us">🇺🇸 US scanner</button>
+<button class="hc-btn" onclick="showView('sectors')" data-act="sectors">🧭 Sector rotation</button>
+<button class="hc-btn" onclick="showView('flow')" data-act="flow">💰 Order flow</button>
 <button class="hc-btn" onclick="showView('chart')" data-act="chart" data-page-node-id="mvSNlyPJxUwInQQ48rk9HZ">📈 Open full chart</button>
 <button class="hc-btn" onclick="dockToggle()" data-act="dock" data-page-node-id="u9PzMBTqTzTucdXYxfy9PZ">☰ Results &amp; watchlist</button>
 <button class="hc-btn ws-open" onclick="openWorkspace()" title="Choose markets and tools — the dashboard follows">⚙ Workspace setup</button>
@@ -1449,7 +1520,7 @@ body.ws-no-ai #aiAnalysisSection{display:none!important}
 <div class="gcard" data-page-node-id="4vxDuaDm90DgWWwbhbukIR">
 <div class="gt" data-page-node-id="mKRHI4qzWV4xZA1zWWrfGM">⌨️ KEYBOARD</div>
 <ul data-page-node-id="4PA06zUR363yjw243ijRkb">
-<li data-page-node-id="xDCshtE08M08bhKxalRZxE"><kbd data-page-node-id="D5hjuh5uB6PBYlvXU4cZDr">1</kbd> Scan · <kbd data-page-node-id="AGYgIVPh7NCyjR20D0WUfe">2</kbd> Chart · <kbd data-page-node-id="2BNyQBQnOs1Zko8nENFGb4">3</kbd> Results</li>
+<li data-page-node-id="xDCshtE08M08bhKxalRZxE"><kbd data-page-node-id="D5hjuh5uB6PBYlvXU4cZDr">1</kbd> Scan · <kbd>2</kbd> Sectors · <kbd>6</kbd> Flow · <kbd data-page-node-id="2BNyQBQnOs1Zko8nENFGb4">3</kbd> Results</li>
 <li data-page-node-id="0eRFo70077AJqchqvjgGWY"><kbd data-page-node-id="0xkElXp4ZGBvYeBRRWIcZh">s</kbd> scan start/stop · <kbd data-page-node-id="GOzxHeCAFA4rDupfsMZ5Rp">/</kbd> search coin</li>
 <li data-page-node-id="yjH79KezF8pb43vB1ZRpOh"><kbd data-page-node-id="eYO0vGgyK6c4iTZcvrAnEy">c</kbd> copy next 30 · <kbd data-page-node-id="WtIEIUh8Ezr4cqKnXC3r9q">k</kbd> cards/table view</li>
 <li data-page-node-id="4LHm7EYGBx1j2m8xxwfn4z"><kbd data-page-node-id="0dwGpPN6rd5nffwwFzFRkY">⌘K</kbd> command palette · <kbd data-page-node-id="pyDJF4l442FqymWxszQnHH">Esc</kbd> to close</li>
@@ -1689,6 +1760,66 @@ body.ws-no-ai #aiAnalysisSection{display:none!important}
 <div class="in-load" id="usLoad"><span class="loader"></span>Opening the US app…</div>
 <iframe id="usFrame" title="US scanner — full app" allow="clipboard-write"></iframe>
 </div>
+<!-- ═══ SECTOR ROTATION — strongest sectors first, then every stock inside ═══ -->
+<div id="sectorView" aria-label="Sector rotation">
+<div class="sv-wrap">
+<div class="sv-head">
+<div class="sv-title">Sector rotation<small id="secAsOf">Pick a market — sectors ranked by how their stocks are actually moving.</small></div>
+<div class="sv-ctrl">
+<div class="ex-seg" id="secMktSeg" role="group" aria-label="Market">
+<button data-mkt="india" class="active" onclick="secSetMkt('india')">🇮🇳 India</button>
+<button data-mkt="us" onclick="secSetMkt('us')">🇺🇸 US</button>
+<button data-mkt="crypto" onclick="secSetMkt('crypto')">🔬 Crypto</button>
+</div>
+<button class="btn-ghost" id="secReloadBtn" onclick="secReload()" title="Reload market data">⟳ Refresh</button>
+</div>
+</div>
+<div class="sv-body">
+<div class="sv-panel">
+<div class="sv-ph"><b>SECTOR RANKING</b><span class="sub" id="secRankNote"></span><span class="r" id="secRankCount"></span></div>
+<div id="secList"><div class="sv-empty">Loading market data…</div></div>
+</div>
+<div class="sv-panel">
+<div class="sv-ph"><b id="secSelName">CONSTITUENTS</b><span class="r" id="secSelMeta"></span></div>
+<div class="stk-list" id="secStocks"><div class="sv-empty">Pick a sector on the left — its stocks land here.</div></div>
+<div class="sv-copy">
+<button class="btn-ghost" id="secCopyBtn" onclick="secCopy30()" title="Copy the next 30 symbols — paste them into your broker or chart">📋 Copy 30</button>
+<button class="btn-ghost" onclick="secCopyAll()" title="Copy every symbol in this sector">Copy all</button>
+<button class="btn-ghost" onclick="secCopyReset()" title="Start the batches from the top again">Reset</button>
+<span class="sv-prog" id="secProg"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══ ORDER FLOW — where the money is going ═══ -->
+<div id="flowView" aria-label="Order flow">
+<div class="sv-wrap">
+<div class="sv-head">
+<div class="sv-title">Order flow<small id="flowAsOf">Aggressive buyers vs sellers, ranked by the money behind them.</small></div>
+<div class="sv-ctrl">
+<div class="ex-seg" id="flowMktSeg" role="group" aria-label="Market">
+<button data-mkt="india" onclick="flowSetMkt('india')">🇮🇳 India</button>
+<button data-mkt="us" onclick="flowSetMkt('us')">🇺🇸 US</button>
+<button data-mkt="crypto" class="active" onclick="flowSetMkt('crypto')">🔬 Crypto</button>
+</div>
+<button class="btn-ghost" onclick="flowReload()" title="Reload order-flow data">⟳ Refresh</button>
+</div>
+</div>
+<div class="fv-cards" id="flowCards"></div>
+<div class="fv-two">
+<div class="sv-panel"><div class="sv-ph"><b>MONEY COMING IN</b><span class="r" id="flowInN"></span></div><div id="flowIn"><div class="sv-empty">Loading…</div></div></div>
+<div class="sv-panel"><div class="sv-ph"><b>MONEY GOING OUT</b><span class="r" id="flowOutN"></span></div><div id="flowOut"><div class="sv-empty">Loading…</div></div></div>
+</div>
+<div class="sv-panel" style="margin-top:12px">
+<div class="sv-ph"><b>BY SECTOR</b><span class="r" id="flowSecN"></span></div>
+<div id="flowSec"><div class="sv-empty">Loading…</div></div>
+<div class="fv-note" id="flowNote"></div>
+</div>
+</div>
+</div>
+
 <div class="toast" id="toast" data-page-node-id="3NqLRJ6WnC77zpbcitD5aM"></div>
 <script>
 // Director's Cut shared state — declared FIRST so engine init() can safely use it
@@ -3532,6 +3663,8 @@ return [
 {t:'\uD83C\uDDFA\uD83C\uDDF8 US scanner',h:'NYSE + NASDAQ',gate:'us',fn:()=>showView('us')},
 {t:'\uD83D\uDD2C Scan Market',h:'run scan',gate:'crypto',fn:()=>liveScan()},
 {t:'\u23F9 Stop scan',h:'interrupt',fn:()=>stopScan()},
+{t:'\uD83E\uDDED Sector rotation',h:'trending sectors',gate:'sectors',fn:()=>showView('sectors')},
+{t:'\uD83D\uDCB0 Order flow',h:'where money moves',gate:'flow',fn:()=>showView('flow')},
 {t:'\uD83D\uDCC8 Chart workspace',h:'full screen',gate:'chart',fn:()=>{let r=(getLive()||[])[0];openChart(r?r.symbol:'BTCUSDT',r?r.ex:'BINANCE',r?r.lvl:0,r);}},
 {t:'\u2753 Quick Guide \u2014 how to use',h:'help / new user',fn:()=>openGuide()},
 {t:'\u2B50 Watchlist / Terminal',h:'paper trading',gate:'dock',fn:()=>dockToggle()},
@@ -4792,12 +4925,13 @@ if(v.charAt(0)==='#')return v;
 try{let m=v.match(/\d+/g);if(!m||m.length<3)return v;return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join('');}catch(e){return v;}}
 // ── top-level navigation: Chart / Scan / Results ──
 function setNavTab(v){
-let c=document.getElementById('navChart'),s=document.getElementById('navScan'),h=document.getElementById('navHome'),i=document.getElementById('navIndia'),u=document.getElementById('navUS');
-if(h){h.classList.toggle('on',v==='home');h.setAttribute('aria-pressed',String(v==='home'));}
-if(c){c.classList.toggle('on',v==='chart');c.setAttribute('aria-pressed',String(v==='chart'));}
-if(s){s.classList.toggle('on',v==='scan');s.setAttribute('aria-pressed',String(v==='scan'));}
-if(i){i.classList.toggle('on',v==='india');i.setAttribute('aria-pressed',String(v==='india'));}
-if(u){u.classList.toggle('on',v==='us');u.setAttribute('aria-pressed',String(v==='us'));}
+const map={home:'navHome',scan:'navScan',india:'navIndia',us:'navUS',sectors:'navSectors',flow:'navFlow'};
+Object.keys(map).forEach(function(k){
+let b=document.getElementById(map[k]);
+if(!b)return;
+let on=(v===k);
+b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));
+});
 navDockSync();
 }
 function navDockSync(){
@@ -4815,32 +4949,43 @@ return 'BTCUSDT';
 }
 let _lastView='scan';   // last non-chart tab (home/scan) — chart ✕ / Esc isi pe wapas laate hain
 function lastViewSaved(){try{let v=localStorage.getItem('ftyLastPlain');return (v==='scan'||v==='home'||v==='india'||v==='us')?v:'scan';}catch(e){return 'scan';}}
+const ALL_VIEWS=['view-chart','view-scan','view-home','view-india','view-us','view-sectors','view-flow'];
+function setViewClass(v){
+document.body.classList.remove.apply(document.body.classList,ALL_VIEWS);
+document.body.classList.add('view-'+v);
+}
 function showView(v){
-if(v!=='chart'&&v!=='home'&&v!=='scan'&&v!=='india'&&v!=='us')v='scan';
+if(['chart','home','scan','india','us','sectors','flow'].indexOf(v)<0)v='scan';
 // workspace gate — a market or tool the user switched off is simply not there
 if(typeof wsAllows==='function'&&!wsAllows(v))return wsBlocked(v);
 if(v==='chart'){
-document.body.classList.add('view-chart');
-document.body.classList.remove('view-scan','view-home','view-india','view-us');
+setViewClass('chart');
 if(!CH||!CH.open)openChart(currentChartSym(),'BINANCE',0,null);
 }else if(v==='us'){
 _lastView=v;
-document.body.classList.remove('view-chart','view-scan','view-home','view-india');
-document.body.classList.add('view-us');
+setViewClass('us');
 closeChart(true);                 // silent: keeps view-us, just tears the chart down
 try{USApp.open();}catch(e){}
 }else if(v==='india'){
 _lastView=v;
-document.body.classList.remove('view-chart','view-scan','view-home','view-us');
-document.body.classList.add('view-india');
+setViewClass('india');
 closeChart(true);                 // silent: keeps view-india, just tears the chart down
 try{IndiaApp.open();}catch(e){}
+}else if(v==='sectors'){
+_lastView=v;
+setViewClass('sectors');
+closeChart(true);
+try{secOpen();}catch(e){}
+}else if(v==='flow'){
+_lastView=v;
+setViewClass('flow');
+closeChart(true);
+try{flowOpen();}catch(e){}
 }else{
 _lastView=v;
-document.body.classList.remove('view-chart','view-india','view-us');
-if(v==='home'){document.body.classList.add('view-home');document.body.classList.remove('view-scan');try{renderHome();}catch(e){}}
-else{document.body.classList.add('view-scan');document.body.classList.remove('view-home');}
+setViewClass(v);
 closeChart(true);
+if(v==='home'){try{renderHome();}catch(e){}}
 }
 setNavTab(v);
 try{localStorage.setItem('ftyLastView',v);if(v!=='chart')localStorage.setItem('ftyLastPlain',v);}catch(e){}
@@ -4906,8 +5051,10 @@ document.body.classList.remove('csp-on');
 // Closing the chart returns you to your last non-chart tab (Home or Scan).
 document.body.classList.remove('view-chart');
 if(!silent){
-if(_lastView==='home'){document.body.classList.add('view-home');document.body.classList.remove('view-scan');try{renderHome();}catch(e){}}
-else{document.body.classList.add('view-scan');document.body.classList.remove('view-home');}
+// back to the tab you came from — home, scan, india, us, sectors or flow
+let back=(_lastView&&_lastView!=='chart')?_lastView:'scan';
+setViewClass(back);
+if(back==='home'){try{renderHome();}catch(e){}}
 setNavTab(_lastView);
 }
 // unified watchlist pass: chart closed → dock's WL tab is back, redirect button hides
@@ -6071,6 +6218,381 @@ start(onReady);   // quiet background load — no spinner, only shown when the u
 return {open:open,warm:warm};
 })();
 // ═══════════════════════════════════════════════════════════════════════
+// SECTOR ROTATION + ORDER FLOW
+// Sector view: one TradingView scan per market (India / US) or Binance's
+// 24h ticker (crypto) → group by sector → rank by how the constituents are
+// actually moving. Order flow: real taker buy/sell for crypto, turnover ×
+// move for stocks (labelled as a proxy, because there is no free feed).
+// ═══════════════════════════════════════════════════════════════════════
+const TV_SCAN={india:'https://scanner.tradingview.com/india/scan',us:'https://scanner.tradingview.com/america/scan'};
+const SEC_TTL=4*60*1000;
+
+// TradingView's Morningstar industries → the 11 buckets people rotate between
+const TV_SECTOR_MAP={
+'Energy Minerals':'Energy','Oil & Gas':'Energy',
+'Finance':'Financials','Financial Services':'Financials',
+'Technology Services':'Information Technology','Electronic Technology':'Information Technology','Information Technology':'Information Technology',
+'Health Technology':'Health Care','Health Services':'Health Care',
+'Producer Manufacturing':'Industrials','Industrial Services':'Industrials','Commercial Services':'Industrials',
+'Transportation':'Industrials','Distribution Services':'Industrials','Process Industries':'Materials',
+'Non-Energy Minerals':'Materials','Materials':'Materials',
+'Consumer Non-Durables':'Consumer Staples','Consumer Staples':'Consumer Staples',
+'Consumer Durables':'Consumer Discretionary','Consumer Services':'Consumer Discretionary','Retail Trade':'Consumer Discretionary','Consumer Discretionary':'Consumer Discretionary',
+'Utilities':'Utilities','Communications':'Communication Services','Communication Services':'Communication Services',
+'Real Estate':'Real Estate','Miscellaneous':'Other','Health Care':'Health Care','Industrials':'Industrials',
+'Energy':'Energy','Financials':'Financials'
+};
+function mapTvSector(s){
+if(!s)return 'Other';
+return TV_SECTOR_MAP[s]||s;
+}
+// Crypto: base asset → sector. Curated for the Binance USDT majors.
+const CRYPTO_SECTORS=(function(){
+const g={
+'Layer 1':'BTC ETH SOL BNB ADA AVAX TRX TON SUI APT NEAR ICP DOT ATOM ALGO EGLD SEI KAS HBAR ETC FTM S RON TIA KAVA OSMO ZIL ONE IOTA VET QTUM XEC CKB KSM ASTR GLMR METIS MANTA LUNC LUNA XTZ NEO EOS WAVES ICX ONT RVN DGB LSK STEEM HIVE ARK',
+'Layer 2':'ARB OP MATIC POL STRK ZK MNT BLAST LRC IMX BOBA CTSI SKL',
+'DeFi':'UNI AAVE MKR CRV LDO SNX COMP SUSHI 1INCH CAKE DYDX GMX PENDLE ENA JUP RAY BAL YFI RPL FXS GNO MLN LQTY RDNT AERO ORCA KMNO',
+'Meme':'DOGE SHIB PEPE WIF BONK FLOKI MEME BOME MOG BRETT TRUMP PNUT NEIRO POPCAT TURBO DOGS',
+'AI':'FET AGIX OCEAN RNDR RENDER TAO WLD ARKM GRT NMR PHB AI VIRTUAL GOAT',
+'Gaming':'SAND MANA AXS GALA ENJ ILV APE PRIME BEAM YGG PIXEL PORTAL NOT CATI MAVIA BIGTIME GHST',
+'RWA':'ONDO POLYX CFG TRU OM MPL',
+'Infra':'FIL AR HNT IOTX THETA AKT NOS STORJ SC LINK PYTH BAND API3 TRB QNT ANKR LPT',
+'Exchange':'CRO OKB LEO KCS GT WOO',
+'Payments':'XRP XLM LTC BCH DCR',
+'Privacy':'XMR ZEC DASH SCRT ROSE ZEN'
+};
+const out={};
+Object.keys(g).forEach(function(k){g[k].split(' ').forEach(function(sym){out[sym]=k;});});
+return out;
+})();
+const SEC_META={
+india:{lbl:'India',cur:'₹',src:'NSE · TradingView'},
+us:{lbl:'US',cur:'$',src:'NYSE + NASDAQ + AMEX · TradingView'},
+crypto:{lbl:'Crypto',cur:'$',src:'Binance USDT spot · 24h'}
+};
+let secMkt='india',secData={},secSel=null,secPtr=0,secLoading=false;
+let flowMkt='crypto',flowData={},flowLoading=false;
+
+function fmtMoney(v,cur){
+let a=Math.abs(v);
+if(cur==='₹'){
+if(a>=1e7)return (v<0?'-':'')+'₹'+(a/1e7).toFixed(2)+' Cr';
+if(a>=1e5)return (v<0?'-':'')+'₹'+(a/1e5).toFixed(1)+' L';
+return (v<0?'-':'')+'₹'+Math.round(a).toLocaleString('en-IN');
+}
+if(a>=1e9)return (v<0?'-':'')+'$'+(a/1e9).toFixed(2)+'B';
+if(a>=1e6)return (v<0?'-':'')+'$'+(a/1e6).toFixed(2)+'M';
+if(a>=1e3)return (v<0?'-':'')+'$'+(a/1e3).toFixed(1)+'K';
+return (v<0?'-':'')+'$'+a.toFixed(2);
+}
+function pctTxt(v){return (v>=0?'+':'')+v.toFixed(2)+'%';}
+function chgCls(v){return v>0?'up':v<0?'dn':'fl';}
+
+// ── data ────────────────────────────────────────────────────────────────
+async function tvScanMarket(mkt){
+const body={filter:[{left:'market_cap_basic',operation:'greater',right:10000000}],
+options:{lang:'en'},markets:[mkt==='us'?'america':'india'],
+columns:['name','close','change','Value.Traded','sector'],
+sort:{sortBy:'market_cap_basic',sortOrder:'desc'},range:[0,3000]};
+const r=await fetch(TV_SCAN[mkt],{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body)});
+if(!r.ok)throw new Error('TradingView '+r.status);
+const j=await r.json();
+const rows=[];
+(j.data||[]).forEach(function(x){
+const s=String(x.s||'');
+if(mkt==='india'&&s.indexOf('NSE:')!==0)return;          // one listing per stock
+if(mkt==='us'&&!/^(NASDAQ|NYSE|AMEX):/.test(s))return;    // the app's own universe
+const d=x.d||[];
+const close=+d[1],chg=+d[2];
+if(!(close>0)||!isFinite(chg))return;
+rows.push({sym:s.split(':').pop(),sector:mapTvSector(d[4]),raw:d[4]||'',price:close,chg:chg,val:+d[3]||0});
+});
+if(!rows.length)throw new Error('empty scan');
+return rows;
+}
+async function cryptoRows(){
+const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
+if(!r.ok)throw new Error('Binance '+r.status);
+const arr=await r.json();
+const rows=[];
+arr.forEach(function(t){
+if(!/USDT$/.test(t.symbol))return;
+const base=t.symbol.slice(0,-4);
+const sec=CRYPTO_SECTORS[base];
+if(!sec)return;
+const px=+t.lastPrice,chg=+t.priceChangePercent,val=+t.quoteVolume;
+if(!(px>0)||!isFinite(chg))return;
+rows.push({sym:t.symbol,sector:sec,raw:sec,price:px,chg:chg,val:val||0});
+});
+if(!rows.length)throw new Error('no mapped pairs');
+return rows;
+}
+function aggSectors(rows){
+const map={};
+rows.forEach(function(r){
+const k=r.sector||'Other';
+if(!map[k])map[k]={key:k,n:0,up:0,sum:0,val:0};
+const s=map[k];
+s.n++;s.sum+=r.chg;s.val+=r.val;
+if(r.chg>0)s.up++;
+});
+return Object.keys(map).map(function(k){
+const s=map[k];
+return {key:k,n:s.n,up:s.up,avg:s.sum/s.n,breadth:s.n?s.up/s.n:0,val:s.val};
+}).filter(function(s){return s.n>=3;}).sort(function(a,b){
+if(a.key==='Other')return 1;      // unclassified always sits at the bottom
+if(b.key==='Other')return -1;
+return b.avg-a.avg;
+});
+}
+
+let secTok=0;
+async function secLoad(mkt,force){
+const d=secData[mkt];
+if(!force&&d&&Date.now()-d.ts<SEC_TTL){secRender();return;}
+const tok=++secTok;               // switching market mid-load: the newest click wins
+secLoading=true;
+let lb=$('secReloadBtn');if(lb){lb.disabled=true;lb.textContent='⟳ Loading…';}
+let host=$('secList');if(host)host.innerHTML='<div class="sv-empty"><b>Reading '+SEC_META[mkt].lbl+' market…</b><br>one scan, then sectors are grouped and ranked.</div>';
+try{
+const rows=mkt==='crypto'?await cryptoRows():await tvScanMarket(mkt);
+const sectors=aggSectors(rows);
+secData[mkt]={ts:Date.now(),rows:rows,sectors:sectors};
+if(tok!==secTok)return;
+if(!secSel||!sectors.some(function(s){return s.key===secSel;}))secSel=sectors[0]?sectors[0].key:null;
+secPtr=0;
+secRender();
+}catch(e){
+if(tok!==secTok)return;
+if(host)host.innerHTML='<div class="sv-empty"><b>Could not load '+SEC_META[mkt].lbl+' data</b><br>'+(e&&e.message?e.message:'network error')+'<br><br><button class="btn-ghost" onclick="secReload()">Try again</button></div>';
+}finally{
+if(tok===secTok){
+secLoading=false;
+let b=$('secReloadBtn');if(b){b.disabled=false;b.textContent='⟳ Refresh';}
+}
+}
+}
+function secSetMkt(m){
+secMkt=m;secSel=null;secPtr=0;
+document.querySelectorAll('#secMktSeg button').forEach(function(b){b.classList.toggle('active',b.dataset.mkt===m);});
+secLoad(m);
+}
+function secReload(){secLoad(secMkt,true);}
+function secOpen(){
+if(!secData[secMkt]&&!secLoading)secLoad(secMkt);
+else secRender();
+}
+function secRows(){
+const d=secData[secMkt];
+if(!d||!secSel)return[];
+return d.rows.filter(function(r){return r.sector===secSel;}).sort(function(a,b){return b.chg-a.chg;});
+}
+function secRender(){
+const d=secData[secMkt];
+const list=$('secList'),stk=$('secStocks');
+const asOf=$('secAsOf'),rankN=$('secRankCount'),rankNote=$('secRankNote');
+const meta=SEC_META[secMkt];
+if(!d){return;}
+if(asOf)asOf.textContent=meta.lbl+' · '+meta.src+' · '+d.rows.length+' symbols · updated '+new Date(d.ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+if(rankNote)rankNote.textContent='avg move · breadth';
+if(rankN)rankN.textContent=d.sectors.length+' sectors';
+const maxAbs=Math.max.apply(null,d.sectors.map(function(s){return Math.abs(s.avg);}).concat([0.5]));
+if(list){
+list.innerHTML=d.sectors.map(function(s,i){
+const w=Math.max(3,Math.round(Math.abs(s.avg)/maxAbs*100));
+const col=s.avg>=0?'var(--up)':'var(--down)';
+return '<div class="srow'+(s.key===secSel?' on':'')+'" onclick="secPick(\''+s.key.replace(/'/g,"\\'")+'\')" title="'+s.n+' stocks · '+Math.round(s.breadth*100)+'% up · turnover '+fmtMoney(s.val,meta.cur)+'">'
++'<span class="rk">'+(i+1)+'</span>'
++'<span class="nm"><b>'+s.key+'</b><span class="bar"><i style="width:'+w+'%;background:'+col+'"></i></span></span>'
++'<span class="ch '+chgCls(s.avg)+'">'+pctTxt(s.avg)+'</span>'
++'<span class="br">'+Math.round(s.breadth*100)+'% up<br>'+s.n+'</span>'
++'</div>';
+}).join('');
+}
+if(!secSel){if(stk)stk.innerHTML='<div class="sv-empty">No sector data.</div>';return;}
+const rows=secRows();
+const sel=d.sectors.filter(function(s){return s.key===secSel;})[0];
+const nm=$('secSelName'),sm=$('secSelMeta');
+if(nm)nm.textContent=secSel.toUpperCase();
+if(sm)sm.textContent=rows.length+' stocks · avg '+pctTxt(sel?sel.avg:0)+' · '+Math.round((sel?sel.breadth:0)*100)+'% up';
+if(stk){
+let h='<div class="stk stk-h"><span>SYMBOL</span><span style="text-align:right">PRICE</span><span style="text-align:right">CHG</span><span style="text-align:right">TURNOVER</span></div>';
+h+=rows.map(function(r){
+return '<div class="stk" onclick="secCopySym(\''+r.sym+'\')" title="Click to copy '+r.sym+'">'
++'<span class="sy">'+r.sym+'</span>'
++'<span class="px">'+(r.price>=1000?r.price.toLocaleString('en-IN',{maximumFractionDigits:0}):r.price.toPrecision(4))+'</span>'
++'<span class="ch '+chgCls(r.chg)+'">'+pctTxt(r.chg)+'</span>'
++'<span class="cv">'+fmtMoney(r.val,meta.cur)+'</span>'
++'</div>';
+}).join('');
+stk.innerHTML=h;
+}
+secRenderProg();
+}
+function secPick(k){secSel=k;secPtr=0;secRender();}
+function secRenderProg(){
+const rows=secRows(),el=$('secProg');
+if(!el)return;
+if(!rows.length){el.textContent='';return;}
+el.textContent=secPtr>=rows.length?('all '+rows.length+' copied'):(secPtr+1)+'–'+Math.min(secPtr+30,rows.length)+' of '+rows.length;
+}
+function secClip(txt,msg){
+if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){showToast(msg);}).catch(function(){showToast('Clipboard blocked by the browser');});
+else{showToast('Clipboard unavailable');}
+}
+function secCopy30(){
+const rows=secRows();
+if(!rows.length){showToast('No stocks in this sector');return;}
+if(secPtr>=rows.length){showToast('All '+rows.length+' copied — hit Reset to start again');return;}
+const start=secPtr,end=Math.min(start+30,rows.length);
+secClip(rows.slice(start,end).map(function(r){return r.sym;}).join('\n'),'📋 '+(end-start)+' symbols copied ('+(start+1)+'–'+end+' of '+rows.length+')');
+secPtr=end;secRenderProg();
+}
+function secCopyAll(){
+const rows=secRows();
+if(!rows.length)return;
+secClip(rows.map(function(r){return r.sym;}).join('\n'),'📋 All '+rows.length+' '+secSel+' symbols copied');
+secPtr=rows.length;secRenderProg();
+}
+function secCopyReset(){secPtr=0;secRenderProg();showToast('Batches reset — Copy 30 starts from the top');}
+function secCopySym(s){secClip(s,'📋 '+s+' copied');}
+
+// ── ORDER FLOW ──────────────────────────────────────────────────────────
+async function cryptoFlow(){
+const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
+if(!r.ok)throw new Error('Binance '+r.status);
+const arr=await r.json();
+const cand=[];
+arr.forEach(function(t){
+if(!/USDT$/.test(t.symbol))return;
+const base=t.symbol.slice(0,-4);
+const sec=CRYPTO_SECTORS[base];
+if(!sec)return;
+cand.push({sym:t.symbol,sector:sec,val:+t.quoteVolume||0,chg:+t.priceChangePercent||0,price:+t.lastPrice||0});
+});
+cand.sort(function(a,b){return b.val-a.val;});
+const list=cand.slice(0,50);
+const out=[];
+let idx=0;
+async function worker(){
+while(idx<list.length){
+const it=list[idx++];
+try{
+const k=await fetch('https://api.binance.com/api/v3/klines?symbol='+it.sym+'&interval=1h&limit=24');
+if(!k.ok)continue;
+const kl=await k.json();
+let buyQ=0,totQ=0;
+kl.forEach(function(c){buyQ+=+c[10]||0;totQ+=+c[7]||0;});
+if(!(totQ>0))continue;
+out.push({sym:it.sym,sector:it.sector,net:buyQ*2-totQ,buy:buyQ,sell:totQ-buyQ,chg:it.chg});
+}catch(e){}
+}
+}
+const ws=[];for(let i=0;i<8;i++)ws.push(worker());
+await Promise.allSettled(ws);
+if(!out.length)throw new Error('no taker data');
+return {rows:out,real:true};
+}
+async function stockFlow(mkt){
+let d=secData[mkt];
+if(!d||Date.now()-d.ts>SEC_TTL){
+const rows=mkt==='crypto'?await cryptoRows():await tvScanMarket(mkt);
+secData[mkt]={ts:Date.now(),rows:rows,sectors:aggSectors(rows)};
+d=secData[mkt];
+}
+const out=d.rows.filter(function(r){return r.val>0;}).map(function(r){
+return {sym:r.sym,sector:r.sector,net:r.val*(r.chg/100),buy:r.chg>0?r.val*(r.chg/100):0,sell:r.chg<0?-r.val*(r.chg/100):0,chg:r.chg,val:r.val};
+});
+return {rows:out,real:false};
+}
+let flowTok=0;
+async function flowLoad(mkt,force){
+const d=flowData[mkt];
+if(!force&&d&&Date.now()-d.ts<SEC_TTL){flowRender();return;}
+const tok=++flowTok;
+flowLoading=true;
+const inHost=$('flowIn'),outHost=$('flowOut');
+if(inHost)inHost.innerHTML='<div class="sv-empty"><b>Reading order flow…</b><br>'+(mkt==='crypto'?'taker buy vs sell, last 24 hourly candles':'turnover weighted by move')+'</div>';
+if(outHost)outHost.innerHTML='<div class="sv-empty">…</div>';
+const fc=$('flowCards');if(fc)fc.innerHTML='';
+try{
+const res=mkt==='crypto'?await cryptoFlow():await stockFlow(mkt);
+flowData[mkt]={ts:Date.now(),rows:res.rows,real:res.real};
+if(tok!==flowTok)return;
+flowRender();
+}catch(e){
+if(tok!==flowTok)return;
+if(inHost)inHost.innerHTML='<div class="sv-empty"><b>Could not load order flow</b><br>'+(e&&e.message?e.message:'network error')+'<br><br><button class="btn-ghost" onclick="flowReload()">Try again</button></div>';
+if(outHost)outHost.innerHTML='';
+}finally{if(tok===flowTok)flowLoading=false;}
+}
+function flowSetMkt(m){
+flowMkt=m;
+document.querySelectorAll('#flowMktSeg button').forEach(function(b){b.classList.toggle('active',b.dataset.mkt===m);});
+flowLoad(m);
+}
+function flowReload(){flowLoad(flowMkt,true);}
+function flowOpen(){
+if(!flowData[flowMkt]&&!flowLoading)flowLoad(flowMkt);
+else flowRender();
+}
+function flowRender(){
+const d=flowData[flowMkt];
+if(!d)return;
+const meta=SEC_META[flowMkt];
+const rows=d.rows.slice().sort(function(a,b){return b.net-a.net;});
+const inflow=rows.filter(function(r){return r.net>0;});
+const outflow=rows.filter(function(r){return r.net<0;}).reverse();
+const totIn=inflow.reduce(function(a,r){return a+r.net;},0);
+const totOut=outflow.reduce(function(a,r){return a-r.net;},0);
+const net=totIn-totOut;
+const bySec={};
+rows.forEach(function(r){
+if(!bySec[r.sector])bySec[r.sector]={k:r.sector,net:0,n:0};
+bySec[r.sector].net+=r.net;bySec[r.sector].n++;
+});
+const secs=Object.keys(bySec).map(function(k){return bySec[k];}).sort(function(a,b){return b.net-a.net;});
+const hot=secs[0],cold=secs[secs.length-1];
+const asOf=$('flowAsOf');
+if(asOf)asOf.textContent=meta.lbl+' · '+(d.real?'Binance taker buy vs sell · last 24h':'TradingView turnover × move (proxy)')+' · updated '+new Date(d.ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+const cards=$('flowCards');
+if(cards){
+cards.innerHTML=
+'<div class="fv-card '+(net>=0?'in':'out')+'"><div class="k">NET FLOW</div><div class="v '+chgCls(net)+'">'+(net>=0?'+':'')+fmtMoney(net,meta.cur)+'</div><div class="s">'+(net>=0?'money moving in':'money moving out')+'</div></div>'
++'<div class="fv-card in"><div class="k">INFLOW</div><div class="v up">'+fmtMoney(totIn,meta.cur)+'</div><div class="s">'+inflow.length+' symbols</div></div>'
++'<div class="fv-card out"><div class="k">OUTFLOW</div><div class="v dn">'+fmtMoney(totOut,meta.cur)+'</div><div class="s">'+outflow.length+' symbols</div></div>'
++'<div class="fv-card"><div class="k">HOTTEST SECTOR</div><div class="v" style="font-size:15px;letter-spacing:0">'+(hot?hot.k:'—')+'</div><div class="s">'+(hot?(hot.net>=0?'+':'')+fmtMoney(hot.net,meta.cur):'')+'</div></div>';
+}
+const maxIn=Math.max.apply(null,inflow.slice(0,12).map(function(r){return r.net;}).concat([1]));
+const maxOut=Math.max.apply(null,outflow.slice(0,12).map(function(r){return -r.net;}).concat([1]));
+function rowHtml(r,i,max,pos){
+const w=Math.max(3,Math.round(Math.abs(r.net)/max*100));
+return '<div class="frow"><span class="rk">'+(i+1)+'</span>'
++'<span class="nm"><b>'+r.sym+'</b><span>'+r.sector+'</span><span class="bar"><i style="width:'+w+'%;background:'+(pos?'var(--up)':'var(--down)')+'"></i></span></span>'
++'<span class="amt '+(pos?'up':'dn')+'">'+(pos?'+':'')+fmtMoney(r.net,meta.cur)+'</span></div>';
+}
+const ih=$('flowIn'),oh=$('flowOut');
+if(ih)ih.innerHTML=inflow.slice(0,12).map(function(r,i){return rowHtml(r,i,maxIn,true);}).join('')||'<div class="sv-empty">Nothing flowing in right now.</div>';
+if(oh)oh.innerHTML=outflow.slice(0,12).map(function(r,i){return rowHtml(r,i,maxOut,false);}).join('')||'<div class="sv-empty">Nothing flowing out right now.</div>';
+const iN=$('flowInN'),oN=$('flowOutN');if(iN)iN.textContent=inflow.length+' up';if(oN)oN.textContent=outflow.length+' down';
+const secHost=$('flowSec');
+if(secHost){
+const maxSec=Math.max.apply(null,secs.map(function(s){return Math.abs(s.net);}).concat([1]));
+secHost.innerHTML=secs.map(function(s,i){
+const w=Math.max(2,Math.round(Math.abs(s.net)/maxSec*100));
+return '<div class="frow"><span class="rk">'+(i+1)+'</span>'
++'<span class="nm"><b>'+s.k+'</b><span>'+s.n+' symbols</span><span class="bar"><i style="width:'+w+'%;background:'+(s.net>=0?'var(--up)':'var(--down)')+'"></i></span></span>'
++'<span class="amt '+(s.net>=0?'up':'dn')+'">'+(s.net>=0?'+':'')+fmtMoney(s.net,meta.cur)+'</span></div>';
+}).join('');
+}
+const fn=$('flowNote');
+if(fn)fn.innerHTML=d.real
+?'<b>Real order flow.</b> Binance klines carry taker buy volume separately, so this is aggressive buying minus aggressive selling in dollars over the last 24 hourly candles — the closest thing to watching money cross the tape.'
+:'<b>Proxy.</b> No free tick-level feed for cash equities, so this is turnover × move: a stock up 3% on ₹500 Cr turnover reads +₹15 Cr. Direction is reliable, the absolute number is an estimate.';
+const sN=$('flowSecN');if(sN)sN.textContent=secs.length+' sectors';
+}
+
+// ═══════════════════════════════════════════════════════════════════════
 // WORKSPACE — which markets + tools this user actually uses.
 // The dashboard, the side rail and the shortcuts are driven by this one
 // saved choice. Nothing is deleted when something is switched off: the
@@ -6083,17 +6605,18 @@ const WS_MARKETS=[
 {id:'us',nm:'US',ico:'🇺🇸',sub:'NYSE + NASDAQ + AMEX',tag:'21:30 – 04:00 IST'}
 ];
 const WS_TOOLS=[
-{id:'chart',nm:'Chart workspace',sub:'Drawing, indicators, replay',svg:'<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'},
+{id:'sectors',nm:'Sector rotation',sub:'Trending sectors + 30-symbol copy',svg:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'},
+{id:'flow',nm:'Order flow',sub:'Where the money is going',svg:'<path d="M3 12h4l3-7 4 14 3-7h4"/>'},
 {id:'dock',nm:'Results & watchlist',sub:'Watchlist + paper terminal',svg:'<path d="M12 17.75 18.2 21l-1.2-6.88L22 9.24l-6.9-.96L12 2 8.9 8.28 2 9.24l5 4.88L5.8 21z"/>'},
 {id:'alerts',nm:'Strong-buy alerts',sub:'Ping when a setup fires',svg:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'},
 {id:'ai',nm:'AI analysis',sub:'Sarvam AI read on results',svg:'<path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/>'}
 ];
 const WS_PRESETS={
-crypto:{markets:['crypto'],tools:['chart','dock','alerts','ai']},
-stocks:{markets:['india','us'],tools:['chart','dock']},
-all:{markets:['crypto','india','us'],tools:['chart','dock','alerts','ai']}
+crypto:{markets:['crypto'],tools:['sectors','flow','dock','alerts','ai']},
+stocks:{markets:['india','us'],tools:['sectors','flow','dock']},
+all:{markets:['crypto','india','us'],tools:['sectors','flow','dock','alerts','ai']}
 };
-let WS={markets:['crypto','india','us'],tools:['chart','dock','alerts','ai'],done:false};
+let WS={markets:['crypto','india','us'],tools:['sectors','flow','dock','alerts','ai'],done:false};
 let wsDraft=null;
 
 function wsLoad(){
@@ -6101,9 +6624,10 @@ let raw=null;try{raw=localStorage.getItem(WS_LS);}catch(e){}
 let d=null;try{d=raw?JSON.parse(raw):null;}catch(e){}
 let m,t;
 if(!d||typeof d!=='object'){                 // kuch saved nahi — poora app pehle jaisa
-m=['crypto','india','us'];t=['chart','dock','alerts','ai'];
+m=['crypto','india','us'];t=['sectors','flow','dock','alerts','ai'];
 }else{
 m=Array.isArray(d.markets)?d.markets.filter(x=>WS_MARKETS.some(k=>k.id===x)):[];
+if(Array.isArray(d.tools)&&d.tools.indexOf('chart')>=0){d.tools=d.tools.filter(function(x){return x!=='chart';});['sectors','flow'].forEach(function(x){if(d.tools.indexOf(x)<0)d.tools.push(x);});}
 t=Array.isArray(d.tools)?d.tools.filter(x=>WS_TOOLS.some(k=>k.id===x)):[];
 if(!m.length)m=['crypto'];                   // market ke bina dashboard khaali rehta hai
 }
@@ -6116,7 +6640,9 @@ function wsHasTool(id){return WS.tools.indexOf(id)>=0;}
 function wsMarketOf(v){return v==='scan'?'crypto':(v==='india'||v==='us')?v:null;}
 function wsAllows(v){
 if(v==='home')return true;
-if(v==='chart')return wsHasTool('chart');
+if(v==='chart')return true;
+if(v==='sectors')return wsHasTool('sectors');
+if(v==='flow')return wsHasTool('flow');
 if(v==='dock')return wsHasTool('dock');
 if(v==='alerts')return wsHasTool('alerts');
 if(v==='ai')return wsHasTool('ai');
@@ -6139,6 +6665,8 @@ function wsBlocked(v){
 let mk=wsMarketOf(v),need='';
 if(mk){let m=WS_MARKETS.filter(x=>x.id===mk)[0];need=(m?m.nm:'That')+' scanner';}
 else if(v==='chart')need='Chart workspace';
+else if(v==='sectors')need='Sector rotation';
+else if(v==='flow')need='Order flow';
 else if(v==='dock')need='Results & watchlist';
 else need='That tool';
 try{showToast(need+' is off — turn it on from ⚙ Workspace');}catch(e){}
@@ -6243,7 +6771,7 @@ dismissModal(m);
 if(!WS.done){WS.done=true;wsSave();}
 }
 function wsSkip(){
-wsDraft={markets:['crypto','india','us'],tools:['chart','dock','alerts','ai']};
+wsDraft={markets:['crypto','india','us'],tools:['sectors','flow','dock','alerts','ai']};
 wsCommit(true);
 }
 function wsCommit(quiet){
@@ -6263,7 +6791,7 @@ let cur=document.body.classList.contains('view-home')?'home'
 :document.body.classList.contains('view-us')?'us':'scan';
 if(!wsAllows(cur)){try{showView(wsStartView());}catch(e){}}
 else if(cur==='home'){try{renderHome();}catch(e){}}
-if(!quiet){try{showToast('✅ Workspace saved — '+WS.markets.length+' market'+(WS.markets.length>1?'s':'')+' · '+(WS.tools.length+1)+' tools');}catch(e){}}
+if(!quiet){try{showToast('✅ Workspace saved — '+WS.markets.length+' market'+(WS.markets.length>1?'s':'')+' · '+WS.tools.length+' tools');}catch(e){}}
 }
 function wsInit(){
 try{wsLoad();}catch(e){}
@@ -6357,7 +6885,8 @@ window._ftyUserNav=true;   // keyboard navigation counts as intent
 if(k==='Tab'){e.preventDefault();toggleView();return;}
 if(k==='h'||k==='H'||k==='0'){e.preventDefault();showView('home');return;}
 if(k==='1'){e.preventDefault();showView('scan');return;}
-if(k==='2'){e.preventDefault();showView('chart');return;}
+if(k==='2'){e.preventDefault();showView('sectors');return;}
+if(k==='6'){e.preventDefault();showView('flow');return;}
 if(k==='3'){e.preventDefault();if(!wsAllows('dock')){wsBlocked('dock');return;}dockToggle();return;}
 if(k==='4'){e.preventDefault();showView('india');return;}
 if(k==='5'){e.preventDefault();showView('us');return;}
